@@ -1,0 +1,65 @@
+id,phase,mode,format_valid,sql_guard_pass,executed,execution_correct,chart_valid,latency_ms,input_tokens,output_tokens,failure
+test-energy-day-weekday-0-direct,base,direct,True,False,False,False,False,13355.76,394,677,SQL 语法错误：Error tokenizing 'utc) NOT LIKE '41' AND strftime('% MERCHANTABILIT'
+test-energy-day-weekday-1-direct,base,direct,True,True,False,False,False,3866.11,396,187,SQL 执行失败：no such function: DATE_TRUNC
+test-energy-day-weekday-2-direct,base,direct,True,True,False,False,False,3753.6,396,181,SQL 执行失败：no such function: DATE_TRUNC
+test-energy-day-weekday-0-repair,base,repair,True,True,True,False,True,2913.72,480,133,oracle_mismatch
+test-energy-week-weekend-0-direct,base,direct,True,True,True,False,False,3328.51,395,159,oracle_mismatch
+test-energy-week-weekend-1-direct,base,direct,True,True,True,False,False,4328.52,396,211,oracle_mismatch
+test-energy-week-weekend-2-direct,base,direct,True,True,True,False,False,3151.92,397,149,oracle_mismatch
+test-energy-week-weekend-0-repair,base,repair,True,True,True,True,True,3478.31,501,163,
+test-forecast-total-weekend-0-direct,base,direct,True,True,False,False,False,7133.85,415,355,"SQL 执行失败：unrecognized token: ""^"""
+test-forecast-total-weekend-1-direct,base,direct,True,True,False,False,False,5983.35,415,296,"SQL 执行失败：unrecognized token: ""^"""
+test-forecast-total-weekend-2-direct,base,direct,True,True,False,False,False,7088.82,417,353,"SQL 执行失败：unrecognized token: ""^"""
+test-forecast-total-weekend-0-repair,base,repair,True,True,True,True,True,5394.79,616,256,
+test-forecast-week-weekday-0-direct,base,direct,True,True,False,False,False,12853.32,416,648,"SQL 执行失败：unrecognized token: ""^"""
+test-forecast-week-weekday-1-direct,base,direct,True,True,True,False,False,7923.29,418,398,oracle_mismatch
+test-forecast-week-weekday-2-direct,base,direct,True,True,False,False,False,12769.72,418,646,SQL 执行失败：not authorized to use function: POWER
+test-forecast-week-weekday-0-repair,base,repair,True,True,True,True,True,6580.18,661,315,
+test-peak-hour-weekend-0-direct,base,direct,True,True,True,False,False,3642.56,395,176,oracle_mismatch
+test-peak-hour-weekend-1-direct,base,direct,False,False,False,False,False,15257.98,396,768,invalid_json_plan
+test-peak-hour-weekend-2-direct,base,direct,True,True,True,False,False,4183.7,399,203,oracle_mismatch
+test-peak-hour-weekend-0-repair,base,repair,True,True,True,True,True,2938.56,464,136,
+test-trend-day_type-all-0-direct,base,direct,True,True,False,False,False,4501.36,404,221,SQL 执行失败：no such column: day_type
+test-trend-day_type-all-1-direct,base,direct,True,True,True,False,True,4931.51,403,243,oracle_mismatch
+test-trend-day_type-all-2-direct,base,direct,True,True,False,False,False,4122.31,406,201,SQL 执行失败：no such column: day_type
+test-trend-day_type-all-0-repair,base,repair,True,True,True,True,True,4539.19,524,217,
+test-trend-total-weekend-0-direct,base,direct,True,True,True,False,False,4136.54,400,202,oracle_mismatch
+test-trend-total-weekend-1-direct,base,direct,True,True,True,False,False,4524.95,398,222,oracle_mismatch
+test-trend-total-weekend-2-direct,base,direct,True,True,True,False,False,3651.26,402,176,oracle_mismatch
+test-trend-total-weekend-0-repair,base,repair,True,True,True,True,False,3083.52,491,143,
+test-trend-week-weekday-0-direct,base,direct,True,True,True,False,True,6228.69,401,311,oracle_mismatch
+test-trend-week-weekday-1-direct,base,direct,True,True,True,False,False,4358.88,401,213,oracle_mismatch
+test-trend-week-weekday-2-direct,base,direct,True,True,True,False,True,6211.3,403,310,oracle_mismatch
+test-trend-week-weekday-0-repair,base,repair,True,True,True,True,True,4054.46,536,191,
+test-energy-day-weekday-0-direct,qlora,direct,True,True,True,True,True,2618.82,394,110,
+test-energy-day-weekday-1-direct,qlora,direct,True,True,True,True,True,2619.55,396,110,
+test-energy-day-weekday-2-direct,qlora,direct,True,True,True,True,True,2621.28,396,110,
+test-energy-day-weekday-0-repair,qlora,repair,True,True,True,True,True,2701.9,480,110,
+test-energy-week-weekend-0-direct,qlora,direct,True,True,True,False,True,2692.58,395,113,oracle_mismatch
+test-energy-week-weekend-1-direct,qlora,direct,True,True,True,False,True,2684.55,396,113,oracle_mismatch
+test-energy-week-weekend-2-direct,qlora,direct,True,True,True,False,True,2699.76,397,113,oracle_mismatch
+test-energy-week-weekend-0-repair,qlora,repair,True,True,True,True,True,3120.65,501,130,
+test-forecast-total-weekend-0-direct,qlora,direct,True,True,True,True,True,5041.17,415,225,
+test-forecast-total-weekend-1-direct,qlora,direct,True,True,True,True,True,4959.92,415,220,
+test-forecast-total-weekend-2-direct,qlora,direct,True,True,True,False,True,4780.93,417,210,oracle_mismatch
+test-forecast-total-weekend-0-repair,qlora,repair,True,True,True,True,True,5212.41,616,220,
+test-forecast-week-weekday-0-direct,qlora,direct,True,True,True,False,True,5679.64,416,252,oracle_mismatch
+test-forecast-week-weekday-1-direct,qlora,direct,True,True,True,False,True,5614.19,418,252,oracle_mismatch
+test-forecast-week-weekday-2-direct,qlora,direct,True,True,True,False,True,5621.88,418,252,oracle_mismatch
+test-forecast-week-weekday-0-repair,qlora,repair,True,True,True,True,True,6308.4,661,270,
+test-peak-hour-weekend-0-direct,qlora,direct,True,True,True,True,True,2282.3,395,93,
+test-peak-hour-weekend-1-direct,qlora,direct,True,True,True,True,True,2360.05,396,93,
+test-peak-hour-weekend-2-direct,qlora,direct,True,True,True,True,True,2349.22,399,95,
+test-peak-hour-weekend-0-repair,qlora,repair,True,True,True,True,True,2369.42,464,93,
+test-trend-day_type-all-0-direct,qlora,direct,True,True,True,False,True,3104.92,404,131,oracle_mismatch
+test-trend-day_type-all-1-direct,qlora,direct,False,False,False,False,False,16876.78,403,768,invalid_json_plan
+test-trend-day_type-all-2-direct,qlora,direct,True,True,True,False,True,3170.99,406,132,oracle_mismatch
+test-trend-day_type-all-0-repair,qlora,repair,True,True,True,True,True,3711.53,524,152,
+test-trend-total-weekend-0-direct,qlora,direct,True,True,True,True,True,2754.48,400,110,
+test-trend-total-weekend-1-direct,qlora,direct,True,True,True,True,True,2742.32,398,111,
+test-trend-total-weekend-2-direct,qlora,direct,True,True,True,True,True,2801.64,402,111,
+test-trend-total-weekend-0-repair,qlora,repair,True,True,True,True,True,2826.14,491,110,
+test-trend-week-weekday-0-direct,qlora,direct,True,True,True,True,True,4004.44,401,164,
+test-trend-week-weekday-1-direct,qlora,direct,True,True,True,True,True,4023.82,401,164,
+test-trend-week-weekday-2-direct,qlora,direct,True,True,True,True,True,4040.98,403,164,
+test-trend-week-weekday-0-repair,qlora,repair,True,True,True,True,True,4105.56,536,164,

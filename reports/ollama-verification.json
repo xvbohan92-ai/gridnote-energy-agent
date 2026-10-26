@@ -1,0 +1,202 @@
+{
+  "scope": "Two local integration smoke tasks after debugging; not a held-out accuracy benchmark.",
+  "provider": "local Ollama",
+  "profile": {
+    "base_model": "qwen3:4b",
+    "profile_model": "gridnote-qwen3:4b",
+    "base_template_sha256": "2d54db2b9bb29ce7db54fea63a891f5859603813c555b1f88b5e0994652897f9",
+    "profile_template_sha256": "0a3e43c71bdec4a59b0ca75916475ff79722c1681b06203ea092bc71e1d0a92f",
+    "base_digest": "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+    "ollama_version": "0.34.2",
+    "change": "Close the assistant thinking prefix; same existing weight blobs, no training or download.",
+    "create_status": "success"
+  },
+  "modelfile_sha256": "2271d82f18e40c975697144d99ade114d9e9f5b3bbecf96fab98e704378b6015",
+  "engine": "ollama-json-action-loop",
+  "weights_trained": false,
+  "cloud_model_requests": 0,
+  "total_local_generation_requests_this_debug_session": 13,
+  "total_local_generation_requests_note": "Includes one single-tool capability probe, three Responses-loop attempts, one native chat probe, one required-chat probe, a 3-request failed JSON run, and the two final 2-request smoke tasks.",
+  "api_fee_usd": 0,
+  "cost_scope": "Local API fees only; hardware and electricity are not estimated.",
+  "tasks": [
+    {
+      "question": "最近7天的每日负荷趋势",
+      "scope": {
+        "start": "2024-12-25T00:00:00Z",
+        "end": "2025-01-01T00:00:00Z",
+        "region": "PJM",
+        "note": "相对时间以该区域最新数据日 2024-12-31 为基准，使用最近 7 个日历日，UTC。"
+      },
+      "result_rows": 7,
+      "result": [
+        {
+          "day": "2024-12-25",
+          "load_mw": 90447.0,
+          "forecast_mw": 94632.21,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-12-26",
+          "load_mw": 94411.5,
+          "forecast_mw": 96310.0,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-12-27",
+          "load_mw": 96449.38,
+          "forecast_mw": 95901.25,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-12-28",
+          "load_mw": 87581.5,
+          "forecast_mw": 86300.58,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-12-29",
+          "load_mw": 81466.17,
+          "forecast_mw": 80231.63,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-12-30",
+          "load_mw": 83967.42,
+          "forecast_mw": 85537.04,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-12-31",
+          "load_mw": 89213.79,
+          "forecast_mw": 85965.21,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        }
+      ],
+      "semantic_check": {
+        "status": "verified",
+        "checks": [
+          "任务字段和时间粒度",
+          "数值与单位定义",
+          "排序与 Top-K",
+          "NULL 与指标分母"
+        ],
+        "required_columns": [
+          "day",
+          "load_mw",
+          "forecast_mw",
+          "observed_hours",
+          "forecast_hours"
+        ],
+        "limitation": "只核验可解析的有限任务合同；无法证明任意自然语言解释正确。"
+      },
+      "tools": [
+        "calculate_metric",
+        "finish_analysis"
+      ],
+      "model_calls": 2,
+      "tokens": 2989,
+      "latency_ms": 3376.54,
+      "observation": "CLI raw report is kept locally, ignored by default."
+    },
+    {
+      "question": "最近7天负荷记录数",
+      "result": [
+        {
+          "n": 168
+        }
+      ],
+      "model_calls": 2,
+      "tokens": 2466,
+      "latency_ms": 2037.67,
+      "tools": [
+        "calculate_metric",
+        "finish_analysis"
+      ],
+      "semantic_status": "verified",
+      "observation": "Verified through the live browser; docs/ollama-local-query.png"
+    }
+  ],
+  "failed_integration_attempts": [
+    {
+      "attempt": 1,
+      "mode": "responses-tools",
+      "outcome": "failed",
+      "error_code": "missing_evidence",
+      "model_calls": 1,
+      "latency_ms": 50001.59,
+      "tool_errors": []
+    },
+    {
+      "attempt": 2,
+      "mode": "responses-tools",
+      "outcome": "failed",
+      "error_code": "missing_evidence",
+      "model_calls": 1,
+      "latency_ms": 45289.25,
+      "tool_errors": []
+    },
+    {
+      "attempt": 3,
+      "mode": "responses-tools",
+      "outcome": "failed",
+      "error_code": "missing_evidence",
+      "model_calls": 1,
+      "latency_ms": 46074.72,
+      "tool_errors": []
+    },
+    {
+      "attempt": 4,
+      "mode": "json-actions-before-contract-fix",
+      "outcome": "failed",
+      "error_code": "budget_exhausted",
+      "model_calls": 3,
+      "latency_ms": 16614.85,
+      "tool_errors": [
+        {
+          "tool": "query_load",
+          "error": "SQL 执行失败：no such function: DATE_TRUNC"
+        },
+        {
+          "tool": "query_load",
+          "error": "缺少任务要求的列：forecast_hours, forecast_mw, load_mw, observed_hours"
+        },
+        {
+          "tool": "query_load",
+          "error": "缺少任务要求的列：forecast_hours, forecast_mw, load_mw, observed_hours"
+        }
+      ]
+    }
+  ],
+  "other_probes": [
+    {
+      "name": "single-tool Responses probe",
+      "result": "tool emitted; connectivity only",
+      "requests": 1
+    },
+    {
+      "name": "native chat probe",
+      "result": "generation limit, no tool emitted",
+      "requests": 1
+    },
+    {
+      "name": "required chat probe",
+      "result": "generation limit, no tool emitted",
+      "requests": 1
+    }
+  ],
+  "limitations": [
+    "Final tasks were used during development, not held out. Failed attempts are retained rather than excluded to report accuracy.",
+    "Both completed tasks selected the trusted metric calculator; this is not evidence of correct free-form model-generated SQL.",
+    "The earlier SQL attempt corrected DATE_TRUNC to DATE, but failed the required-column contract and did not complete.",
+    "Template, decoding format, instruction and task-contract changes were combined; no isolated causal attribution or latency-improvement claim.",
+    "No fine-tuning or post-training. Warm local timings are individual observations, not P50/P95 or an SLA."
+  ]
+}

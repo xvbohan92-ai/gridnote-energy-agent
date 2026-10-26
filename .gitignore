@@ -19,5 +19,16 @@ dist/
 /reports/*
 !/reports/evaluation.json
 !/reports/test-results.xml
+!/reports/eia-provenance.json
+!/reports/real-data-validation.json
+!/reports/v0.3-test-results.xml
+!/reports/ollama-test-results.xml
+!/reports/ollama-verification.json
+!/reports/sft-data-audit.json
+!/reports/sft-training.json
+!/reports/sft-evaluation.json
+!/reports/sft-analysis.json
+!/reports/sft-test-results.xml
+# Real-model traces may contain user data; review before publishing them.
 *.pem
 *.key

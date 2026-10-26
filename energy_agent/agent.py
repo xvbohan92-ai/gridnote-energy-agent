@@ -12,7 +12,7 @@ from .data import dataset_context
 from .errors import PlanningError, SemanticError, failure_outcome
 from .metrics import quality, read_window, verify_result
 from .models import AnalysisTask, AskRequest, QueryPlan, Scope
-from .planner import DemoPlanner, OpenAIPlanner
+from .planner import DemoPlanner, MLXPlanner, OpenAIPlanner
 from .scope import ScopeError, resolve_scope
 from .sql import QueryError, execute_sql, guard_sql
 from .tasks import compile_task, parse_task
@@ -370,11 +370,20 @@ def build_agent(settings: Settings, planner, *, baseline=False, mode=None):
 
 
 def ask(settings: Settings, request: AskRequest, *, planner=None, baseline=False, mode=None) -> dict:
+    if planner is None and settings.planner in ("openai-tools", "ollama-tools"):
+        from .tool_agent import ask_tool_agent
+
+        try:
+            return ask_tool_agent(settings, request, mode=mode or ("baseline" if baseline else "domain"))
+        except (sqlite3.Error, OSError) as exc:
+            raise PlanningError("数据库读取失败，请检查服务日志。", code="data_error") from exc
     started = time.perf_counter()
     owned = planner is None
     if owned:
         if settings.planner == "openai":
             planner = OpenAIPlanner(settings.model)
+        elif settings.planner == "mlx-sql":
+            planner = MLXPlanner(settings.mlx_base_url, settings.model)
         elif settings.planner == "demo":
             planner = DemoPlanner()
         else:
@@ -384,9 +393,12 @@ def ask(settings: Settings, request: AskRequest, *, planner=None, baseline=False
             "response"
         ]
         response["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
+        if settings.planner == "mlx-sql" and owned:
+            response.update(provider="mlx", engine="langgraph-mlx-sql",
+                            adapter_sha256=planner.adapter_sha256)
         return response
     except (sqlite3.Error, OSError) as exc:
         raise PlanningError("数据库读取失败，请检查服务日志。", code="data_error") from exc
     finally:
-        if owned and isinstance(planner, OpenAIPlanner):
+        if owned and isinstance(planner, (OpenAIPlanner, MLXPlanner)):
             planner.client.close()

@@ -405,6 +405,8 @@ def semantic_diagnostics(fixtures):
 
 
 def evaluate(*, planner="demo", model="gpt-4.1-mini", output: Path | None = None):
+    if planner not in ("demo", "openai"):
+        raise ValueError("Legacy batch benchmark supports only demo or explicit openai, not the tool loop.")
     records = []
     with tempfile.TemporaryDirectory() as directory:
         fixtures = _fixtures(Path(directory))

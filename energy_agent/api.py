@@ -1,4 +1,7 @@
+import hashlib
+import json
 import logging
+import os
 import sqlite3
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -8,13 +11,41 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from .agent import ask
-from .config import Settings
+from .config import ROOT, Settings
 from .data import create_demo, dataset_context
 from .models import AskRequest
 from .planner import DemoPlanner, PlanningError
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "static"
+
+
+def training_evidence():
+    try:
+        train_bytes = (ROOT / "reports/sft-training.json").read_bytes()
+        evaluation_bytes = (ROOT / "reports/sft-evaluation.json").read_bytes()
+        chart = json.loads((ROOT / "docs/figures/sft-chart-values.json").read_text())
+        if (
+            hashlib.sha256(train_bytes).hexdigest() != chart["training_report_sha256"]
+            or hashlib.sha256(evaluation_bytes).hexdigest() != chart["evaluation_report_sha256"]
+        ):
+            return {"available": False}
+        trained, evaluated = json.loads(train_bytes), json.loads(evaluation_bytes)
+        return {
+            "available": True,
+            "base": evaluated["summary"]["base"],
+            "qlora": evaluated["summary"]["qlora"],
+            "paired": evaluated["paired"],
+            "splits": evaluated["dataset"]["splits"],
+            "steps": trained["config"]["iters"],
+            "rank": trained["config"]["lora_parameters"]["rank"],
+            "best_step": trained["best_checkpoint"]["iteration"],
+            "parameters": trained["trainable_parameters"],
+            "peak_gb": trained["peak_memory_bytes"] / 1e9,
+            "fixed_experiment": True,
+        }
+    except (OSError, ValueError, KeyError, TypeError):
+        return {"available": False}
 
 
 def create_app(settings: Settings | None = None):
@@ -25,7 +56,7 @@ def create_app(settings: Settings | None = None):
         create_demo(config.db_path)  # Existing imported data is never replaced on startup.
         yield
 
-    app = FastAPI(title="Energy Data Analysis Agent", version="0.2.0", lifespan=lifespan)
+    app = FastAPI(title="Energy Data Analysis Agent", version="0.3.0", lifespan=lifespan)
 
     @app.middleware("http")
     async def headers(request: Request, call_next):
@@ -43,12 +74,32 @@ def create_app(settings: Settings | None = None):
         return {
             "status": "ok",
             "planner": config.planner,
-            "model": config.model if config.planner == "openai" else None,
+            "model": config.model if config.planner != "demo" else None,
+            "model_configured": config.planner in ("ollama-tools", "mlx-sql")
+            or bool(os.getenv("OPENAI_API_KEY")),
+            "provider": "mlx"
+            if config.planner == "mlx-sql"
+            else None
+            if config.planner == "demo"
+            else "ollama"
+            if config.planner == "ollama-tools"
+            else "openai",
+            "max_model_calls": config.max_model_calls,
         }
 
     @app.get("/api/dataset")
     def dataset():
         return dataset_context(config.db_path)
+
+    @app.get("/api/training-evidence")
+    def training_report():
+        return training_evidence()
+
+    @app.get("/api/training-figure")
+    def training_figure():
+        if not training_evidence()["available"]:
+            return JSONResponse(status_code=404, content={"detail": "Training evidence is unavailable"})
+        return FileResponse(ROOT / "docs/figures/sft-evaluation.png", headers={"Cache-Control": "no-store"})
 
     @app.post("/api/ask")
     def query(request: AskRequest):

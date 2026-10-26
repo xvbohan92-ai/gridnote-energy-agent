@@ -22,7 +22,7 @@ jobs:
           node-version: '22'
       - run: uv python install 3.12
       - run: uv sync --frozen --python 3.12
-      - run: uv run ruff check energy_agent tests
+      - run: uv run ruff check energy_agent tests training
       - run: node --check --input-type=module < energy_agent/static/app.js
       - run: uv run pytest -q --junitxml=/tmp/gridnote-tests.xml
       - run: uv run energy-agent evaluate --planner demo --output /tmp/gridnote-evaluation.json

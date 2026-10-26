@@ -8,7 +8,7 @@ from pathlib import Path
 
 import sqlglot
 from sqlglot import exp
-from sqlglot.errors import ParseError
+from sqlglot.errors import ParseError, TokenError
 
 from .data import readonly
 from .errors import AgentError
@@ -55,7 +55,7 @@ def guard_sql(sql: str, scope: Scope, max_rows: int = 500) -> str:
         raise QueryError("SQL 为空或过长。")
     try:
         statements = sqlglot.parse(sql, read="sqlite")
-    except ParseError as exc:
+    except (ParseError, TokenError) as exc:
         raise QueryError(f"SQL 语法错误：{str(exc)[:250]}") from exc
     if len(statements) != 1 or not isinstance(statements[0], exp.Query):
         raise QueryError("只允许一条 SELECT / WITH 查询。")

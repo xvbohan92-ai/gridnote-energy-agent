@@ -3,12 +3,14 @@
 import json
 import math
 import os
+from urllib.parse import urlsplit
 
+import httpx
 from openai import APIError, OpenAI
 from pydantic import ValidationError
 
 from .errors import PlanningError
-from .models import QueryPlan, Scope
+from .models import AnalysisTask, QueryPlan, Scope
 from .tasks import compile_task, parse_task
 
 
@@ -107,3 +109,61 @@ class OpenAIPlanner:
         if not response.output_parsed.sql.strip():
             raise PlanningError(response.output_parsed.note, code="model_refusal")
         return response.output_parsed
+
+
+class MLXPlanner:
+    """Local trained SQL component; the existing graph retains execution authority."""
+
+    name = "mlx-sql"
+
+    def __init__(self, base_url, model):
+        address = urlsplit(base_url)
+        if (
+            address.scheme not in ("http", "https")
+            or address.hostname not in ("127.0.0.1", "localhost", "::1")
+            or address.username
+            or address.password
+            or address.query
+            or address.fragment
+            or address.path not in ("", "/")
+        ):
+            raise PlanningError("MLX 规划器仅连接本机服务。", code="configuration_error")
+        self.client = httpx.Client(base_url=base_url, timeout=90, trust_env=False, follow_redirects=False)
+        self.model = model
+        self.usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+        self.adapter_sha256 = None
+
+    def plan(self, question, context, scope, previous=None):
+        contract = context["task_contract"]
+        if contract["kind"] in ("custom", "anomaly"):
+            raise PlanningError("微调规划器仅支持已定义的有限分析任务。", code="unsupported_question")
+        task = AnalysisTask.model_validate(
+            {k: contract[k] for k in AnalysisTask.model_fields if k in contract}
+        )
+        self.usage["calls"] += 1
+        try:
+            response = self.client.post(
+                "/plan",
+                json={
+                    "question": question,
+                    "scope": scope.model_dump(),
+                    "task": task.model_dump(),
+                    "previous_attempt": previous,
+                },
+            )
+            response.raise_for_status()
+        except httpx.HTTPError as exc:
+            raise PlanningError(
+                f"本地 MLX 请求失败（{type(exc).__name__}）；未切换云端。", code="provider_error"
+            ) from exc
+        try:
+            data = response.json()
+            self.usage["input_tokens"] += data["usage"]["input_tokens"]
+            self.usage["output_tokens"] += data["usage"]["output_tokens"]
+            self.model = data["model"]
+            self.adapter_sha256 = data.get("adapter_sha256")
+            if data.get("plan") is None:
+                raise ValueError("invalid plan")
+            return QueryPlan.model_validate(data["plan"])
+        except (ValueError, KeyError, TypeError) as exc:
+            raise PlanningError("微调模型未返回有效 SQL 计划。", code="invalid_plan") from exc

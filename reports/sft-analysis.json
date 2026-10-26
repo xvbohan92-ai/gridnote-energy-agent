@@ -1,0 +1,155 @@
+{
+  "evaluation_report_sha256": "764667ff56ca9b1de137a602fcf37219d8af441d296c27a1026cb1868f9c52fc",
+  "training_report_sha256": "10cd27354cd337e783826d93bd78385215d48e6249483bf93d65378b9afaff38",
+  "failure_counts": {
+    "omitted_day_filter": 7,
+    "wrong_day_type_grouping": 2,
+    "invalid_json_plan": 1
+  },
+  "failed_cases": [
+    {
+      "id": "test-energy-week-weekend-0-direct",
+      "condition": [
+        "energy",
+        "week",
+        "weekend"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-energy-week-weekend-1-direct",
+      "condition": [
+        "energy",
+        "week",
+        "weekend"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-energy-week-weekend-2-direct",
+      "condition": [
+        "energy",
+        "week",
+        "weekend"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-forecast-total-weekend-2-direct",
+      "condition": [
+        "forecast",
+        "total",
+        "weekend"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-forecast-week-weekday-0-direct",
+      "condition": [
+        "forecast",
+        "week",
+        "weekday"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-forecast-week-weekday-1-direct",
+      "condition": [
+        "forecast",
+        "week",
+        "weekday"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-forecast-week-weekday-2-direct",
+      "condition": [
+        "forecast",
+        "week",
+        "weekday"
+      ],
+      "category": "omitted_day_filter",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-trend-day_type-all-0-direct",
+      "condition": [
+        "trend",
+        "day_type",
+        "all"
+      ],
+      "category": "wrong_day_type_grouping",
+      "failure": "oracle_mismatch"
+    },
+    {
+      "id": "test-trend-day_type-all-1-direct",
+      "condition": [
+        "trend",
+        "day_type",
+        "all"
+      ],
+      "category": "invalid_json_plan",
+      "failure": "invalid_json_plan"
+    },
+    {
+      "id": "test-trend-day_type-all-2-direct",
+      "condition": [
+        "trend",
+        "day_type",
+        "all"
+      ],
+      "category": "wrong_day_type_grouping",
+      "failure": "oracle_mismatch"
+    }
+  ],
+  "delta_percentage_points": 46.875,
+  "paired": {
+    "improved": 15,
+    "regressed": 0,
+    "both_correct": 7,
+    "both_wrong": 10
+  },
+  "live_smoke": {
+    "question": "最近7天的每日负荷趋势",
+    "status": "ok",
+    "outcome": "success",
+    "model": "Qwen3-4B QLoRA · step 119",
+    "provider": "mlx",
+    "usage": {
+      "calls": 1,
+      "input_tokens": 394,
+      "output_tokens": 124,
+      "estimated_cost_usd": 0.0
+    },
+    "latency_ms": 3195.34,
+    "retries": 0,
+    "semantic_check": {
+      "status": "verified",
+      "checks": [
+        "任务字段和时间粒度",
+        "数值与单位定义",
+        "排序与 Top-K",
+        "NULL 与指标分母"
+      ],
+      "required_columns": [
+        "day",
+        "load_mw",
+        "forecast_mw",
+        "observed_hours",
+        "forecast_hours"
+      ],
+      "limitation": "只核验可解析的有限任务合同；无法证明任意自然语言解释正确。"
+    },
+    "adapter_sha256": "6cc91b3a70e524b408487503b05e5d3724bc4316ba016d5f73191b5574fa5fd7"
+  },
+  "live_smoke_result_rows": 7,
+  "selected_adapter_matches_live_service": true,
+  "evaluator_incident": "The initial evaluator aborted on the first base case because a SQL TokenError escaped the guard. The shared guard was fixed to classify malformed strings as query errors. All 32 paired cases were then evaluated; no model, training-data, checkpoint, prompt or decoding change was made after test generation began.",
+  "limitations": "32 programmatically authored cases from 8 held-out semantic conditions; paraphrases are correlated. Supplied correct finite task contract and one schema, shared metric primitives; no external human review or general text-to-SQL claim. Repair faults are synthetic. Execution scores use separate raw EIA CSV calculations. No tool retries, no trusted-calculator fallback and no per-phase prompt/decoding changes. Latency is an individual local warm run with base-first order, not a production SLA."
+}

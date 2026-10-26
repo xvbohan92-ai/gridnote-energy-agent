@@ -40,6 +40,7 @@ function view(name) {
   }
   $("mobile-data").textContent = name === "analysis" ? "数据来源" : "返回分析";
   if (name === "analysis") renderChart();
+  if (name === "about") loadTrainingEvidence();
 }
 function chooseTab(name) {
   for (const tab of document.querySelectorAll("[data-tab]")) {
@@ -72,15 +73,25 @@ function renderDataset() {
   banner.querySelector("strong").textContent = metadata.synthetic ? "演示数据空间" : "已导入本地数据";
   banner.querySelector("div").querySelector("span").textContent = metadata.synthetic
     ? "数据为可复现的合成样本，并非真实 PJM 观测。支持导入你的小时负荷 CSV。"
+    : metadata.source_kind === "eia930" ? `EIA-930 · PJM · ${number(metadata.audit.rows, 0)} 条有效记录；缺少 ${metadata.audit.missing_hours} 小时，未补零。`
     : `来源：${metadata.source}。数据来源标签由导入者提供。`;
   $("dataset-detail").replaceChildren();
   const dl = element("dl", undefined, "catalog-meta");
   for (const [name, value] of [["数据集", metadata.name], ["来源", metadata.source],
-                              ["演示数据", metadata.synthetic ? "是 · 不代表真实 PJM 运行" : "否 · 用户导入，来源未自动验证"],
+                              ["演示数据", metadata.synthetic ? "是 · 不代表真实 PJM 运行" : metadata.source_kind === "eia930" ? "否 · EIA 官方历史文件，保留快照 SHA-256" : "否 · 用户导入，来源未自动验证"],
                               ["数据粒度", "1 小时 × 区域"], ["时区", "UTC"], ["导入时间", metadata.created_at]]) {
     dl.append(element("dt", name), element("dd", value));
   }
   $("dataset-detail").append(dl, element("h2", "覆盖与质量"));
+  if (metadata.source_kind === "eia930") {
+    const note = element("p", `${metadata.time_conversion}。使用报告原始负荷，未使用调整值或插补值。预测值是 EIA 报告快照，不能当作自训练预测模型或严格的时点回测。`);
+    $("dataset-detail").append(note);
+    for (const source of metadata.sources) {
+      const details = element("details", undefined, "source-snapshot");
+      details.append(element("summary", source.file), element("pre", `SHA-256: ${source.sha256}\n${source.url}`));
+      $("dataset-detail").append(details);
+    }
+  }
   const coverage = element("div", undefined, "table-container");
   const t = element("table"), head = element("tr");
   for (const name of ["区域", "起始日 UTC", "结束日 UTC", "记录数", "缺失小时", "预测覆盖"]) head.append(element("th", name));
@@ -117,6 +128,11 @@ function renderTrace() {
     const row = element("div", undefined, "trace-item");
     const icon = element("span", step.status === "error" ? "!" : step.status === "retry" ? "↻" : "✓", `trace-icon ${step.status}`);
     const text = element("div"); text.append(element("strong", names[step.node] || step.node), element("p", step.detail));
+    if (step.arguments || step.observation) {
+      const details = element("details", undefined, "tool-evidence");
+      details.append(element("summary", "查看调用参数与结果"), element("pre", JSON.stringify({ arguments: step.arguments, observation: step.observation, execution_steps: step.execution_steps }, null, 2)));
+      text.append(details);
+    }
     row.append(icon, text, element("small", `${number(step.duration_ms)} ms`));
     $("trace-list").append(row);
   }
@@ -139,7 +155,7 @@ function renderResult(result, preview = false) {
     : "查询范围未通过校验";
   $("scope-label").title = scope?.note || "";
   const usage = result.usage;
-  $("run-stats").textContent = `${number(result.latency_ms)} ms · ${usage.calls} 次模型调用 · ${usage.input_tokens + usage.output_tokens} tokens · ${usage.estimated_cost_usd === null ? "费用未配置" : "$" + number(usage.estimated_cost_usd, 6)}`;
+  $("run-stats").textContent = `${number(result.latency_ms)} ms · ${usage.calls} 次模型调用 · ${usage.input_tokens + usage.output_tokens} tokens · ${["ollama", "mlx"].includes(result.provider) ? "本地推理 · 无云端 API 费用" : usage.estimated_cost_usd === null ? "费用未配置" : "$" + number(usage.estimated_cost_usd, 6)}`;
   $("download").disabled = !result.result.rows.length;
   renderTable(); renderTrace(); renderValidation(); chooseTab("chart");
 }
@@ -345,7 +361,7 @@ async function init() {
   try {
     const [health, dataset] = await Promise.all([api("/api/health"), api("/api/dataset")]);
     state.dataset = dataset;
-    $("planner-badge").textContent = health.planner === "demo" ? "规则演示 · 无模型调用" : `OpenAI · ${health.model}`;
+    $("planner-badge").textContent = health.planner === "demo" ? "规则演示 · 无模型调用" : health.planner === "mlx-sql" ? `MLX LoRA · ${health.model} · 本地 SQL` : health.planner === "ollama-tools" ? `Ollama · ${health.model} · 本地` : !health.model_configured ? "模型待配置 · 预览不调用模型" : health.planner === "openai-tools" ? `工具 Agent · 最多 ${health.max_model_calls} 次模型请求` : `OpenAI · ${health.model}`;
     for (const region of dataset.regions) {
       const option = element("option", region.region); option.value = region.region; $("region").append(option);
     }
@@ -354,3 +370,25 @@ async function init() {
   } catch (error) { errorMessage(`无法连接本地数据：${error.message}`); }
 }
 init();
+
+async function loadTrainingEvidence() {
+  const container = $("training-evidence");
+  try {
+    const report = await api("/api/training-evidence");
+    container.replaceChildren(element("h2", "QLoRA 微调与固定评测"));
+    if (!report.available) { container.append(element("p", "训练报告或图表尚未准备好，亦可能需要重新核对来源指纹。")); return; }
+    container.append(element("p", `Qwen3-4B · 4-bit QLoRA · rank ${report.rank} · ${report.steps} 步训练 · 验证集选中第 ${report.best_step} 步。`));
+    const table = element("table"), heading = element("tr");
+    for (const label of ["SQL 组件单次执行", "基础模型", "QLoRA 模型"]) heading.append(element("th", label));
+    table.append(heading);
+    for (const [label, key] of [["契约执行正确", "execution_correct"], ["SQL 执行成功", "executed"], ["结构化计划有效", "format_valid"]]) {
+      const row = element("tr"); row.append(element("td", label));
+      for (const phase of ["base", "qlora"]) row.append(element("td", `${report[phase][key]}/${report[phase].cases}`));
+      table.append(row);
+    }
+    const wrap = element("div", undefined, "table-container"); wrap.append(table); container.append(wrap);
+    container.append(element("p", `程序生成样本：训练 ${report.splits.train.rows}、验证 ${report.splits.valid.rows}、测试 ${report.splits.test.rows}；测试来自 ${report.splits.test.conditions} 个留出任务组合。`));
+    const plot = element("img"); plot.src = "/api/training-figure"; plot.alt = "基础模型与 QLoRA SQL 执行结果、训练损失和成对失败分析"; plot.className = "training-figure";
+    container.append(plot, element("p", `这是固定的小规模 SQL 组件实验，不是通用 Text-to-SQL 或完整 Agent 准确率；正确任务契约由程序提供。测试题存在相关改写，修复故障为合成；仍有 ${report.qlora.cases - report.qlora.execution_correct} 题失败，详见 README。当前查询仍需单独校验。`));
+  } catch { container.replaceChildren(element("h2", "QLoRA 微调与固定评测"), element("p", "暂时无法读取固定实验报告，请查看项目 README。")); }
+}

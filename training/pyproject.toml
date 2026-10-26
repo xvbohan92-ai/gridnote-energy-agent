@@ -1,0 +1,11 @@
+[project]
+name = "gridnote-sql-finetuning"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "energy-analysis-agent",
+  "mlx-lm[train]==0.32.2",
+]
+
+[tool.uv.sources]
+energy-analysis-agent = { path = "..", editable = true }

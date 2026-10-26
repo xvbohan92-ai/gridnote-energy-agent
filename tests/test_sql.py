@@ -8,6 +8,14 @@ from energy_agent.sql import QueryError, execute_sql, guard_sql
 SCOPE = Scope(start="2025-01-22T00:00:00Z", end="2025-01-29T00:00:00Z", region="DOM")
 
 
+@pytest.mark.parametrize(
+    "sql", ["SELECT 'unterminated FROM load_hourly", "SELECT * FROM load_hourly WHERE region='DOM"]
+)
+def test_unclosed_model_strings_are_rejected_as_query_errors(sql):
+    with pytest.raises(QueryError, match="SQL 语法错误"):
+        guard_sql(sql, SCOPE)
+
+
 def test_all_source_references_are_scoped(settings):
     sql = """WITH all_rows AS (SELECT * FROM load_hourly WHERE 1=1 OR region='AECO')
              SELECT a.region, COUNT(*) AS n FROM all_rows a

@@ -1,0 +1,126 @@
+{
+  "training_report_sha256": "10cd27354cd337e783826d93bd78385215d48e6249483bf93d65378b9afaff38",
+  "evaluation_report_sha256": "764667ff56ca9b1de137a602fcf37219d8af441d296c27a1026cb1868f9c52fc",
+  "case_csv_sha256": "43238202b08c2b0cbb8f694f94ab86eb77a3ecf22657e36dd01fbe897c525bc4",
+  "summary": {
+    "base": {
+      "cases": 32,
+      "format_valid": 31,
+      "sql_guard_pass": 30,
+      "executed": 21,
+      "execution_correct": 7,
+      "chart_valid": 10,
+      "execution_accuracy": 0.21875,
+      "median_latency_ms": 4430.12,
+      "input_tokens": 13954,
+      "output_tokens": 9060
+    },
+    "qlora": {
+      "cases": 32,
+      "format_valid": 31,
+      "sql_guard_pass": 31,
+      "executed": 31,
+      "execution_correct": 22,
+      "chart_valid": 31,
+      "execution_accuracy": 0.6875,
+      "median_latency_ms": 3112.785,
+      "input_tokens": 13954,
+      "output_tokens": 5465
+    }
+  },
+  "by_mode": {
+    "base": {
+      "direct": {
+        "cases": 24,
+        "format_valid": 23,
+        "sql_guard_pass": 22,
+        "executed": 13,
+        "execution_correct": 0,
+        "chart_valid": 3,
+        "execution_accuracy": 0.0,
+        "median_latency_ms": 4513.155,
+        "input_tokens": 9681,
+        "output_tokens": 7506
+      },
+      "repair": {
+        "cases": 8,
+        "format_valid": 8,
+        "sql_guard_pass": 8,
+        "executed": 8,
+        "execution_correct": 7,
+        "chart_valid": 7,
+        "execution_accuracy": 0.875,
+        "median_latency_ms": 3766.385,
+        "input_tokens": 4273,
+        "output_tokens": 1554
+      }
+    },
+    "qlora": {
+      "direct": {
+        "cases": 24,
+        "format_valid": 23,
+        "sql_guard_pass": 23,
+        "executed": 23,
+        "execution_correct": 14,
+        "chart_valid": 23,
+        "execution_accuracy": 0.5833333333333334,
+        "median_latency_ms": 2953.2799999999997,
+        "input_tokens": 9681,
+        "output_tokens": 4216
+      },
+      "repair": {
+        "cases": 8,
+        "format_valid": 8,
+        "sql_guard_pass": 8,
+        "executed": 8,
+        "execution_correct": 8,
+        "chart_valid": 8,
+        "execution_accuracy": 1.0,
+        "median_latency_ms": 3416.09,
+        "input_tokens": 4273,
+        "output_tokens": 1249
+      }
+    }
+  },
+  "paired": {
+    "improved": 15,
+    "regressed": 0,
+    "both_correct": 7,
+    "both_wrong": 10
+  },
+  "dataset": {
+    "experiment": "gridnote-contract-sql-qlora-v1",
+    "splits": {
+      "train": {
+        "rows": 232,
+        "conditions": 29,
+        "direct": 174,
+        "repair": 58,
+        "sha256": "5d195060541119f8e1b34453233248b3181e6cb09d8b746d7c59181193c0ae1f"
+      },
+      "valid": {
+        "rows": 24,
+        "conditions": 8,
+        "direct": 16,
+        "repair": 8,
+        "sha256": "e0d506ddb2a9da02c828651ca6ebc051bfafe46d536ffa43542e3e188fae08d3"
+      },
+      "test": {
+        "rows": 32,
+        "conditions": 8,
+        "direct": 24,
+        "repair": 8,
+        "sha256": "65e2a893fafa5608a728c73d87997abdf635dfd56bbe114c52f1ceb5b2c4f475"
+      }
+    },
+    "limitations": "Programmatically authored synthetic instructions/SQL labels, not human annotations. Same schema and metric primitives across splits. Conditions and phrase families are grouped; real EIA data is used only for execution scoring. This evaluates a supplied correct task contract, not general intent recognition.",
+    "builder_sha256": "1589ff2533e37ea32a8d774da5805f3d1cf6a3899e30c9383ab52bffe31e7d90",
+    "prompt_module_sha256": "1e591b427c6e02d0cc1a7380e07ce471eddc67f77ed366f9446d856995955e57"
+  },
+  "selected_checkpoint": {
+    "iteration": 119,
+    "val_loss": 0.01613154448568821,
+    "val_time": 12.723821040941402
+  },
+  "limitations": "32 programmatically authored cases from 8 held-out semantic conditions; paraphrases are correlated. Supplied correct finite task contract and one schema, shared metric primitives; no external human review or general text-to-SQL claim. Repair faults are synthetic. Execution scores use separate raw EIA CSV calculations. No tool retries, no trusted-calculator fallback and no per-phase prompt/decoding changes. Latency is an individual local warm run with base-first order, not a production SLA."
+}

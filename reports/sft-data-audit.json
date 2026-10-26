@@ -1,0 +1,59 @@
+{
+  "dataset": {
+    "experiment": "gridnote-contract-sql-qlora-v1",
+    "splits": {
+      "train": {
+        "rows": 232,
+        "conditions": 29,
+        "direct": 174,
+        "repair": 58,
+        "sha256": "5d195060541119f8e1b34453233248b3181e6cb09d8b746d7c59181193c0ae1f"
+      },
+      "valid": {
+        "rows": 24,
+        "conditions": 8,
+        "direct": 16,
+        "repair": 8,
+        "sha256": "e0d506ddb2a9da02c828651ca6ebc051bfafe46d536ffa43542e3e188fae08d3"
+      },
+      "test": {
+        "rows": 32,
+        "conditions": 8,
+        "direct": 24,
+        "repair": 8,
+        "sha256": "65e2a893fafa5608a728c73d87997abdf635dfd56bbe114c52f1ceb5b2c4f475"
+      }
+    },
+    "limitations": "Programmatically authored synthetic instructions/SQL labels, not human annotations. Same schema and metric primitives across splits. Conditions and phrase families are grouped; real EIA data is used only for execution scoring. This evaluates a supplied correct task contract, not general intent recognition.",
+    "builder_sha256": "1589ff2533e37ea32a8d774da5805f3d1cf6a3899e30c9383ab52bffe31e7d90",
+    "prompt_module_sha256": "1e591b427c6e02d0cc1a7380e07ce471eddc67f77ed366f9446d856995955e57"
+  },
+  "tokenization": {
+    "train": {
+      "rows": 232,
+      "gold_execution_checks": 232,
+      "prefix_masks_checked": 232,
+      "max_tokens": 992,
+      "mean_completion_tokens": 147.24137931034483
+    },
+    "valid": {
+      "rows": 24,
+      "gold_execution_checks": 24,
+      "prefix_masks_checked": 24,
+      "max_tokens": 888,
+      "mean_completion_tokens": 146.375
+    },
+    "test": {
+      "rows": 32,
+      "gold_execution_checks": 32,
+      "prefix_masks_checked": 32,
+      "max_tokens": 932,
+      "mean_completion_tokens": 157.4375
+    }
+  },
+  "training_config_sha256": "42ca34239a28a4c7071caa761b3eb27ab133f6e423a028e52f97f9fafb858f80",
+  "oracle": "Separate EIA CSV decoder and metric scorer; no model-generated test outputs.",
+  "truncation": false,
+  "thinking": false,
+  "prompt_loss_masked": true
+}

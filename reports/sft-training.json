@@ -1,0 +1,354 @@
+{
+  "status": "trained",
+  "config": {
+    "model": "data/models/qwen3-4b-mlx",
+    "model_repo": "Qwen/Qwen3-4B-MLX-4bit",
+    "model_revision": "52a5ab34fa604bc8af6d3ce0cac0cab10b7eb495",
+    "data": "training/datasets",
+    "adapter_path": "data/finetuning/sql-qlora-v1/run",
+    "best_path": "data/finetuning/sql-qlora-v1/best",
+    "seed": 20261026,
+    "iters": 160,
+    "num_layers": 8,
+    "batch_size": 1,
+    "learning_rate": 0.0001,
+    "lora_parameters": {
+      "rank": 8,
+      "dropout": 0.0,
+      "scale": 16.0
+    },
+    "max_seq_length": 1536,
+    "steps_per_report": 10,
+    "steps_per_eval": 40,
+    "save_every": 40,
+    "val_batches": -1,
+    "grad_checkpoint": true,
+    "grad_accumulation_steps": 1,
+    "mask_prompt": true,
+    "generation_max_tokens": 768,
+    "generation_temperature": 0,
+    "checkpoint_selection": "Minimum full validation completion loss among positive-step checkpoints; initial zero-step loss is diagnostic only. Final step is also evaluated.",
+    "test_policy": "Do not generate test-set model outputs before training and checkpoint selection are finished. No changes based on test results."
+  },
+  "dataset": {
+    "experiment": "gridnote-contract-sql-qlora-v1",
+    "splits": {
+      "train": {
+        "rows": 232,
+        "conditions": 29,
+        "direct": 174,
+        "repair": 58,
+        "sha256": "5d195060541119f8e1b34453233248b3181e6cb09d8b746d7c59181193c0ae1f"
+      },
+      "valid": {
+        "rows": 24,
+        "conditions": 8,
+        "direct": 16,
+        "repair": 8,
+        "sha256": "e0d506ddb2a9da02c828651ca6ebc051bfafe46d536ffa43542e3e188fae08d3"
+      },
+      "test": {
+        "rows": 32,
+        "conditions": 8,
+        "direct": 24,
+        "repair": 8,
+        "sha256": "65e2a893fafa5608a728c73d87997abdf635dfd56bbe114c52f1ceb5b2c4f475"
+      }
+    },
+    "limitations": "Programmatically authored synthetic instructions/SQL labels, not human annotations. Same schema and metric primitives across splits. Conditions and phrase families are grouped; real EIA data is used only for execution scoring. This evaluates a supplied correct task contract, not general intent recognition.",
+    "builder_sha256": "1589ff2533e37ea32a8d774da5805f3d1cf6a3899e30c9383ab52bffe31e7d90",
+    "prompt_module_sha256": "1e591b427c6e02d0cc1a7380e07ce471eddc67f77ed366f9446d856995955e57"
+  },
+  "config_sha256": "42ca34239a28a4c7071caa761b3eb27ab133f6e423a028e52f97f9fafb858f80",
+  "model_source": {
+    "repo": "Qwen/Qwen3-4B-MLX-4bit",
+    "revision": "52a5ab34fa604bc8af6d3ce0cac0cab10b7eb495",
+    "files": [
+      {
+        "path": "model.safetensors",
+        "bytes": 2137326367,
+        "sha256": "e56a94b846a2dce7d1cc154ce58b9cfc4b8d99e8ffb74bfe256a265f4cbc7fb9"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 11343,
+        "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 9732,
+        "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101"
+      },
+      {
+        "path": "config.json",
+        "bytes": 988,
+        "sha256": "76eae114d67a444c7296be7a6bc0409ecc15c340e113f1bac7572cb7d0928b6f"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      {
+        "path": "README.md",
+        "bytes": 14708,
+        "sha256": "a3ac01d2a1fff2f02be25e1d2e9160f03db51dbee2cc17f13b774f646648adf9"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 1671853,
+        "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+      },
+      {
+        "path": ".gitattributes",
+        "bytes": 1570,
+        "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 63924,
+        "sha256": "278844a566da15beab6e9068c57f606c50a99c440d4515206b871a8b5282b3de"
+      }
+    ],
+    "download_seconds": 300.64
+  },
+  "best_checkpoint": {
+    "iteration": 119,
+    "val_loss": 0.01613154448568821,
+    "val_time": 12.723821040941402
+  },
+  "metrics": [
+    {
+      "kind": "valid",
+      "elapsed_seconds": 13.501,
+      "iteration": 0,
+      "val_loss": 2.0169904232025146,
+      "val_time": 13.375006791087799
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 24.946,
+      "iteration": 10,
+      "train_loss": 0.8878338813781739,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 0.8748657819889433,
+      "tokens_per_second": 95.18539708039702,
+      "trained_tokens": 1088,
+      "peak_memory": 3.345221006
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 34.092,
+      "iteration": 20,
+      "train_loss": 0.12319040298461914,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.0950844288014216,
+      "tokens_per_second": 174.88498327958703,
+      "trained_tokens": 2685,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 42.433,
+      "iteration": 30,
+      "train_loss": 0.09365488886833191,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.2004549604546677,
+      "tokens_per_second": 190.39215672811028,
+      "trained_tokens": 4271,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "valid",
+      "elapsed_seconds": 61.035,
+      "iteration": 39,
+      "val_loss": 0.11754141002893448,
+      "val_time": 11.855655375053175
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 61.801,
+      "iteration": 40,
+      "train_loss": 0.10718472003936767,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.3336609099412093,
+      "tokens_per_second": 165.24058674171582,
+      "trained_tokens": 5510,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 71.656,
+      "iteration": 50,
+      "train_loss": 0.0577808678150177,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.0167855493521571,
+      "tokens_per_second": 206.50914507342313,
+      "trained_tokens": 7541,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 80.408,
+      "iteration": 60,
+      "train_loss": 0.0943346381187439,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.144035123297489,
+      "tokens_per_second": 207.756778390824,
+      "trained_tokens": 9357,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 88.532,
+      "iteration": 70,
+      "train_loss": 0.02938970923423767,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.2327435678420262,
+      "tokens_per_second": 169.99533800541542,
+      "trained_tokens": 10736,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "valid",
+      "elapsed_seconds": 107.961,
+      "iteration": 79,
+      "val_loss": 0.03279906511306763,
+      "val_time": 12.120859124930575
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 108.748,
+      "iteration": 80,
+      "train_loss": 0.055992227792739865,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.2375895103033316,
+      "tokens_per_second": 177.47033577749775,
+      "trained_tokens": 12170,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 117.862,
+      "iteration": 90,
+      "train_loss": 0.053992992639541625,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.0993160806857916,
+      "tokens_per_second": 179.62824758405836,
+      "trained_tokens": 13804,
+      "peak_memory": 3.68892658
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 126.435,
+      "iteration": 100,
+      "train_loss": 0.023078000545501708,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.168012710418603,
+      "tokens_per_second": 178.00513706779512,
+      "trained_tokens": 15328,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 135.16,
+      "iteration": 110,
+      "train_loss": 0.01576547175645828,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.1477341989117913,
+      "tokens_per_second": 169.4055677593804,
+      "trained_tokens": 16804,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "valid",
+      "elapsed_seconds": 155.303,
+      "iteration": 119,
+      "val_loss": 0.01613154448568821,
+      "val_time": 12.723821040941402
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 156.714,
+      "iteration": 120,
+      "train_loss": 0.015426245331764222,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.1342546636846147,
+      "tokens_per_second": 169.57107222084989,
+      "trained_tokens": 18299,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 165.288,
+      "iteration": 130,
+      "train_loss": 0.0662729024887085,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.168605489318533,
+      "tokens_per_second": 171.6681463808925,
+      "trained_tokens": 19768,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 173.925,
+      "iteration": 140,
+      "train_loss": 0.012692584097385407,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.1592085916225452,
+      "tokens_per_second": 160.89815251720927,
+      "trained_tokens": 21156,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 182.986,
+      "iteration": 150,
+      "train_loss": 0.00727154016494751,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.10503868800651,
+      "tokens_per_second": 213.38297065405706,
+      "trained_tokens": 23087,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "valid",
+      "elapsed_seconds": 203.005,
+      "iteration": 159,
+      "val_loss": 0.017051268368959427,
+      "val_time": 12.923980416031554
+    },
+    {
+      "kind": "train",
+      "elapsed_seconds": 203.826,
+      "iteration": 160,
+      "train_loss": 0.0034341577440500258,
+      "learning_rate": 9.999999747378752e-05,
+      "iterations_per_second": 1.2658640924034283,
+      "tokens_per_second": 152.91638236233416,
+      "trained_tokens": 24295,
+      "peak_memory": 3.703982362
+    },
+    {
+      "kind": "valid",
+      "elapsed_seconds": 216.876,
+      "iteration": 160,
+      "val_loss": 0.016308387741446495,
+      "val_time": null
+    }
+  ],
+  "initial_adapter_sha256": "3054db63aa6fba353d1d1ba3504b73511d3b75f5920ee8740105e45000af2a37",
+  "selected_adapter_sha256": "6cc91b3a70e524b408487503b05e5d3724bc4316ba016d5f73191b5574fa5fd7",
+  "adapter_tensor_count": 112,
+  "trainable_parameters": 3670016,
+  "adapter_l2_change": 8.247181665223259,
+  "elapsed_seconds": 216.97,
+  "peak_memory_bytes": 3703982362,
+  "test_used_for_selection": false,
+  "cloud_compute_used": false
+}

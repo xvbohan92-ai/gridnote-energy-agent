@@ -1,0 +1,5717 @@
+{
+  "benchmark": "eia-pjm-contract-pilot-v1",
+  "created_at": "2026-10-26T14:46:02.085899+00:00",
+  "planner": "demo",
+  "model_calls": 0,
+  "row_integrity": true,
+  "source_rows_checked": 8737,
+  "source": {
+    "name": "EIA-930 PJM reported hourly demand · 2024",
+    "synthetic": false,
+    "source": "U.S. Energy Information Administration, EIA-930 historical balance CSV snapshots",
+    "source_kind": "eia930",
+    "timezone": "UTC",
+    "grain": "one hour × region",
+    "created_at": "2026-10-26T14:37:16.273734+00:00",
+    "sources": [
+      {
+        "url": "https://www.eia.gov/electricity/gridmonitor/sixMonthFiles/EIA930_BALANCE_2023_Jul_Dec.csv",
+        "file": "EIA930_BALANCE_2023_Jul_Dec.csv",
+        "bytes": 42574041,
+        "sha256": "c719fc1b513eec8982ce209b6e3173fc64b2d0d243f83d3bf0d8d1adf6222de2"
+      },
+      {
+        "url": "https://www.eia.gov/electricity/gridmonitor/sixMonthFiles/EIA930_BALANCE_2024_Jan_Jun.csv",
+        "file": "EIA930_BALANCE_2024_Jan_Jun.csv",
+        "bytes": 41742812,
+        "sha256": "26768c495c3ba987e29d79df2e40d4e741f9dbcff086f53c12ff774465756a10"
+      },
+      {
+        "url": "https://www.eia.gov/electricity/gridmonitor/sixMonthFiles/EIA930_BALANCE_2024_Jul_Dec.csv",
+        "file": "EIA930_BALANCE_2024_Jul_Dec.csv",
+        "bytes": 47928993,
+        "sha256": "a602a8e577cfdd2fa3083413eaa4dd8ba7f0d2b26a2986f8f6d22917465ea49f"
+      }
+    ],
+    "audit": {
+      "year": 2024,
+      "region": "PJM",
+      "rows": 8737,
+      "expected_hours": 8784,
+      "missing_hours": 47,
+      "missing_hour_starts": [
+        "2024-03-10T06:00:00Z",
+        "2024-03-10T07:00:00Z",
+        "2024-03-10T08:00:00Z",
+        "2024-03-10T09:00:00Z",
+        "2024-03-10T10:00:00Z",
+        "2024-03-10T11:00:00Z",
+        "2024-03-10T12:00:00Z",
+        "2024-03-10T13:00:00Z",
+        "2024-03-10T14:00:00Z",
+        "2024-03-10T15:00:00Z",
+        "2024-03-10T16:00:00Z",
+        "2024-03-10T17:00:00Z",
+        "2024-03-10T18:00:00Z",
+        "2024-03-10T19:00:00Z",
+        "2024-03-10T20:00:00Z",
+        "2024-03-10T21:00:00Z",
+        "2024-03-10T22:00:00Z",
+        "2024-03-10T23:00:00Z",
+        "2024-03-11T00:00:00Z",
+        "2024-03-11T01:00:00Z",
+        "2024-03-11T02:00:00Z",
+        "2024-03-11T03:00:00Z",
+        "2024-11-03T04:00:00Z",
+        "2024-11-03T05:00:00Z",
+        "2024-11-03T06:00:00Z",
+        "2024-11-03T07:00:00Z",
+        "2024-11-03T08:00:00Z",
+        "2024-11-03T09:00:00Z",
+        "2024-11-03T10:00:00Z",
+        "2024-11-03T11:00:00Z",
+        "2024-11-03T12:00:00Z",
+        "2024-11-03T13:00:00Z",
+        "2024-11-03T14:00:00Z",
+        "2024-11-03T15:00:00Z",
+        "2024-11-03T16:00:00Z",
+        "2024-11-03T17:00:00Z",
+        "2024-11-03T18:00:00Z",
+        "2024-11-03T19:00:00Z",
+        "2024-11-03T20:00:00Z",
+        "2024-11-03T21:00:00Z",
+        "2024-11-03T22:00:00Z",
+        "2024-11-03T23:00:00Z",
+        "2024-11-04T00:00:00Z",
+        "2024-11-04T01:00:00Z",
+        "2024-11-04T02:00:00Z",
+        "2024-11-04T03:00:00Z",
+        "2024-11-04T04:00:00Z"
+      ],
+      "forecast_rows": 8736,
+      "row_sha256": "27bbe9576c601c9a5ea31e818c6e21bef87232bf94f0cdc6cc09ea7d2e41778c",
+      "source_pjm_rows": 13201,
+      "outside_utc_year": 4417,
+      "missing_demand_rows": 47,
+      "duplicate_identical_rows": 0
+    },
+    "time_conversion": "UTC Time at End of Hour minus exactly one hour; UTC calendar-year crop",
+    "value_selection": "Demand (MW) and Demand Forecast (MW); adjusted/imputed columns unused",
+    "forecast_limitation": "Reported forecast snapshot, not an as-of forecasting backtest or a trained model",
+    "attribution": "Source: U.S. Energy Information Administration; downloaded 2026-10-26. Historical files may be revised; SHA-256 identifies the actual snapshots."
+  },
+  "case_sha256": "e14f9e65613a62d30145cce2d8fee8b7761f38c58e18cebd17d9da9b1cb5221b",
+  "summary": {
+    "dev": {
+      "cases": 12,
+      "correct": 12
+    },
+    "test": {
+      "cases": 24,
+      "correct": 24
+    }
+  },
+  "limitations": "Same-author contract pilot on real reported data; separate source CSV oracle. Dev/test use different time windows but share metric families. No external question review, no LLM benchmark, no model training, no causal anomaly or forecasting-backtest claim.",
+  "records": [
+    {
+      "id": "jan-count",
+      "split": "dev",
+      "question": "统计负荷记录数",
+      "start": "2024-01-01",
+      "end": "2024-01-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 11.33,
+      "expected": [
+        {
+          "n": 744
+        }
+      ],
+      "actual": [
+        {
+          "n": 744
+        }
+      ]
+    },
+    {
+      "id": "jan-daily",
+      "split": "dev",
+      "question": "每日负荷趋势",
+      "start": "2024-01-08",
+      "end": "2024-01-14",
+      "correct": true,
+      "expected_rows": 7,
+      "returned_rows": 7,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 168,
+        "expected_hours": 168,
+        "missing_hours": 0,
+        "forecast_hours": 168,
+        "mape_hours": 168,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.88,
+      "expected": [
+        {
+          "day": "2024-01-08",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 97408.75,
+          "forecast_mw": 97209.25
+        },
+        {
+          "day": "2024-01-09",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 101016.67,
+          "forecast_mw": 96766.96
+        },
+        {
+          "day": "2024-01-10",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 95692.0,
+          "forecast_mw": 92560.29
+        },
+        {
+          "day": "2024-01-11",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 97996.46,
+          "forecast_mw": 95823.04
+        },
+        {
+          "day": "2024-01-12",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 98906.08,
+          "forecast_mw": 95037.92
+        },
+        {
+          "day": "2024-01-13",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 91505.58,
+          "forecast_mw": 90375.54
+        },
+        {
+          "day": "2024-01-14",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 100521.38,
+          "forecast_mw": 98898.46
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-01-08",
+          "load_mw": 97408.75,
+          "forecast_mw": 97209.25,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-01-09",
+          "load_mw": 101016.67,
+          "forecast_mw": 96766.96,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-01-10",
+          "load_mw": 95692.0,
+          "forecast_mw": 92560.29,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-01-11",
+          "load_mw": 97996.46,
+          "forecast_mw": 95823.04,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-01-12",
+          "load_mw": 98906.08,
+          "forecast_mw": 95037.92,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-01-13",
+          "load_mw": 91505.58,
+          "forecast_mw": 90375.54,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-01-14",
+          "load_mw": 100521.38,
+          "forecast_mw": 98898.46,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        }
+      ]
+    },
+    {
+      "id": "jan-week",
+      "split": "dev",
+      "question": "每周负荷趋势",
+      "start": "2024-01-01",
+      "end": "2024-01-28",
+      "correct": true,
+      "expected_rows": 4,
+      "returned_rows": 4,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 672,
+        "expected_hours": 672,
+        "missing_hours": 0,
+        "forecast_hours": 672,
+        "mape_hours": 672,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 7.41,
+      "expected": [
+        {
+          "week": "2024-01-01",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 97730.26,
+          "forecast_mw": 96150.1
+        },
+        {
+          "week": "2024-01-08",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 97578.13,
+          "forecast_mw": 95238.78
+        },
+        {
+          "week": "2024-01-15",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 116324.35,
+          "forecast_mw": 113417.56
+        },
+        {
+          "week": "2024-01-22",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 95337.12,
+          "forecast_mw": 94507.26
+        }
+      ],
+      "actual": [
+        {
+          "week": "2024-01-01",
+          "load_mw": 97730.26,
+          "forecast_mw": 96150.1,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        },
+        {
+          "week": "2024-01-08",
+          "load_mw": 97578.13,
+          "forecast_mw": 95238.78,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        },
+        {
+          "week": "2024-01-15",
+          "load_mw": 116324.35,
+          "forecast_mw": 113417.56,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        },
+        {
+          "week": "2024-01-22",
+          "load_mw": 95337.12,
+          "forecast_mw": 94507.26,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        }
+      ]
+    },
+    {
+      "id": "feb-hour",
+      "split": "dev",
+      "question": "每小时负荷趋势",
+      "start": "2024-02-29",
+      "end": "2024-02-29",
+      "correct": true,
+      "expected_rows": 24,
+      "returned_rows": 24,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 24,
+        "expected_hours": 24,
+        "missing_hours": 0,
+        "forecast_hours": 24,
+        "mape_hours": 24,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.8,
+      "expected": [
+        {
+          "timestamp_utc": "2024-02-29T00:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 97042.0,
+          "forecast_mw": 92605.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T01:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 95957.0,
+          "forecast_mw": 90420.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T02:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 93705.0,
+          "forecast_mw": 86661.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T03:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 91253.0,
+          "forecast_mw": 83145.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T04:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 89276.0,
+          "forecast_mw": 82020.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T05:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 87746.0,
+          "forecast_mw": 82116.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T06:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 87245.0,
+          "forecast_mw": 82219.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T07:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 87399.0,
+          "forecast_mw": 83352.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T08:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 87925.0,
+          "forecast_mw": 86034.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T09:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 90295.0,
+          "forecast_mw": 91511.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T10:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 95052.0,
+          "forecast_mw": 99565.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T11:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 102941.0,
+          "forecast_mw": 104459.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T12:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 106487.0,
+          "forecast_mw": 103291.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T13:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 103547.0,
+          "forecast_mw": 99686.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T14:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 99657.0,
+          "forecast_mw": 96543.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T15:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 97066.0,
+          "forecast_mw": 94002.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T16:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 95987.0,
+          "forecast_mw": 91987.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T17:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 94363.0,
+          "forecast_mw": 90560.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T18:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 93020.0,
+          "forecast_mw": 89504.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T19:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 91720.0,
+          "forecast_mw": 89601.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T20:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 91277.0,
+          "forecast_mw": 92321.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T21:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 92882.0,
+          "forecast_mw": 97057.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T22:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 95434.0,
+          "forecast_mw": 100792.0
+        },
+        {
+          "timestamp_utc": "2024-02-29T23:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 99972.0,
+          "forecast_mw": 101322.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-02-29T00:00:00Z",
+          "load_mw": 97042.0,
+          "forecast_mw": 92605.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T01:00:00Z",
+          "load_mw": 95957.0,
+          "forecast_mw": 90420.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T02:00:00Z",
+          "load_mw": 93705.0,
+          "forecast_mw": 86661.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T03:00:00Z",
+          "load_mw": 91253.0,
+          "forecast_mw": 83145.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T04:00:00Z",
+          "load_mw": 89276.0,
+          "forecast_mw": 82020.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T05:00:00Z",
+          "load_mw": 87746.0,
+          "forecast_mw": 82116.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T06:00:00Z",
+          "load_mw": 87245.0,
+          "forecast_mw": 82219.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T07:00:00Z",
+          "load_mw": 87399.0,
+          "forecast_mw": 83352.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T08:00:00Z",
+          "load_mw": 87925.0,
+          "forecast_mw": 86034.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T09:00:00Z",
+          "load_mw": 90295.0,
+          "forecast_mw": 91511.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T10:00:00Z",
+          "load_mw": 95052.0,
+          "forecast_mw": 99565.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T11:00:00Z",
+          "load_mw": 102941.0,
+          "forecast_mw": 104459.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T12:00:00Z",
+          "load_mw": 106487.0,
+          "forecast_mw": 103291.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T13:00:00Z",
+          "load_mw": 103547.0,
+          "forecast_mw": 99686.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T14:00:00Z",
+          "load_mw": 99657.0,
+          "forecast_mw": 96543.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T15:00:00Z",
+          "load_mw": 97066.0,
+          "forecast_mw": 94002.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T16:00:00Z",
+          "load_mw": 95987.0,
+          "forecast_mw": 91987.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T17:00:00Z",
+          "load_mw": 94363.0,
+          "forecast_mw": 90560.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T18:00:00Z",
+          "load_mw": 93020.0,
+          "forecast_mw": 89504.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T19:00:00Z",
+          "load_mw": 91720.0,
+          "forecast_mw": 89601.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T20:00:00Z",
+          "load_mw": 91277.0,
+          "forecast_mw": 92321.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T21:00:00Z",
+          "load_mw": 92882.0,
+          "forecast_mw": 97057.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T22:00:00Z",
+          "load_mw": 95434.0,
+          "forecast_mw": 100792.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-02-29T23:00:00Z",
+          "load_mw": 99972.0,
+          "forecast_mw": 101322.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        }
+      ]
+    },
+    {
+      "id": "feb-energy",
+      "split": "dev",
+      "question": "总用电量",
+      "start": "2024-02-01",
+      "end": "2024-02-29",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 696,
+        "expected_hours": 696,
+        "missing_hours": 0,
+        "forecast_hours": 696,
+        "mape_hours": 696,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.57,
+      "expected": [
+        {
+          "observed_hours": 696,
+          "energy_mwh": 64520583.0
+        }
+      ],
+      "actual": [
+        {
+          "observed_hours": 696,
+          "energy_mwh": 64520583.0
+        }
+      ]
+    },
+    {
+      "id": "feb-daily-energy",
+      "split": "dev",
+      "question": "每日用电量",
+      "start": "2024-02-12",
+      "end": "2024-02-18",
+      "correct": true,
+      "expected_rows": 7,
+      "returned_rows": 7,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 168,
+        "expected_hours": 168,
+        "missing_hours": 0,
+        "forecast_hours": 168,
+        "mape_hours": 168,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.47,
+      "expected": [
+        {
+          "day": "2024-02-12",
+          "observed_hours": 24,
+          "energy_mwh": 2144202.0
+        },
+        {
+          "day": "2024-02-13",
+          "observed_hours": 24,
+          "energy_mwh": 2268965.0
+        },
+        {
+          "day": "2024-02-14",
+          "observed_hours": 24,
+          "energy_mwh": 2304842.0
+        },
+        {
+          "day": "2024-02-15",
+          "observed_hours": 24,
+          "energy_mwh": 2363760.0
+        },
+        {
+          "day": "2024-02-16",
+          "observed_hours": 24,
+          "energy_mwh": 2292201.0
+        },
+        {
+          "day": "2024-02-17",
+          "observed_hours": 24,
+          "energy_mwh": 2330499.0
+        },
+        {
+          "day": "2024-02-18",
+          "observed_hours": 24,
+          "energy_mwh": 2372023.0
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-02-12",
+          "observed_hours": 24,
+          "energy_mwh": 2144202.0
+        },
+        {
+          "day": "2024-02-13",
+          "observed_hours": 24,
+          "energy_mwh": 2268965.0
+        },
+        {
+          "day": "2024-02-14",
+          "observed_hours": 24,
+          "energy_mwh": 2304842.0
+        },
+        {
+          "day": "2024-02-15",
+          "observed_hours": 24,
+          "energy_mwh": 2363760.0
+        },
+        {
+          "day": "2024-02-16",
+          "observed_hours": 24,
+          "energy_mwh": 2292201.0
+        },
+        {
+          "day": "2024-02-17",
+          "observed_hours": 24,
+          "energy_mwh": 2330499.0
+        },
+        {
+          "day": "2024-02-18",
+          "observed_hours": 24,
+          "energy_mwh": 2372023.0
+        }
+      ]
+    },
+    {
+      "id": "jan-peak",
+      "split": "dev",
+      "question": "负荷最高的10个小时",
+      "start": "2024-01-01",
+      "end": "2024-01-31",
+      "correct": true,
+      "expected_rows": 10,
+      "returned_rows": 10,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.67,
+      "expected": [
+        {
+          "timestamp_utc": "2024-01-17T13:00:00Z",
+          "load_mw": 133949.0,
+          "forecast_mw": 124949.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T12:00:00Z",
+          "load_mw": 133468.0,
+          "forecast_mw": 129429.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T14:00:00Z",
+          "load_mw": 130326.0,
+          "forecast_mw": 120274.0
+        },
+        {
+          "timestamp_utc": "2024-01-22T12:00:00Z",
+          "load_mw": 129205.0,
+          "forecast_mw": 122194.0
+        },
+        {
+          "timestamp_utc": "2024-01-16T23:00:00Z",
+          "load_mw": 128507.0,
+          "forecast_mw": 125891.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T11:00:00Z",
+          "load_mw": 128423.0,
+          "forecast_mw": 130999.0
+        },
+        {
+          "timestamp_utc": "2024-01-22T13:00:00Z",
+          "load_mw": 128078.0,
+          "forecast_mw": 118390.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T00:00:00Z",
+          "load_mw": 128077.0,
+          "forecast_mw": 124911.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T23:00:00Z",
+          "load_mw": 127767.0,
+          "forecast_mw": 123754.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T15:00:00Z",
+          "load_mw": 127628.0,
+          "forecast_mw": 116794.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-01-17T13:00:00Z",
+          "load_mw": 133949.0,
+          "forecast_mw": 124949.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T12:00:00Z",
+          "load_mw": 133468.0,
+          "forecast_mw": 129429.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T14:00:00Z",
+          "load_mw": 130326.0,
+          "forecast_mw": 120274.0
+        },
+        {
+          "timestamp_utc": "2024-01-22T12:00:00Z",
+          "load_mw": 129205.0,
+          "forecast_mw": 122194.0
+        },
+        {
+          "timestamp_utc": "2024-01-16T23:00:00Z",
+          "load_mw": 128507.0,
+          "forecast_mw": 125891.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T11:00:00Z",
+          "load_mw": 128423.0,
+          "forecast_mw": 130999.0
+        },
+        {
+          "timestamp_utc": "2024-01-22T13:00:00Z",
+          "load_mw": 128078.0,
+          "forecast_mw": 118390.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T00:00:00Z",
+          "load_mw": 128077.0,
+          "forecast_mw": 124911.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T23:00:00Z",
+          "load_mw": 127767.0,
+          "forecast_mw": 123754.0
+        },
+        {
+          "timestamp_utc": "2024-01-17T15:00:00Z",
+          "load_mw": 127628.0,
+          "forecast_mw": 116794.0
+        }
+      ]
+    },
+    {
+      "id": "feb-forecast",
+      "split": "dev",
+      "question": "每日预测误差 MAE MAPE RMSE",
+      "start": "2024-02-01",
+      "end": "2024-02-07",
+      "correct": true,
+      "expected_rows": 7,
+      "returned_rows": 7,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 168,
+        "expected_hours": 168,
+        "missing_hours": 0,
+        "forecast_hours": 168,
+        "mape_hours": 168,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.92,
+      "expected": [
+        {
+          "day": "2024-02-01",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 3175.542,
+          "mse_mw2": 14996670.292,
+          "mape_pct": 3.279,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-02-02",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 2625.917,
+          "mse_mw2": 11414023.667,
+          "mape_pct": 2.869,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-02-03",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 1770.542,
+          "mse_mw2": 5480167.708,
+          "mape_pct": 1.978,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-02-04",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 2358.458,
+          "mse_mw2": 7921688.542,
+          "mape_pct": 2.65,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-02-05",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 2823.0,
+          "mse_mw2": 11017872.333,
+          "mape_pct": 2.975,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-02-06",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 2513.375,
+          "mse_mw2": 11326393.292,
+          "mape_pct": 2.601,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-02-07",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 3021.375,
+          "mse_mw2": 11676455.458,
+          "mape_pct": 3.077,
+          "mape_hours": 24
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-02-01",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 3175.542,
+          "mse_mw2": 14996670.292,
+          "mape_pct": 3.279,
+          "rmse_mw": 3872.553
+        },
+        {
+          "day": "2024-02-02",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 2625.917,
+          "mse_mw2": 11414023.667,
+          "mape_pct": 2.869,
+          "rmse_mw": 3378.465
+        },
+        {
+          "day": "2024-02-03",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 1770.542,
+          "mse_mw2": 5480167.708,
+          "mape_pct": 1.978,
+          "rmse_mw": 2340.976
+        },
+        {
+          "day": "2024-02-04",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 2358.458,
+          "mse_mw2": 7921688.542,
+          "mape_pct": 2.65,
+          "rmse_mw": 2814.549
+        },
+        {
+          "day": "2024-02-05",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 2823.0,
+          "mse_mw2": 11017872.333,
+          "mape_pct": 2.975,
+          "rmse_mw": 3319.318
+        },
+        {
+          "day": "2024-02-06",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 2513.375,
+          "mse_mw2": 11326393.292,
+          "mape_pct": 2.601,
+          "rmse_mw": 3365.471
+        },
+        {
+          "day": "2024-02-07",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 3021.375,
+          "mse_mw2": 11676455.458,
+          "mape_pct": 3.077,
+          "rmse_mw": 3417.083
+        }
+      ]
+    },
+    {
+      "id": "mar-forecast",
+      "split": "dev",
+      "question": "整体预测误差 MAE MAPE",
+      "start": "2024-03-01",
+      "end": "2024-03-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 722,
+        "expected_hours": 744,
+        "missing_hours": 22,
+        "forecast_hours": 721,
+        "mape_hours": 721,
+        "coverage_pct": 97.04,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 7.35,
+      "expected": [
+        {
+          "observed_hours": 722,
+          "forecast_hours": 721,
+          "mae_mw": 2742.29,
+          "mse_mw2": 10688735.624,
+          "mape_pct": 3.242,
+          "mape_hours": 721
+        }
+      ],
+      "actual": [
+        {
+          "observed_hours": 722,
+          "forecast_hours": 721,
+          "mape_hours": 721,
+          "mae_mw": 2742.29,
+          "mse_mw2": 10688735.624,
+          "mape_pct": 3.242,
+          "rmse_mw": 3269.363
+        }
+      ]
+    },
+    {
+      "id": "mar-missing",
+      "split": "dev",
+      "question": "统计负荷记录数",
+      "start": "2024-03-10",
+      "end": "2024-03-11",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 26,
+        "expected_hours": 48,
+        "missing_hours": 22,
+        "forecast_hours": 25,
+        "mape_hours": 25,
+        "coverage_pct": 54.17,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 4.65,
+      "expected": [
+        {
+          "n": 26
+        }
+      ],
+      "actual": [
+        {
+          "n": 26
+        }
+      ]
+    },
+    {
+      "id": "weekday",
+      "split": "dev",
+      "question": "工作日整体负荷趋势",
+      "start": "2024-02-01",
+      "end": "2024-02-29",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 504,
+        "expected_hours": 504,
+        "missing_hours": 0,
+        "forecast_hours": 504,
+        "mape_hours": 504,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.91,
+      "expected": [
+        {
+          "observed_hours": 504,
+          "forecast_hours": 504,
+          "load_mw": 93773.32,
+          "forecast_mw": 92887.42
+        }
+      ],
+      "actual": [
+        {
+          "load_mw": 93773.32,
+          "forecast_mw": 92887.42,
+          "observed_hours": 504,
+          "forecast_hours": 504
+        }
+      ]
+    },
+    {
+      "id": "day-types",
+      "split": "dev",
+      "question": "工作日与周末用电量",
+      "start": "2024-02-01",
+      "end": "2024-02-29",
+      "correct": true,
+      "expected_rows": 2,
+      "returned_rows": 2,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 696,
+        "expected_hours": 696,
+        "missing_hours": 0,
+        "forecast_hours": 696,
+        "mape_hours": 696,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.09,
+      "expected": [
+        {
+          "day_type": "weekday",
+          "observed_hours": 504,
+          "energy_mwh": 47261755.0
+        },
+        {
+          "day_type": "weekend",
+          "observed_hours": 192,
+          "energy_mwh": 17258828.0
+        }
+      ],
+      "actual": [
+        {
+          "day_type": "weekday",
+          "observed_hours": 504,
+          "energy_mwh": 47261755.0
+        },
+        {
+          "day_type": "weekend",
+          "observed_hours": 192,
+          "energy_mwh": 17258828.0
+        }
+      ]
+    },
+    {
+      "id": "jul-count",
+      "split": "test",
+      "question": "Count load records",
+      "start": "2024-07-01",
+      "end": "2024-07-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.21,
+      "expected": [
+        {
+          "n": 744
+        }
+      ],
+      "actual": [
+        {
+          "n": 744
+        }
+      ]
+    },
+    {
+      "id": "summer-daily",
+      "split": "test",
+      "question": "Daily load trend",
+      "start": "2024-07-08",
+      "end": "2024-07-14",
+      "correct": true,
+      "expected_rows": 7,
+      "returned_rows": 7,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 168,
+        "expected_hours": 168,
+        "missing_hours": 0,
+        "forecast_hours": 168,
+        "mape_hours": 168,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.33,
+      "expected": [
+        {
+          "day": "2024-07-08",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 118560.38,
+          "forecast_mw": 117214.21
+        },
+        {
+          "day": "2024-07-09",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 123791.79,
+          "forecast_mw": 119108.04
+        },
+        {
+          "day": "2024-07-10",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 123372.12,
+          "forecast_mw": 116777.42
+        },
+        {
+          "day": "2024-07-11",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 113592.75,
+          "forecast_mw": 109669.08
+        },
+        {
+          "day": "2024-07-12",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 109634.58,
+          "forecast_mw": 106096.0
+        },
+        {
+          "day": "2024-07-13",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 110047.67,
+          "forecast_mw": 103493.29
+        },
+        {
+          "day": "2024-07-14",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "load_mw": 112591.96,
+          "forecast_mw": 111923.08
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-07-08",
+          "load_mw": 118560.38,
+          "forecast_mw": 117214.21,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-07-09",
+          "load_mw": 123791.79,
+          "forecast_mw": 119108.04,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-07-10",
+          "load_mw": 123372.13,
+          "forecast_mw": 116777.42,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-07-11",
+          "load_mw": 113592.75,
+          "forecast_mw": 109669.08,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-07-12",
+          "load_mw": 109634.58,
+          "forecast_mw": 106096.0,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-07-13",
+          "load_mw": 110047.67,
+          "forecast_mw": 103493.29,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        },
+        {
+          "day": "2024-07-14",
+          "load_mw": 112591.96,
+          "forecast_mw": 111923.08,
+          "observed_hours": 24,
+          "forecast_hours": 24
+        }
+      ]
+    },
+    {
+      "id": "summer-week",
+      "split": "test",
+      "question": "Weekly load trend",
+      "start": "2024-07-01",
+      "end": "2024-07-28",
+      "correct": true,
+      "expected_rows": 4,
+      "returned_rows": 4,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 672,
+        "expected_hours": 672,
+        "missing_hours": 0,
+        "forecast_hours": 672,
+        "mape_hours": 672,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.88,
+      "expected": [
+        {
+          "week": "2024-07-01",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 104554.28,
+          "forecast_mw": 103054.07
+        },
+        {
+          "week": "2024-07-08",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 115941.61,
+          "forecast_mw": 112040.16
+        },
+        {
+          "week": "2024-07-15",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 111493.93,
+          "forecast_mw": 110661.2
+        },
+        {
+          "week": "2024-07-22",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "load_mw": 104611.82,
+          "forecast_mw": 103292.59
+        }
+      ],
+      "actual": [
+        {
+          "week": "2024-07-01",
+          "load_mw": 104554.28,
+          "forecast_mw": 103054.07,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        },
+        {
+          "week": "2024-07-08",
+          "load_mw": 115941.61,
+          "forecast_mw": 112040.16,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        },
+        {
+          "week": "2024-07-15",
+          "load_mw": 111493.93,
+          "forecast_mw": 110661.2,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        },
+        {
+          "week": "2024-07-22",
+          "load_mw": 104611.82,
+          "forecast_mw": 103292.59,
+          "observed_hours": 168,
+          "forecast_hours": 168
+        }
+      ]
+    },
+    {
+      "id": "summer-hour",
+      "split": "test",
+      "question": "Hourly load trend",
+      "start": "2024-08-01",
+      "end": "2024-08-01",
+      "correct": true,
+      "expected_rows": 24,
+      "returned_rows": 24,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 24,
+        "expected_hours": 24,
+        "missing_hours": 0,
+        "forecast_hours": 24,
+        "mape_hours": 24,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.44,
+      "expected": [
+        {
+          "timestamp_utc": "2024-08-01T00:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 135144.0,
+          "forecast_mw": 128003.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T01:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 129397.0,
+          "forecast_mw": 119822.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T02:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 121417.0,
+          "forecast_mw": 111161.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T03:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 114143.0,
+          "forecast_mw": 103876.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T04:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 108135.0,
+          "forecast_mw": 98495.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T05:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 103029.0,
+          "forecast_mw": 93996.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T06:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 98555.0,
+          "forecast_mw": 91288.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T07:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 95539.0,
+          "forecast_mw": 90458.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T08:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 94625.0,
+          "forecast_mw": 92173.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T09:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 96095.0,
+          "forecast_mw": 95673.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T10:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 99288.0,
+          "forecast_mw": 101010.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T11:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 104665.0,
+          "forecast_mw": 107352.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T12:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 111064.0,
+          "forecast_mw": 113811.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T13:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 117331.0,
+          "forecast_mw": 121049.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T14:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 123322.0,
+          "forecast_mw": 128380.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T15:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 129818.0,
+          "forecast_mw": 135081.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T16:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 136075.0,
+          "forecast_mw": 140906.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T17:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 140765.0,
+          "forecast_mw": 144525.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T18:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 144022.0,
+          "forecast_mw": 147058.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T19:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 146650.0,
+          "forecast_mw": 148368.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T20:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 148400.0,
+          "forecast_mw": 148350.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T21:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 149274.0,
+          "forecast_mw": 145898.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T22:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 148079.0,
+          "forecast_mw": 141314.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T23:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 144414.0,
+          "forecast_mw": 135154.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-08-01T00:00:00Z",
+          "load_mw": 135144.0,
+          "forecast_mw": 128003.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T01:00:00Z",
+          "load_mw": 129397.0,
+          "forecast_mw": 119822.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T02:00:00Z",
+          "load_mw": 121417.0,
+          "forecast_mw": 111161.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T03:00:00Z",
+          "load_mw": 114143.0,
+          "forecast_mw": 103876.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T04:00:00Z",
+          "load_mw": 108135.0,
+          "forecast_mw": 98495.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T05:00:00Z",
+          "load_mw": 103029.0,
+          "forecast_mw": 93996.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T06:00:00Z",
+          "load_mw": 98555.0,
+          "forecast_mw": 91288.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T07:00:00Z",
+          "load_mw": 95539.0,
+          "forecast_mw": 90458.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T08:00:00Z",
+          "load_mw": 94625.0,
+          "forecast_mw": 92173.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T09:00:00Z",
+          "load_mw": 96095.0,
+          "forecast_mw": 95673.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T10:00:00Z",
+          "load_mw": 99288.0,
+          "forecast_mw": 101010.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T11:00:00Z",
+          "load_mw": 104665.0,
+          "forecast_mw": 107352.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T12:00:00Z",
+          "load_mw": 111064.0,
+          "forecast_mw": 113811.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T13:00:00Z",
+          "load_mw": 117331.0,
+          "forecast_mw": 121049.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T14:00:00Z",
+          "load_mw": 123322.0,
+          "forecast_mw": 128380.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T15:00:00Z",
+          "load_mw": 129818.0,
+          "forecast_mw": 135081.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T16:00:00Z",
+          "load_mw": 136075.0,
+          "forecast_mw": 140906.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T17:00:00Z",
+          "load_mw": 140765.0,
+          "forecast_mw": 144525.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T18:00:00Z",
+          "load_mw": 144022.0,
+          "forecast_mw": 147058.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T19:00:00Z",
+          "load_mw": 146650.0,
+          "forecast_mw": 148368.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T20:00:00Z",
+          "load_mw": 148400.0,
+          "forecast_mw": 148350.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T21:00:00Z",
+          "load_mw": 149274.0,
+          "forecast_mw": 145898.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T22:00:00Z",
+          "load_mw": 148079.0,
+          "forecast_mw": 141314.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-08-01T23:00:00Z",
+          "load_mw": 144414.0,
+          "forecast_mw": 135154.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        }
+      ]
+    },
+    {
+      "id": "aug-energy",
+      "split": "test",
+      "question": "Total observed energy in MWh",
+      "start": "2024-08-01",
+      "end": "2024-08-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.4,
+      "expected": [
+        {
+          "observed_hours": 744,
+          "energy_mwh": 77617754.0
+        }
+      ],
+      "actual": [
+        {
+          "observed_hours": 744,
+          "energy_mwh": 77617754.0
+        }
+      ]
+    },
+    {
+      "id": "daily-energy",
+      "split": "test",
+      "question": "Daily energy in MWh",
+      "start": "2024-08-05",
+      "end": "2024-08-11",
+      "correct": true,
+      "expected_rows": 7,
+      "returned_rows": 7,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 168,
+        "expected_hours": 168,
+        "missing_hours": 0,
+        "forecast_hours": 168,
+        "mape_hours": 168,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.03,
+      "expected": [
+        {
+          "day": "2024-08-05",
+          "observed_hours": 24,
+          "energy_mwh": 2824950.0
+        },
+        {
+          "day": "2024-08-06",
+          "observed_hours": 24,
+          "energy_mwh": 2892668.0
+        },
+        {
+          "day": "2024-08-07",
+          "observed_hours": 24,
+          "energy_mwh": 2587924.0
+        },
+        {
+          "day": "2024-08-08",
+          "observed_hours": 24,
+          "energy_mwh": 2510205.0
+        },
+        {
+          "day": "2024-08-09",
+          "observed_hours": 24,
+          "energy_mwh": 2583884.0
+        },
+        {
+          "day": "2024-08-10",
+          "observed_hours": 24,
+          "energy_mwh": 2364917.0
+        },
+        {
+          "day": "2024-08-11",
+          "observed_hours": 24,
+          "energy_mwh": 2178492.0
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-08-05",
+          "observed_hours": 24,
+          "energy_mwh": 2824950.0
+        },
+        {
+          "day": "2024-08-06",
+          "observed_hours": 24,
+          "energy_mwh": 2892668.0
+        },
+        {
+          "day": "2024-08-07",
+          "observed_hours": 24,
+          "energy_mwh": 2587924.0
+        },
+        {
+          "day": "2024-08-08",
+          "observed_hours": 24,
+          "energy_mwh": 2510205.0
+        },
+        {
+          "day": "2024-08-09",
+          "observed_hours": 24,
+          "energy_mwh": 2583884.0
+        },
+        {
+          "day": "2024-08-10",
+          "observed_hours": 24,
+          "energy_mwh": 2364917.0
+        },
+        {
+          "day": "2024-08-11",
+          "observed_hours": 24,
+          "energy_mwh": 2178492.0
+        }
+      ]
+    },
+    {
+      "id": "summer-top3",
+      "split": "test",
+      "question": "Top 3 load hours",
+      "start": "2024-07-01",
+      "end": "2024-08-31",
+      "correct": true,
+      "expected_rows": 3,
+      "returned_rows": 3,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 1488,
+        "expected_hours": 1488,
+        "missing_hours": 0,
+        "forecast_hours": 1488,
+        "mape_hours": 1488,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.25,
+      "expected": [
+        {
+          "timestamp_utc": "2024-07-16T21:00:00Z",
+          "load_mw": 153121.0,
+          "forecast_mw": 148297.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T20:00:00Z",
+          "load_mw": 152793.0,
+          "forecast_mw": 149996.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T21:00:00Z",
+          "load_mw": 152137.0,
+          "forecast_mw": 153263.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-07-16T21:00:00Z",
+          "load_mw": 153121.0,
+          "forecast_mw": 148297.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T20:00:00Z",
+          "load_mw": 152793.0,
+          "forecast_mw": 149996.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T21:00:00Z",
+          "load_mw": 152137.0,
+          "forecast_mw": 153263.0
+        }
+      ]
+    },
+    {
+      "id": "summer-top20",
+      "split": "test",
+      "question": "负荷最高的20个小时",
+      "start": "2024-07-01",
+      "end": "2024-08-31",
+      "correct": true,
+      "expected_rows": 20,
+      "returned_rows": 20,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 1488,
+        "expected_hours": 1488,
+        "missing_hours": 0,
+        "forecast_hours": 1488,
+        "mape_hours": 1488,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.39,
+      "expected": [
+        {
+          "timestamp_utc": "2024-07-16T21:00:00Z",
+          "load_mw": 153121.0,
+          "forecast_mw": 148297.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T20:00:00Z",
+          "load_mw": 152793.0,
+          "forecast_mw": 149996.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T21:00:00Z",
+          "load_mw": 152137.0,
+          "forecast_mw": 153263.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T20:00:00Z",
+          "load_mw": 152092.0,
+          "forecast_mw": 154484.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T22:00:00Z",
+          "load_mw": 151657.0,
+          "forecast_mw": 144663.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T19:00:00Z",
+          "load_mw": 151392.0,
+          "forecast_mw": 149867.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T22:00:00Z",
+          "load_mw": 150962.0,
+          "forecast_mw": 149726.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T19:00:00Z",
+          "load_mw": 150618.0,
+          "forecast_mw": 153474.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T18:00:00Z",
+          "load_mw": 149485.0,
+          "forecast_mw": 149199.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T21:00:00Z",
+          "load_mw": 149274.0,
+          "forecast_mw": 145898.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T20:00:00Z",
+          "load_mw": 148400.0,
+          "forecast_mw": 148350.0
+        },
+        {
+          "timestamp_utc": "2024-08-28T21:00:00Z",
+          "load_mw": 148328.0,
+          "forecast_mw": 148537.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T23:00:00Z",
+          "load_mw": 148145.0,
+          "forecast_mw": 143640.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T22:00:00Z",
+          "load_mw": 148079.0,
+          "forecast_mw": 141314.0
+        },
+        {
+          "timestamp_utc": "2024-08-28T20:00:00Z",
+          "load_mw": 148019.0,
+          "forecast_mw": 151334.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T18:00:00Z",
+          "load_mw": 147866.0,
+          "forecast_mw": 152044.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T23:00:00Z",
+          "load_mw": 147169.0,
+          "forecast_mw": 139340.0
+        },
+        {
+          "timestamp_utc": "2024-07-08T21:00:00Z",
+          "load_mw": 146962.0,
+          "forecast_mw": 144252.0
+        },
+        {
+          "timestamp_utc": "2024-08-28T22:00:00Z",
+          "load_mw": 146755.0,
+          "forecast_mw": 142994.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T19:00:00Z",
+          "load_mw": 146650.0,
+          "forecast_mw": 148368.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-07-16T21:00:00Z",
+          "load_mw": 153121.0,
+          "forecast_mw": 148297.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T20:00:00Z",
+          "load_mw": 152793.0,
+          "forecast_mw": 149996.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T21:00:00Z",
+          "load_mw": 152137.0,
+          "forecast_mw": 153263.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T20:00:00Z",
+          "load_mw": 152092.0,
+          "forecast_mw": 154484.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T22:00:00Z",
+          "load_mw": 151657.0,
+          "forecast_mw": 144663.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T19:00:00Z",
+          "load_mw": 151392.0,
+          "forecast_mw": 149867.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T22:00:00Z",
+          "load_mw": 150962.0,
+          "forecast_mw": 149726.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T19:00:00Z",
+          "load_mw": 150618.0,
+          "forecast_mw": 153474.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T18:00:00Z",
+          "load_mw": 149485.0,
+          "forecast_mw": 149199.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T21:00:00Z",
+          "load_mw": 149274.0,
+          "forecast_mw": 145898.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T20:00:00Z",
+          "load_mw": 148400.0,
+          "forecast_mw": 148350.0
+        },
+        {
+          "timestamp_utc": "2024-08-28T21:00:00Z",
+          "load_mw": 148328.0,
+          "forecast_mw": 148537.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T23:00:00Z",
+          "load_mw": 148145.0,
+          "forecast_mw": 143640.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T22:00:00Z",
+          "load_mw": 148079.0,
+          "forecast_mw": 141314.0
+        },
+        {
+          "timestamp_utc": "2024-08-28T20:00:00Z",
+          "load_mw": 148019.0,
+          "forecast_mw": 151334.0
+        },
+        {
+          "timestamp_utc": "2024-07-15T18:00:00Z",
+          "load_mw": 147866.0,
+          "forecast_mw": 152044.0
+        },
+        {
+          "timestamp_utc": "2024-07-16T23:00:00Z",
+          "load_mw": 147169.0,
+          "forecast_mw": 139340.0
+        },
+        {
+          "timestamp_utc": "2024-07-08T21:00:00Z",
+          "load_mw": 146962.0,
+          "forecast_mw": 144252.0
+        },
+        {
+          "timestamp_utc": "2024-08-28T22:00:00Z",
+          "load_mw": 146755.0,
+          "forecast_mw": 142994.0
+        },
+        {
+          "timestamp_utc": "2024-08-01T19:00:00Z",
+          "load_mw": 146650.0,
+          "forecast_mw": 148368.0
+        }
+      ]
+    },
+    {
+      "id": "jul-forecast",
+      "split": "test",
+      "question": "Daily forecast MAE MAPE RMSE",
+      "start": "2024-07-01",
+      "end": "2024-07-07",
+      "correct": true,
+      "expected_rows": 7,
+      "returned_rows": 7,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 168,
+        "expected_hours": 168,
+        "missing_hours": 0,
+        "forecast_hours": 168,
+        "mape_hours": 168,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.74,
+      "expected": [
+        {
+          "day": "2024-07-01",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 4014.792,
+          "mse_mw2": 22420525.125,
+          "mape_pct": 4.275,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-07-02",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 4847.958,
+          "mse_mw2": 28532511.625,
+          "mape_pct": 5.218,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-07-03",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 3691.792,
+          "mse_mw2": 20634058.292,
+          "mape_pct": 3.694,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-07-04",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 3531.25,
+          "mse_mw2": 15781415.667,
+          "mape_pct": 3.528,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-07-05",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 4701.917,
+          "mse_mw2": 27985901.083,
+          "mape_pct": 4.482,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-07-06",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 4828.083,
+          "mse_mw2": 36885362.083,
+          "mape_pct": 4.45,
+          "mape_hours": 24
+        },
+        {
+          "day": "2024-07-07",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mae_mw": 5394.042,
+          "mse_mw2": 39802601.792,
+          "mape_pct": 5.046,
+          "mape_hours": 24
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-07-01",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 4014.792,
+          "mse_mw2": 22420525.125,
+          "mape_pct": 4.275,
+          "rmse_mw": 4735.032
+        },
+        {
+          "day": "2024-07-02",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 4847.958,
+          "mse_mw2": 28532511.625,
+          "mape_pct": 5.218,
+          "rmse_mw": 5341.583
+        },
+        {
+          "day": "2024-07-03",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 3691.792,
+          "mse_mw2": 20634058.292,
+          "mape_pct": 3.694,
+          "rmse_mw": 4542.473
+        },
+        {
+          "day": "2024-07-04",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 3531.25,
+          "mse_mw2": 15781415.667,
+          "mape_pct": 3.528,
+          "rmse_mw": 3972.583
+        },
+        {
+          "day": "2024-07-05",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 4701.917,
+          "mse_mw2": 27985901.083,
+          "mape_pct": 4.482,
+          "rmse_mw": 5290.17
+        },
+        {
+          "day": "2024-07-06",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 4828.083,
+          "mse_mw2": 36885362.083,
+          "mape_pct": 4.45,
+          "rmse_mw": 6073.332
+        },
+        {
+          "day": "2024-07-07",
+          "observed_hours": 24,
+          "forecast_hours": 24,
+          "mape_hours": 24,
+          "mae_mw": 5394.042,
+          "mse_mw2": 39802601.792,
+          "mape_pct": 5.046,
+          "rmse_mw": 6308.93
+        }
+      ]
+    },
+    {
+      "id": "aug-forecast",
+      "split": "test",
+      "question": "Overall forecast error",
+      "start": "2024-08-01",
+      "end": "2024-08-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 7.18,
+      "expected": [
+        {
+          "observed_hours": 744,
+          "forecast_hours": 744,
+          "mae_mw": 4382.161,
+          "mse_mw2": 27482058.868,
+          "mape_pct": 4.298,
+          "mape_hours": 744
+        }
+      ],
+      "actual": [
+        {
+          "observed_hours": 744,
+          "forecast_hours": 744,
+          "mape_hours": 744,
+          "mae_mw": 4382.161,
+          "mse_mw2": 27482058.868,
+          "mape_pct": 4.298,
+          "rmse_mw": 5242.333
+        }
+      ]
+    },
+    {
+      "id": "weekly-forecast",
+      "split": "test",
+      "question": "Weekly forecast error",
+      "start": "2024-09-02",
+      "end": "2024-09-29",
+      "correct": true,
+      "expected_rows": 4,
+      "returned_rows": 4,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 672,
+        "expected_hours": 672,
+        "missing_hours": 0,
+        "forecast_hours": 672,
+        "mape_hours": 672,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 8.24,
+      "expected": [
+        {
+          "week": "2024-09-02",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mae_mw": 2917.268,
+          "mse_mw2": 13211249.125,
+          "mape_pct": 3.42,
+          "mape_hours": 168
+        },
+        {
+          "week": "2024-09-09",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mae_mw": 3301.054,
+          "mse_mw2": 14654991.839,
+          "mape_pct": 3.708,
+          "mape_hours": 168
+        },
+        {
+          "week": "2024-09-16",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mae_mw": 3679.482,
+          "mse_mw2": 21330431.565,
+          "mape_pct": 3.973,
+          "mape_hours": 168
+        },
+        {
+          "week": "2024-09-23",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mae_mw": 2665.315,
+          "mse_mw2": 12501824.565,
+          "mape_pct": 3.146,
+          "mape_hours": 168
+        }
+      ],
+      "actual": [
+        {
+          "week": "2024-09-02",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mape_hours": 168,
+          "mae_mw": 2917.268,
+          "mse_mw2": 13211249.125,
+          "mape_pct": 3.42,
+          "rmse_mw": 3634.728
+        },
+        {
+          "week": "2024-09-09",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mape_hours": 168,
+          "mae_mw": 3301.054,
+          "mse_mw2": 14654991.839,
+          "mape_pct": 3.708,
+          "rmse_mw": 3828.184
+        },
+        {
+          "week": "2024-09-16",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mape_hours": 168,
+          "mae_mw": 3679.482,
+          "mse_mw2": 21330431.565,
+          "mape_pct": 3.973,
+          "rmse_mw": 4618.488
+        },
+        {
+          "week": "2024-09-23",
+          "observed_hours": 168,
+          "forecast_hours": 168,
+          "mape_hours": 168,
+          "mae_mw": 2665.315,
+          "mse_mw2": 12501824.565,
+          "mape_pct": 3.146,
+          "rmse_mw": 3535.792
+        }
+      ]
+    },
+    {
+      "id": "summer-weekday",
+      "split": "test",
+      "question": "Overall weekday load trend",
+      "start": "2024-08-01",
+      "end": "2024-08-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 528,
+        "expected_hours": 528,
+        "missing_hours": 0,
+        "forecast_hours": 528,
+        "mape_hours": 528,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.96,
+      "expected": [
+        {
+          "observed_hours": 528,
+          "forecast_hours": 528,
+          "load_mw": 106397.01,
+          "forecast_mw": 104715.33
+        }
+      ],
+      "actual": [
+        {
+          "load_mw": 106397.01,
+          "forecast_mw": 104715.33,
+          "observed_hours": 528,
+          "forecast_hours": 528
+        }
+      ]
+    },
+    {
+      "id": "summer-weekend",
+      "split": "test",
+      "question": "Overall weekend load trend",
+      "start": "2024-08-01",
+      "end": "2024-08-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 216,
+        "expected_hours": 216,
+        "missing_hours": 0,
+        "forecast_hours": 216,
+        "mape_hours": 216,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.84,
+      "expected": [
+        {
+          "observed_hours": 216,
+          "forecast_hours": 216,
+          "load_mw": 99259.88,
+          "forecast_mw": 96577.19
+        }
+      ],
+      "actual": [
+        {
+          "load_mw": 99259.88,
+          "forecast_mw": 96577.19,
+          "observed_hours": 216,
+          "forecast_hours": 216
+        }
+      ]
+    },
+    {
+      "id": "autumn-types",
+      "split": "test",
+      "question": "Weekday and weekend load trend",
+      "start": "2024-10-01",
+      "end": "2024-10-31",
+      "correct": true,
+      "expected_rows": 2,
+      "returned_rows": 2,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.4,
+      "expected": [
+        {
+          "day_type": "weekday",
+          "observed_hours": 552,
+          "forecast_hours": 552,
+          "load_mw": 81698.03,
+          "forecast_mw": 81370.06
+        },
+        {
+          "day_type": "weekend",
+          "observed_hours": 192,
+          "forecast_hours": 192,
+          "load_mw": 75700.44,
+          "forecast_mw": 74434.59
+        }
+      ],
+      "actual": [
+        {
+          "day_type": "weekday",
+          "load_mw": 81698.03,
+          "forecast_mw": 81370.06,
+          "observed_hours": 552,
+          "forecast_hours": 552
+        },
+        {
+          "day_type": "weekend",
+          "load_mw": 75700.44,
+          "forecast_mw": 74434.59,
+          "observed_hours": 192,
+          "forecast_hours": 192
+        }
+      ]
+    },
+    {
+      "id": "weekend-energy",
+      "split": "test",
+      "question": "Total weekend energy in MWh",
+      "start": "2024-10-01",
+      "end": "2024-10-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 192,
+        "expected_hours": 192,
+        "missing_hours": 0,
+        "forecast_hours": 192,
+        "mape_hours": 192,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.55,
+      "expected": [
+        {
+          "observed_hours": 192,
+          "energy_mwh": 14534484.0
+        }
+      ],
+      "actual": [
+        {
+          "observed_hours": 192,
+          "energy_mwh": 14534484.0
+        }
+      ]
+    },
+    {
+      "id": "weekday-count",
+      "split": "test",
+      "question": "Count weekday load records",
+      "start": "2024-10-01",
+      "end": "2024-10-31",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 552,
+        "expected_hours": 552,
+        "missing_hours": 0,
+        "forecast_hours": 552,
+        "mape_hours": 552,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.55,
+      "expected": [
+        {
+          "n": 552
+        }
+      ],
+      "actual": [
+        {
+          "n": 552
+        }
+      ]
+    },
+    {
+      "id": "fall-missing-count",
+      "split": "test",
+      "question": "负荷记录数",
+      "start": "2024-11-03",
+      "end": "2024-11-04",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 23,
+        "expected_hours": 48,
+        "missing_hours": 25,
+        "forecast_hours": 23,
+        "mape_hours": 23,
+        "coverage_pct": 47.92,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 4.6,
+      "expected": [
+        {
+          "n": 23
+        }
+      ],
+      "actual": [
+        {
+          "n": 23
+        }
+      ]
+    },
+    {
+      "id": "fall-missing-trend",
+      "split": "test",
+      "question": "每日负荷趋势",
+      "start": "2024-11-03",
+      "end": "2024-11-04",
+      "correct": true,
+      "expected_rows": 2,
+      "returned_rows": 2,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 23,
+        "expected_hours": 48,
+        "missing_hours": 25,
+        "forecast_hours": 23,
+        "mape_hours": 23,
+        "coverage_pct": 47.92,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.16,
+      "expected": [
+        {
+          "day": "2024-11-03",
+          "observed_hours": 4,
+          "forecast_hours": 4,
+          "load_mw": 76467.25,
+          "forecast_mw": 74618.0
+        },
+        {
+          "day": "2024-11-04",
+          "observed_hours": 19,
+          "forecast_hours": 19,
+          "load_mw": 82233.42,
+          "forecast_mw": 83359.63
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-11-03",
+          "load_mw": 76467.25,
+          "forecast_mw": 74618.0,
+          "observed_hours": 4,
+          "forecast_hours": 4
+        },
+        {
+          "day": "2024-11-04",
+          "load_mw": 82233.42,
+          "forecast_mw": 83359.63,
+          "observed_hours": 19,
+          "forecast_hours": 19
+        }
+      ]
+    },
+    {
+      "id": "fall-missing-energy",
+      "split": "test",
+      "question": "总用电量",
+      "start": "2024-11-03",
+      "end": "2024-11-04",
+      "correct": true,
+      "expected_rows": 1,
+      "returned_rows": 1,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 23,
+        "expected_hours": 48,
+        "missing_hours": 25,
+        "forecast_hours": 23,
+        "mape_hours": 23,
+        "coverage_pct": 47.92,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 4.82,
+      "expected": [
+        {
+          "observed_hours": 23,
+          "energy_mwh": 1868304.0
+        }
+      ],
+      "actual": [
+        {
+          "observed_hours": 23,
+          "energy_mwh": 1868304.0
+        }
+      ]
+    },
+    {
+      "id": "fall-missing-forecast",
+      "split": "test",
+      "question": "每日预测误差",
+      "start": "2024-11-03",
+      "end": "2024-11-04",
+      "correct": true,
+      "expected_rows": 2,
+      "returned_rows": 2,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 23,
+        "expected_hours": 48,
+        "missing_hours": 25,
+        "forecast_hours": 23,
+        "mape_hours": 23,
+        "coverage_pct": 47.92,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 7.12,
+      "expected": [
+        {
+          "day": "2024-11-03",
+          "observed_hours": 4,
+          "forecast_hours": 4,
+          "mae_mw": 1849.25,
+          "mse_mw2": 3795605.75,
+          "mape_pct": 2.441,
+          "mape_hours": 4
+        },
+        {
+          "day": "2024-11-04",
+          "observed_hours": 19,
+          "forecast_hours": 19,
+          "mae_mw": 1863.789,
+          "mse_mw2": 5718808.316,
+          "mape_pct": 2.324,
+          "mape_hours": 19
+        }
+      ],
+      "actual": [
+        {
+          "day": "2024-11-03",
+          "observed_hours": 4,
+          "forecast_hours": 4,
+          "mape_hours": 4,
+          "mae_mw": 1849.25,
+          "mse_mw2": 3795605.75,
+          "mape_pct": 2.441,
+          "rmse_mw": 1948.231
+        },
+        {
+          "day": "2024-11-04",
+          "observed_hours": 19,
+          "forecast_hours": 19,
+          "mape_hours": 19,
+          "mae_mw": 1863.789,
+          "mse_mw2": 5718808.316,
+          "mape_pct": 2.324,
+          "rmse_mw": 2391.403
+        }
+      ]
+    },
+    {
+      "id": "dec-week",
+      "split": "test",
+      "question": "每周用电量",
+      "start": "2024-12-02",
+      "end": "2024-12-29",
+      "correct": true,
+      "expected_rows": 4,
+      "returned_rows": 4,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 672,
+        "expected_hours": 672,
+        "missing_hours": 0,
+        "forecast_hours": 672,
+        "mape_hours": 672,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.42,
+      "expected": [
+        {
+          "week": "2024-12-02",
+          "observed_hours": 168,
+          "energy_mwh": 17592049.0
+        },
+        {
+          "week": "2024-12-09",
+          "observed_hours": 168,
+          "energy_mwh": 16545513.0
+        },
+        {
+          "week": "2024-12-16",
+          "observed_hours": 168,
+          "energy_mwh": 16548216.0
+        },
+        {
+          "week": "2024-12-23",
+          "observed_hours": 168,
+          "energy_mwh": 15900442.0
+        }
+      ],
+      "actual": [
+        {
+          "week": "2024-12-02",
+          "observed_hours": 168,
+          "energy_mwh": 17592049.0
+        },
+        {
+          "week": "2024-12-09",
+          "observed_hours": 168,
+          "energy_mwh": 16545513.0
+        },
+        {
+          "week": "2024-12-16",
+          "observed_hours": 168,
+          "energy_mwh": 16548216.0
+        },
+        {
+          "week": "2024-12-23",
+          "observed_hours": 168,
+          "energy_mwh": 15900442.0
+        }
+      ]
+    },
+    {
+      "id": "dec-peak",
+      "split": "test",
+      "question": "Top 5 load hours",
+      "start": "2024-12-01",
+      "end": "2024-12-31",
+      "correct": true,
+      "expected_rows": 5,
+      "returned_rows": 5,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 5.6,
+      "expected": [
+        {
+          "timestamp_utc": "2024-12-23T13:00:00Z",
+          "load_mw": 121008.0,
+          "forecast_mw": 118046.0
+        },
+        {
+          "timestamp_utc": "2024-12-23T12:00:00Z",
+          "load_mw": 120835.0,
+          "forecast_mw": 122308.0
+        },
+        {
+          "timestamp_utc": "2024-12-05T23:00:00Z",
+          "load_mw": 119965.0,
+          "forecast_mw": 114387.0
+        },
+        {
+          "timestamp_utc": "2024-12-06T00:00:00Z",
+          "load_mw": 119731.0,
+          "forecast_mw": 113313.0
+        },
+        {
+          "timestamp_utc": "2024-12-04T12:00:00Z",
+          "load_mw": 119003.0,
+          "forecast_mw": 114318.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-12-23T13:00:00Z",
+          "load_mw": 121008.0,
+          "forecast_mw": 118046.0
+        },
+        {
+          "timestamp_utc": "2024-12-23T12:00:00Z",
+          "load_mw": 120835.0,
+          "forecast_mw": 122308.0
+        },
+        {
+          "timestamp_utc": "2024-12-05T23:00:00Z",
+          "load_mw": 119965.0,
+          "forecast_mw": 114387.0
+        },
+        {
+          "timestamp_utc": "2024-12-06T00:00:00Z",
+          "load_mw": 119731.0,
+          "forecast_mw": 113313.0
+        },
+        {
+          "timestamp_utc": "2024-12-04T12:00:00Z",
+          "load_mw": 119003.0,
+          "forecast_mw": 114318.0
+        }
+      ]
+    },
+    {
+      "id": "year-end",
+      "split": "test",
+      "question": "每小时负荷趋势",
+      "start": "2024-12-31",
+      "end": "2024-12-31",
+      "correct": true,
+      "expected_rows": 24,
+      "returned_rows": 24,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 24,
+        "expected_hours": 24,
+        "missing_hours": 0,
+        "forecast_hours": 24,
+        "mape_hours": 24,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 6.41,
+      "expected": [
+        {
+          "timestamp_utc": "2024-12-31T00:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 94169.0,
+          "forecast_mw": 95380.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T01:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 93018.0,
+          "forecast_mw": 92800.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T02:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 91259.0,
+          "forecast_mw": 88696.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T03:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 88668.0,
+          "forecast_mw": 84599.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T04:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 87933.0,
+          "forecast_mw": 82053.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T05:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 85765.0,
+          "forecast_mw": 79664.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T06:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 83916.0,
+          "forecast_mw": 78663.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T07:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 83211.0,
+          "forecast_mw": 78231.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T08:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 82737.0,
+          "forecast_mw": 78698.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T09:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 83194.0,
+          "forecast_mw": 80363.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T10:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 85867.0,
+          "forecast_mw": 83127.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T11:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 89394.0,
+          "forecast_mw": 86015.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T12:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 93324.0,
+          "forecast_mw": 87365.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T13:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 93765.0,
+          "forecast_mw": 86971.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T14:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 91524.0,
+          "forecast_mw": 85814.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T15:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 90132.0,
+          "forecast_mw": 84959.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T16:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 89022.0,
+          "forecast_mw": 84336.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T17:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 88267.0,
+          "forecast_mw": 83930.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T18:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 88009.0,
+          "forecast_mw": 84033.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T19:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 88135.0,
+          "forecast_mw": 85417.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T20:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 88819.0,
+          "forecast_mw": 89083.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T21:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 91526.0,
+          "forecast_mw": 94240.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T22:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 95120.0,
+          "forecast_mw": 94623.0
+        },
+        {
+          "timestamp_utc": "2024-12-31T23:00:00Z",
+          "observed_hours": 1,
+          "forecast_hours": 1,
+          "load_mw": 94357.0,
+          "forecast_mw": 94105.0
+        }
+      ],
+      "actual": [
+        {
+          "timestamp_utc": "2024-12-31T00:00:00Z",
+          "load_mw": 94169.0,
+          "forecast_mw": 95380.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T01:00:00Z",
+          "load_mw": 93018.0,
+          "forecast_mw": 92800.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T02:00:00Z",
+          "load_mw": 91259.0,
+          "forecast_mw": 88696.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T03:00:00Z",
+          "load_mw": 88668.0,
+          "forecast_mw": 84599.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T04:00:00Z",
+          "load_mw": 87933.0,
+          "forecast_mw": 82053.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T05:00:00Z",
+          "load_mw": 85765.0,
+          "forecast_mw": 79664.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T06:00:00Z",
+          "load_mw": 83916.0,
+          "forecast_mw": 78663.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T07:00:00Z",
+          "load_mw": 83211.0,
+          "forecast_mw": 78231.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T08:00:00Z",
+          "load_mw": 82737.0,
+          "forecast_mw": 78698.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T09:00:00Z",
+          "load_mw": 83194.0,
+          "forecast_mw": 80363.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T10:00:00Z",
+          "load_mw": 85867.0,
+          "forecast_mw": 83127.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T11:00:00Z",
+          "load_mw": 89394.0,
+          "forecast_mw": 86015.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T12:00:00Z",
+          "load_mw": 93324.0,
+          "forecast_mw": 87365.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T13:00:00Z",
+          "load_mw": 93765.0,
+          "forecast_mw": 86971.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T14:00:00Z",
+          "load_mw": 91524.0,
+          "forecast_mw": 85814.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T15:00:00Z",
+          "load_mw": 90132.0,
+          "forecast_mw": 84959.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T16:00:00Z",
+          "load_mw": 89022.0,
+          "forecast_mw": 84336.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T17:00:00Z",
+          "load_mw": 88267.0,
+          "forecast_mw": 83930.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T18:00:00Z",
+          "load_mw": 88009.0,
+          "forecast_mw": 84033.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T19:00:00Z",
+          "load_mw": 88135.0,
+          "forecast_mw": 85417.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T20:00:00Z",
+          "load_mw": 88819.0,
+          "forecast_mw": 89083.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T21:00:00Z",
+          "load_mw": 91526.0,
+          "forecast_mw": 94240.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T22:00:00Z",
+          "load_mw": 95120.0,
+          "forecast_mw": 94623.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        },
+        {
+          "timestamp_utc": "2024-12-31T23:00:00Z",
+          "load_mw": 94357.0,
+          "forecast_mw": 94105.0,
+          "observed_hours": 1,
+          "forecast_hours": 1
+        }
+      ]
+    },
+    {
+      "id": "winter-forecast",
+      "split": "test",
+      "question": "工作日与周末预测误差",
+      "start": "2024-12-01",
+      "end": "2024-12-31",
+      "correct": true,
+      "expected_rows": 2,
+      "returned_rows": 2,
+      "outcome": "success",
+      "quality": {
+        "observed_hours": 744,
+        "expected_hours": 744,
+        "missing_hours": 0,
+        "forecast_hours": 744,
+        "mape_hours": 744,
+        "coverage_pct": 100.0,
+        "calendar": "UTC; weekdays=Monday-Friday, no holiday calendar"
+      },
+      "latency_ms": 8.2,
+      "expected": [
+        {
+          "day_type": "weekday",
+          "observed_hours": 528,
+          "forecast_hours": 528,
+          "mae_mw": 3517.295,
+          "mse_mw2": 17535544.114,
+          "mape_pct": 3.601,
+          "mape_hours": 528
+        },
+        {
+          "day_type": "weekend",
+          "observed_hours": 216,
+          "forecast_hours": 216,
+          "mae_mw": 2526.468,
+          "mse_mw2": 9322271.227,
+          "mape_pct": 2.634,
+          "mape_hours": 216
+        }
+      ],
+      "actual": [
+        {
+          "day_type": "weekday",
+          "observed_hours": 528,
+          "forecast_hours": 528,
+          "mape_hours": 528,
+          "mae_mw": 3517.295,
+          "mse_mw2": 17535544.114,
+          "mape_pct": 3.601,
+          "rmse_mw": 4187.546
+        },
+        {
+          "day_type": "weekend",
+          "observed_hours": 216,
+          "forecast_hours": 216,
+          "mape_hours": 216,
+          "mae_mw": 2526.468,
+          "mse_mw2": 9322271.227,
+          "mape_pct": 2.634,
+          "rmse_mw": 3053.239
+        }
+      ]
+    }
+  ],
+  "daily": [
+    {
+      "day": "2024-01-01",
+      "observed_hours": 24,
+      "mean_load_mw": 88647.38,
+      "energy_mwh": 2127537.0
+    },
+    {
+      "day": "2024-01-02",
+      "observed_hours": 24,
+      "mean_load_mw": 96294.0,
+      "energy_mwh": 2311056.0
+    },
+    {
+      "day": "2024-01-03",
+      "observed_hours": 24,
+      "mean_load_mw": 100929.96,
+      "energy_mwh": 2422319.0
+    },
+    {
+      "day": "2024-01-04",
+      "observed_hours": 24,
+      "mean_load_mw": 99912.12,
+      "energy_mwh": 2397891.0
+    },
+    {
+      "day": "2024-01-05",
+      "observed_hours": 24,
+      "mean_load_mw": 104315.46,
+      "energy_mwh": 2503571.0
+    },
+    {
+      "day": "2024-01-06",
+      "observed_hours": 24,
+      "mean_load_mw": 100014.75,
+      "energy_mwh": 2400354.0
+    },
+    {
+      "day": "2024-01-07",
+      "observed_hours": 24,
+      "mean_load_mw": 93998.17,
+      "energy_mwh": 2255956.0
+    },
+    {
+      "day": "2024-01-08",
+      "observed_hours": 24,
+      "mean_load_mw": 97408.75,
+      "energy_mwh": 2337810.0
+    },
+    {
+      "day": "2024-01-09",
+      "observed_hours": 24,
+      "mean_load_mw": 101016.67,
+      "energy_mwh": 2424400.0
+    },
+    {
+      "day": "2024-01-10",
+      "observed_hours": 24,
+      "mean_load_mw": 95692.0,
+      "energy_mwh": 2296608.0
+    },
+    {
+      "day": "2024-01-11",
+      "observed_hours": 24,
+      "mean_load_mw": 97996.46,
+      "energy_mwh": 2351915.0
+    },
+    {
+      "day": "2024-01-12",
+      "observed_hours": 24,
+      "mean_load_mw": 98906.08,
+      "energy_mwh": 2373746.0
+    },
+    {
+      "day": "2024-01-13",
+      "observed_hours": 24,
+      "mean_load_mw": 91505.58,
+      "energy_mwh": 2196134.0
+    },
+    {
+      "day": "2024-01-14",
+      "observed_hours": 24,
+      "mean_load_mw": 100521.38,
+      "energy_mwh": 2412513.0
+    },
+    {
+      "day": "2024-01-15",
+      "observed_hours": 24,
+      "mean_load_mw": 112756.12,
+      "energy_mwh": 2706147.0
+    },
+    {
+      "day": "2024-01-16",
+      "observed_hours": 24,
+      "mean_load_mw": 116801.54,
+      "energy_mwh": 2803237.0
+    },
+    {
+      "day": "2024-01-17",
+      "observed_hours": 24,
+      "mean_load_mw": 123632.79,
+      "energy_mwh": 2967187.0
+    },
+    {
+      "day": "2024-01-18",
+      "observed_hours": 24,
+      "mean_load_mw": 118126.62,
+      "energy_mwh": 2835039.0
+    },
+    {
+      "day": "2024-01-19",
+      "observed_hours": 24,
+      "mean_load_mw": 112270.62,
+      "energy_mwh": 2694495.0
+    },
+    {
+      "day": "2024-01-20",
+      "observed_hours": 24,
+      "mean_load_mw": 115653.08,
+      "energy_mwh": 2775674.0
+    },
+    {
+      "day": "2024-01-21",
+      "observed_hours": 24,
+      "mean_load_mw": 115029.62,
+      "energy_mwh": 2760711.0
+    },
+    {
+      "day": "2024-01-22",
+      "observed_hours": 24,
+      "mean_load_mw": 115403.71,
+      "energy_mwh": 2769689.0
+    },
+    {
+      "day": "2024-01-23",
+      "observed_hours": 24,
+      "mean_load_mw": 105631.62,
+      "energy_mwh": 2535159.0
+    },
+    {
+      "day": "2024-01-24",
+      "observed_hours": 24,
+      "mean_load_mw": 97312.54,
+      "energy_mwh": 2335501.0
+    },
+    {
+      "day": "2024-01-25",
+      "observed_hours": 24,
+      "mean_load_mw": 90789.96,
+      "energy_mwh": 2178959.0
+    },
+    {
+      "day": "2024-01-26",
+      "observed_hours": 24,
+      "mean_load_mw": 87658.5,
+      "energy_mwh": 2103804.0
+    },
+    {
+      "day": "2024-01-27",
+      "observed_hours": 24,
+      "mean_load_mw": 83890.58,
+      "energy_mwh": 2013374.0
+    },
+    {
+      "day": "2024-01-28",
+      "observed_hours": 24,
+      "mean_load_mw": 86672.92,
+      "energy_mwh": 2080150.0
+    },
+    {
+      "day": "2024-01-29",
+      "observed_hours": 24,
+      "mean_load_mw": 96496.17,
+      "energy_mwh": 2315908.0
+    },
+    {
+      "day": "2024-01-30",
+      "observed_hours": 24,
+      "mean_load_mw": 100890.0,
+      "energy_mwh": 2421360.0
+    },
+    {
+      "day": "2024-01-31",
+      "observed_hours": 24,
+      "mean_load_mw": 99144.12,
+      "energy_mwh": 2379459.0
+    },
+    {
+      "day": "2024-02-01",
+      "observed_hours": 24,
+      "mean_load_mw": 97628.71,
+      "energy_mwh": 2343089.0
+    },
+    {
+      "day": "2024-02-02",
+      "observed_hours": 24,
+      "mean_load_mw": 93365.04,
+      "energy_mwh": 2240761.0
+    },
+    {
+      "day": "2024-02-03",
+      "observed_hours": 24,
+      "mean_load_mw": 90466.75,
+      "energy_mwh": 2171202.0
+    },
+    {
+      "day": "2024-02-04",
+      "observed_hours": 24,
+      "mean_load_mw": 89716.96,
+      "energy_mwh": 2153207.0
+    },
+    {
+      "day": "2024-02-05",
+      "observed_hours": 24,
+      "mean_load_mw": 95508.79,
+      "energy_mwh": 2292211.0
+    },
+    {
+      "day": "2024-02-06",
+      "observed_hours": 24,
+      "mean_load_mw": 97103.54,
+      "energy_mwh": 2330485.0
+    },
+    {
+      "day": "2024-02-07",
+      "observed_hours": 24,
+      "mean_load_mw": 98056.5,
+      "energy_mwh": 2353356.0
+    },
+    {
+      "day": "2024-02-08",
+      "observed_hours": 24,
+      "mean_load_mw": 95331.92,
+      "energy_mwh": 2287966.0
+    },
+    {
+      "day": "2024-02-09",
+      "observed_hours": 24,
+      "mean_load_mw": 88587.04,
+      "energy_mwh": 2126089.0
+    },
+    {
+      "day": "2024-02-10",
+      "observed_hours": 24,
+      "mean_load_mw": 82077.62,
+      "energy_mwh": 1969863.0
+    },
+    {
+      "day": "2024-02-11",
+      "observed_hours": 24,
+      "mean_load_mw": 81477.29,
+      "energy_mwh": 1955455.0
+    },
+    {
+      "day": "2024-02-12",
+      "observed_hours": 24,
+      "mean_load_mw": 89341.75,
+      "energy_mwh": 2144202.0
+    },
+    {
+      "day": "2024-02-13",
+      "observed_hours": 24,
+      "mean_load_mw": 94540.21,
+      "energy_mwh": 2268965.0
+    },
+    {
+      "day": "2024-02-14",
+      "observed_hours": 24,
+      "mean_load_mw": 96035.08,
+      "energy_mwh": 2304842.0
+    },
+    {
+      "day": "2024-02-15",
+      "observed_hours": 24,
+      "mean_load_mw": 98490.0,
+      "energy_mwh": 2363760.0
+    },
+    {
+      "day": "2024-02-16",
+      "observed_hours": 24,
+      "mean_load_mw": 95508.38,
+      "energy_mwh": 2292201.0
+    },
+    {
+      "day": "2024-02-17",
+      "observed_hours": 24,
+      "mean_load_mw": 97104.12,
+      "energy_mwh": 2330499.0
+    },
+    {
+      "day": "2024-02-18",
+      "observed_hours": 24,
+      "mean_load_mw": 98834.29,
+      "energy_mwh": 2372023.0
+    },
+    {
+      "day": "2024-02-19",
+      "observed_hours": 24,
+      "mean_load_mw": 96596.54,
+      "energy_mwh": 2318317.0
+    },
+    {
+      "day": "2024-02-20",
+      "observed_hours": 24,
+      "mean_load_mw": 97699.88,
+      "energy_mwh": 2344797.0
+    },
+    {
+      "day": "2024-02-21",
+      "observed_hours": 24,
+      "mean_load_mw": 96064.21,
+      "energy_mwh": 2305541.0
+    },
+    {
+      "day": "2024-02-22",
+      "observed_hours": 24,
+      "mean_load_mw": 93499.29,
+      "energy_mwh": 2243983.0
+    },
+    {
+      "day": "2024-02-23",
+      "observed_hours": 24,
+      "mean_load_mw": 89811.71,
+      "energy_mwh": 2155481.0
+    },
+    {
+      "day": "2024-02-24",
+      "observed_hours": 24,
+      "mean_load_mw": 88242.54,
+      "energy_mwh": 2117821.0
+    },
+    {
+      "day": "2024-02-25",
+      "observed_hours": 24,
+      "mean_load_mw": 91198.25,
+      "energy_mwh": 2188758.0
+    },
+    {
+      "day": "2024-02-26",
+      "observed_hours": 24,
+      "mean_load_mw": 89852.04,
+      "energy_mwh": 2156449.0
+    },
+    {
+      "day": "2024-02-27",
+      "observed_hours": 24,
+      "mean_load_mw": 85994.25,
+      "energy_mwh": 2063862.0
+    },
+    {
+      "day": "2024-02-28",
+      "observed_hours": 24,
+      "mean_load_mw": 85756.25,
+      "energy_mwh": 2058150.0
+    },
+    {
+      "day": "2024-02-29",
+      "observed_hours": 24,
+      "mean_load_mw": 94468.67,
+      "energy_mwh": 2267248.0
+    },
+    {
+      "day": "2024-03-01",
+      "observed_hours": 24,
+      "mean_load_mw": 95440.62,
+      "energy_mwh": 2290575.0
+    },
+    {
+      "day": "2024-03-02",
+      "observed_hours": 24,
+      "mean_load_mw": 85671.0,
+      "energy_mwh": 2056104.0
+    },
+    {
+      "day": "2024-03-03",
+      "observed_hours": 24,
+      "mean_load_mw": 78240.54,
+      "energy_mwh": 1877773.0
+    },
+    {
+      "day": "2024-03-04",
+      "observed_hours": 24,
+      "mean_load_mw": 81524.83,
+      "energy_mwh": 1956596.0
+    },
+    {
+      "day": "2024-03-05",
+      "observed_hours": 24,
+      "mean_load_mw": 83898.71,
+      "energy_mwh": 2013569.0
+    },
+    {
+      "day": "2024-03-06",
+      "observed_hours": 24,
+      "mean_load_mw": 85248.12,
+      "energy_mwh": 2045955.0
+    },
+    {
+      "day": "2024-03-07",
+      "observed_hours": 24,
+      "mean_load_mw": 85107.92,
+      "energy_mwh": 2042590.0
+    },
+    {
+      "day": "2024-03-08",
+      "observed_hours": 24,
+      "mean_load_mw": 84453.21,
+      "energy_mwh": 2026877.0
+    },
+    {
+      "day": "2024-03-09",
+      "observed_hours": 24,
+      "mean_load_mw": 83624.54,
+      "energy_mwh": 2006989.0
+    },
+    {
+      "day": "2024-03-10",
+      "observed_hours": 6,
+      "mean_load_mw": 84513.5,
+      "energy_mwh": 507081.0
+    },
+    {
+      "day": "2024-03-11",
+      "observed_hours": 20,
+      "mean_load_mw": 91179.65,
+      "energy_mwh": 1823593.0
+    },
+    {
+      "day": "2024-03-12",
+      "observed_hours": 24,
+      "mean_load_mw": 86490.46,
+      "energy_mwh": 2075771.0
+    },
+    {
+      "day": "2024-03-13",
+      "observed_hours": 24,
+      "mean_load_mw": 81965.62,
+      "energy_mwh": 1967175.0
+    },
+    {
+      "day": "2024-03-14",
+      "observed_hours": 24,
+      "mean_load_mw": 81502.75,
+      "energy_mwh": 1956066.0
+    },
+    {
+      "day": "2024-03-15",
+      "observed_hours": 24,
+      "mean_load_mw": 80171.58,
+      "energy_mwh": 1924118.0
+    },
+    {
+      "day": "2024-03-16",
+      "observed_hours": 24,
+      "mean_load_mw": 76035.79,
+      "energy_mwh": 1824859.0
+    },
+    {
+      "day": "2024-03-17",
+      "observed_hours": 24,
+      "mean_load_mw": 75013.04,
+      "energy_mwh": 1800313.0
+    },
+    {
+      "day": "2024-03-18",
+      "observed_hours": 24,
+      "mean_load_mw": 86705.54,
+      "energy_mwh": 2080933.0
+    },
+    {
+      "day": "2024-03-19",
+      "observed_hours": 24,
+      "mean_load_mw": 92727.75,
+      "energy_mwh": 2225466.0
+    },
+    {
+      "day": "2024-03-20",
+      "observed_hours": 24,
+      "mean_load_mw": 88379.71,
+      "energy_mwh": 2121113.0
+    },
+    {
+      "day": "2024-03-21",
+      "observed_hours": 24,
+      "mean_load_mw": 90966.54,
+      "energy_mwh": 2183197.0
+    },
+    {
+      "day": "2024-03-22",
+      "observed_hours": 24,
+      "mean_load_mw": 92059.33,
+      "energy_mwh": 2209424.0
+    },
+    {
+      "day": "2024-03-23",
+      "observed_hours": 24,
+      "mean_load_mw": 85423.88,
+      "energy_mwh": 2050173.0
+    },
+    {
+      "day": "2024-03-24",
+      "observed_hours": 24,
+      "mean_load_mw": 85639.29,
+      "energy_mwh": 2055343.0
+    },
+    {
+      "day": "2024-03-25",
+      "observed_hours": 24,
+      "mean_load_mw": 87291.08,
+      "energy_mwh": 2094986.0
+    },
+    {
+      "day": "2024-03-26",
+      "observed_hours": 24,
+      "mean_load_mw": 86025.58,
+      "energy_mwh": 2064614.0
+    },
+    {
+      "day": "2024-03-27",
+      "observed_hours": 24,
+      "mean_load_mw": 86757.42,
+      "energy_mwh": 2082178.0
+    },
+    {
+      "day": "2024-03-28",
+      "observed_hours": 24,
+      "mean_load_mw": 87233.25,
+      "energy_mwh": 2093598.0
+    },
+    {
+      "day": "2024-03-29",
+      "observed_hours": 24,
+      "mean_load_mw": 82356.46,
+      "energy_mwh": 1976555.0
+    },
+    {
+      "day": "2024-03-30",
+      "observed_hours": 24,
+      "mean_load_mw": 77502.08,
+      "energy_mwh": 1860050.0
+    },
+    {
+      "day": "2024-03-31",
+      "observed_hours": 24,
+      "mean_load_mw": 72836.88,
+      "energy_mwh": 1748085.0
+    },
+    {
+      "day": "2024-04-01",
+      "observed_hours": 24,
+      "mean_load_mw": 80547.04,
+      "energy_mwh": 1933129.0
+    },
+    {
+      "day": "2024-04-02",
+      "observed_hours": 24,
+      "mean_load_mw": 84640.71,
+      "energy_mwh": 2031377.0
+    },
+    {
+      "day": "2024-04-03",
+      "observed_hours": 24,
+      "mean_load_mw": 86976.12,
+      "energy_mwh": 2087427.0
+    },
+    {
+      "day": "2024-04-04",
+      "observed_hours": 24,
+      "mean_load_mw": 88632.83,
+      "energy_mwh": 2127188.0
+    },
+    {
+      "day": "2024-04-05",
+      "observed_hours": 24,
+      "mean_load_mw": 88253.17,
+      "energy_mwh": 2118076.0
+    },
+    {
+      "day": "2024-04-06",
+      "observed_hours": 24,
+      "mean_load_mw": 82640.96,
+      "energy_mwh": 1983383.0
+    },
+    {
+      "day": "2024-04-07",
+      "observed_hours": 24,
+      "mean_load_mw": 77954.33,
+      "energy_mwh": 1870904.0
+    },
+    {
+      "day": "2024-04-08",
+      "observed_hours": 24,
+      "mean_load_mw": 79970.5,
+      "energy_mwh": 1919292.0
+    },
+    {
+      "day": "2024-04-09",
+      "observed_hours": 24,
+      "mean_load_mw": 79787.58,
+      "energy_mwh": 1914902.0
+    },
+    {
+      "day": "2024-04-10",
+      "observed_hours": 24,
+      "mean_load_mw": 79781.58,
+      "energy_mwh": 1914758.0
+    },
+    {
+      "day": "2024-04-11",
+      "observed_hours": 24,
+      "mean_load_mw": 81334.08,
+      "energy_mwh": 1952018.0
+    },
+    {
+      "day": "2024-04-12",
+      "observed_hours": 24,
+      "mean_load_mw": 80571.25,
+      "energy_mwh": 1933710.0
+    },
+    {
+      "day": "2024-04-13",
+      "observed_hours": 24,
+      "mean_load_mw": 75174.75,
+      "energy_mwh": 1804194.0
+    },
+    {
+      "day": "2024-04-14",
+      "observed_hours": 24,
+      "mean_load_mw": 73357.42,
+      "energy_mwh": 1760578.0
+    },
+    {
+      "day": "2024-04-15",
+      "observed_hours": 24,
+      "mean_load_mw": 80350.62,
+      "energy_mwh": 1928415.0
+    },
+    {
+      "day": "2024-04-16",
+      "observed_hours": 24,
+      "mean_load_mw": 81094.0,
+      "energy_mwh": 1946256.0
+    },
+    {
+      "day": "2024-04-17",
+      "observed_hours": 24,
+      "mean_load_mw": 81551.75,
+      "energy_mwh": 1957242.0
+    },
+    {
+      "day": "2024-04-18",
+      "observed_hours": 24,
+      "mean_load_mw": 81366.92,
+      "energy_mwh": 1952806.0
+    },
+    {
+      "day": "2024-04-19",
+      "observed_hours": 24,
+      "mean_load_mw": 79445.96,
+      "energy_mwh": 1906703.0
+    },
+    {
+      "day": "2024-04-20",
+      "observed_hours": 24,
+      "mean_load_mw": 73786.17,
+      "energy_mwh": 1770868.0
+    },
+    {
+      "day": "2024-04-21",
+      "observed_hours": 24,
+      "mean_load_mw": 74137.58,
+      "energy_mwh": 1779302.0
+    },
+    {
+      "day": "2024-04-22",
+      "observed_hours": 24,
+      "mean_load_mw": 80927.79,
+      "energy_mwh": 1942267.0
+    },
+    {
+      "day": "2024-04-23",
+      "observed_hours": 24,
+      "mean_load_mw": 80579.21,
+      "energy_mwh": 1933901.0
+    },
+    {
+      "day": "2024-04-24",
+      "observed_hours": 24,
+      "mean_load_mw": 79450.42,
+      "energy_mwh": 1906810.0
+    },
+    {
+      "day": "2024-04-25",
+      "observed_hours": 24,
+      "mean_load_mw": 79490.21,
+      "energy_mwh": 1907765.0
+    },
+    {
+      "day": "2024-04-26",
+      "observed_hours": 24,
+      "mean_load_mw": 79397.88,
+      "energy_mwh": 1905549.0
+    },
+    {
+      "day": "2024-04-27",
+      "observed_hours": 24,
+      "mean_load_mw": 76056.29,
+      "energy_mwh": 1825351.0
+    },
+    {
+      "day": "2024-04-28",
+      "observed_hours": 24,
+      "mean_load_mw": 75900.25,
+      "energy_mwh": 1821606.0
+    },
+    {
+      "day": "2024-04-29",
+      "observed_hours": 24,
+      "mean_load_mw": 87655.75,
+      "energy_mwh": 2103738.0
+    },
+    {
+      "day": "2024-04-30",
+      "observed_hours": 24,
+      "mean_load_mw": 87552.33,
+      "energy_mwh": 2101256.0
+    },
+    {
+      "day": "2024-05-01",
+      "observed_hours": 24,
+      "mean_load_mw": 86917.33,
+      "energy_mwh": 2086016.0
+    },
+    {
+      "day": "2024-05-02",
+      "observed_hours": 24,
+      "mean_load_mw": 88977.08,
+      "energy_mwh": 2135450.0
+    },
+    {
+      "day": "2024-05-03",
+      "observed_hours": 24,
+      "mean_load_mw": 85692.83,
+      "energy_mwh": 2056628.0
+    },
+    {
+      "day": "2024-05-04",
+      "observed_hours": 24,
+      "mean_load_mw": 76584.33,
+      "energy_mwh": 1838024.0
+    },
+    {
+      "day": "2024-05-05",
+      "observed_hours": 24,
+      "mean_load_mw": 76071.25,
+      "energy_mwh": 1825710.0
+    },
+    {
+      "day": "2024-05-06",
+      "observed_hours": 24,
+      "mean_load_mw": 82380.08,
+      "energy_mwh": 1977122.0
+    },
+    {
+      "day": "2024-05-07",
+      "observed_hours": 24,
+      "mean_load_mw": 86203.92,
+      "energy_mwh": 2068894.0
+    },
+    {
+      "day": "2024-05-08",
+      "observed_hours": 24,
+      "mean_load_mw": 91498.12,
+      "energy_mwh": 2195955.0
+    },
+    {
+      "day": "2024-05-09",
+      "observed_hours": 24,
+      "mean_load_mw": 86185.71,
+      "energy_mwh": 2068457.0
+    },
+    {
+      "day": "2024-05-10",
+      "observed_hours": 24,
+      "mean_load_mw": 80336.92,
+      "energy_mwh": 1928086.0
+    },
+    {
+      "day": "2024-05-11",
+      "observed_hours": 24,
+      "mean_load_mw": 74132.46,
+      "energy_mwh": 1779179.0
+    },
+    {
+      "day": "2024-05-12",
+      "observed_hours": 24,
+      "mean_load_mw": 72438.71,
+      "energy_mwh": 1738529.0
+    },
+    {
+      "day": "2024-05-13",
+      "observed_hours": 24,
+      "mean_load_mw": 80985.54,
+      "energy_mwh": 1943653.0
+    },
+    {
+      "day": "2024-05-14",
+      "observed_hours": 24,
+      "mean_load_mw": 82790.75,
+      "energy_mwh": 1986978.0
+    },
+    {
+      "day": "2024-05-15",
+      "observed_hours": 24,
+      "mean_load_mw": 82454.92,
+      "energy_mwh": 1978918.0
+    },
+    {
+      "day": "2024-05-16",
+      "observed_hours": 24,
+      "mean_load_mw": 83881.83,
+      "energy_mwh": 2013164.0
+    },
+    {
+      "day": "2024-05-17",
+      "observed_hours": 24,
+      "mean_load_mw": 83925.96,
+      "energy_mwh": 2014223.0
+    },
+    {
+      "day": "2024-05-18",
+      "observed_hours": 24,
+      "mean_load_mw": 80629.67,
+      "energy_mwh": 1935112.0
+    },
+    {
+      "day": "2024-05-19",
+      "observed_hours": 24,
+      "mean_load_mw": 81447.79,
+      "energy_mwh": 1954747.0
+    },
+    {
+      "day": "2024-05-20",
+      "observed_hours": 24,
+      "mean_load_mw": 90309.17,
+      "energy_mwh": 2167420.0
+    },
+    {
+      "day": "2024-05-21",
+      "observed_hours": 24,
+      "mean_load_mw": 97248.83,
+      "energy_mwh": 2333972.0
+    },
+    {
+      "day": "2024-05-22",
+      "observed_hours": 24,
+      "mean_load_mw": 100909.62,
+      "energy_mwh": 2421831.0
+    },
+    {
+      "day": "2024-05-23",
+      "observed_hours": 24,
+      "mean_load_mw": 98308.79,
+      "energy_mwh": 2359411.0
+    },
+    {
+      "day": "2024-05-24",
+      "observed_hours": 24,
+      "mean_load_mw": 96616.12,
+      "energy_mwh": 2318787.0
+    },
+    {
+      "day": "2024-05-25",
+      "observed_hours": 24,
+      "mean_load_mw": 90672.62,
+      "energy_mwh": 2176143.0
+    },
+    {
+      "day": "2024-05-26",
+      "observed_hours": 24,
+      "mean_load_mw": 88616.75,
+      "energy_mwh": 2126802.0
+    },
+    {
+      "day": "2024-05-27",
+      "observed_hours": 24,
+      "mean_load_mw": 85952.96,
+      "energy_mwh": 2062871.0
+    },
+    {
+      "day": "2024-05-28",
+      "observed_hours": 24,
+      "mean_load_mw": 89233.83,
+      "energy_mwh": 2141612.0
+    },
+    {
+      "day": "2024-05-29",
+      "observed_hours": 24,
+      "mean_load_mw": 86691.04,
+      "energy_mwh": 2080585.0
+    },
+    {
+      "day": "2024-05-30",
+      "observed_hours": 24,
+      "mean_load_mw": 83055.04,
+      "energy_mwh": 1993321.0
+    },
+    {
+      "day": "2024-05-31",
+      "observed_hours": 24,
+      "mean_load_mw": 82584.04,
+      "energy_mwh": 1982017.0
+    },
+    {
+      "day": "2024-06-01",
+      "observed_hours": 24,
+      "mean_load_mw": 80013.42,
+      "energy_mwh": 1920322.0
+    },
+    {
+      "day": "2024-06-02",
+      "observed_hours": 24,
+      "mean_load_mw": 81106.08,
+      "energy_mwh": 1946546.0
+    },
+    {
+      "day": "2024-06-03",
+      "observed_hours": 24,
+      "mean_load_mw": 96274.71,
+      "energy_mwh": 2310593.0
+    },
+    {
+      "day": "2024-06-04",
+      "observed_hours": 24,
+      "mean_load_mw": 104613.29,
+      "energy_mwh": 2510719.0
+    },
+    {
+      "day": "2024-06-05",
+      "observed_hours": 24,
+      "mean_load_mw": 102792.54,
+      "energy_mwh": 2467021.0
+    },
+    {
+      "day": "2024-06-06",
+      "observed_hours": 24,
+      "mean_load_mw": 102780.67,
+      "energy_mwh": 2466736.0
+    },
+    {
+      "day": "2024-06-07",
+      "observed_hours": 24,
+      "mean_load_mw": 96847.25,
+      "energy_mwh": 2324334.0
+    },
+    {
+      "day": "2024-06-08",
+      "observed_hours": 24,
+      "mean_load_mw": 85377.17,
+      "energy_mwh": 2049052.0
+    },
+    {
+      "day": "2024-06-09",
+      "observed_hours": 24,
+      "mean_load_mw": 84453.38,
+      "energy_mwh": 2026881.0
+    },
+    {
+      "day": "2024-06-10",
+      "observed_hours": 24,
+      "mean_load_mw": 86747.83,
+      "energy_mwh": 2081948.0
+    },
+    {
+      "day": "2024-06-11",
+      "observed_hours": 24,
+      "mean_load_mw": 86249.08,
+      "energy_mwh": 2069978.0
+    },
+    {
+      "day": "2024-06-12",
+      "observed_hours": 24,
+      "mean_load_mw": 91402.42,
+      "energy_mwh": 2193658.0
+    },
+    {
+      "day": "2024-06-13",
+      "observed_hours": 24,
+      "mean_load_mw": 102280.08,
+      "energy_mwh": 2454722.0
+    },
+    {
+      "day": "2024-06-14",
+      "observed_hours": 24,
+      "mean_load_mw": 106704.71,
+      "energy_mwh": 2560913.0
+    },
+    {
+      "day": "2024-06-15",
+      "observed_hours": 24,
+      "mean_load_mw": 92816.29,
+      "energy_mwh": 2227591.0
+    },
+    {
+      "day": "2024-06-16",
+      "observed_hours": 24,
+      "mean_load_mw": 91352.46,
+      "energy_mwh": 2192459.0
+    },
+    {
+      "day": "2024-06-17",
+      "observed_hours": 24,
+      "mean_load_mw": 110715.08,
+      "energy_mwh": 2657162.0
+    },
+    {
+      "day": "2024-06-18",
+      "observed_hours": 24,
+      "mean_load_mw": 119870.0,
+      "energy_mwh": 2876880.0
+    },
+    {
+      "day": "2024-06-19",
+      "observed_hours": 24,
+      "mean_load_mw": 119229.42,
+      "energy_mwh": 2861506.0
+    },
+    {
+      "day": "2024-06-20",
+      "observed_hours": 24,
+      "mean_load_mw": 118666.83,
+      "energy_mwh": 2848004.0
+    },
+    {
+      "day": "2024-06-21",
+      "observed_hours": 24,
+      "mean_load_mw": 120659.83,
+      "energy_mwh": 2895836.0
+    },
+    {
+      "day": "2024-06-22",
+      "observed_hours": 24,
+      "mean_load_mw": 120391.79,
+      "energy_mwh": 2889403.0
+    },
+    {
+      "day": "2024-06-23",
+      "observed_hours": 24,
+      "mean_load_mw": 115562.46,
+      "energy_mwh": 2773499.0
+    },
+    {
+      "day": "2024-06-24",
+      "observed_hours": 24,
+      "mean_load_mw": 111632.46,
+      "energy_mwh": 2679179.0
+    },
+    {
+      "day": "2024-06-25",
+      "observed_hours": 24,
+      "mean_load_mw": 106860.75,
+      "energy_mwh": 2564658.0
+    },
+    {
+      "day": "2024-06-26",
+      "observed_hours": 24,
+      "mean_load_mw": 113945.96,
+      "energy_mwh": 2734703.0
+    },
+    {
+      "day": "2024-06-27",
+      "observed_hours": 24,
+      "mean_load_mw": 106120.58,
+      "energy_mwh": 2546894.0
+    },
+    {
+      "day": "2024-06-28",
+      "observed_hours": 24,
+      "mean_load_mw": 99616.5,
+      "energy_mwh": 2390796.0
+    },
+    {
+      "day": "2024-06-29",
+      "observed_hours": 24,
+      "mean_load_mw": 104092.46,
+      "energy_mwh": 2498219.0
+    },
+    {
+      "day": "2024-06-30",
+      "observed_hours": 24,
+      "mean_load_mw": 105825.12,
+      "energy_mwh": 2539803.0
+    },
+    {
+      "day": "2024-07-01",
+      "observed_hours": 24,
+      "mean_load_mw": 94080.54,
+      "energy_mwh": 2257933.0
+    },
+    {
+      "day": "2024-07-02",
+      "observed_hours": 24,
+      "mean_load_mw": 95479.54,
+      "energy_mwh": 2291509.0
+    },
+    {
+      "day": "2024-07-03",
+      "observed_hours": 24,
+      "mean_load_mw": 106421.17,
+      "energy_mwh": 2554108.0
+    },
+    {
+      "day": "2024-07-04",
+      "observed_hours": 24,
+      "mean_load_mw": 104726.83,
+      "energy_mwh": 2513444.0
+    },
+    {
+      "day": "2024-07-05",
+      "observed_hours": 24,
+      "mean_load_mw": 109819.54,
+      "energy_mwh": 2635669.0
+    },
+    {
+      "day": "2024-07-06",
+      "observed_hours": 24,
+      "mean_load_mw": 111841.38,
+      "energy_mwh": 2684193.0
+    },
+    {
+      "day": "2024-07-07",
+      "observed_hours": 24,
+      "mean_load_mw": 109510.96,
+      "energy_mwh": 2628263.0
+    },
+    {
+      "day": "2024-07-08",
+      "observed_hours": 24,
+      "mean_load_mw": 118560.38,
+      "energy_mwh": 2845449.0
+    },
+    {
+      "day": "2024-07-09",
+      "observed_hours": 24,
+      "mean_load_mw": 123791.79,
+      "energy_mwh": 2971003.0
+    },
+    {
+      "day": "2024-07-10",
+      "observed_hours": 24,
+      "mean_load_mw": 123372.12,
+      "energy_mwh": 2960931.0
+    },
+    {
+      "day": "2024-07-11",
+      "observed_hours": 24,
+      "mean_load_mw": 113592.75,
+      "energy_mwh": 2726226.0
+    },
+    {
+      "day": "2024-07-12",
+      "observed_hours": 24,
+      "mean_load_mw": 109634.58,
+      "energy_mwh": 2631230.0
+    },
+    {
+      "day": "2024-07-13",
+      "observed_hours": 24,
+      "mean_load_mw": 110047.67,
+      "energy_mwh": 2641144.0
+    },
+    {
+      "day": "2024-07-14",
+      "observed_hours": 24,
+      "mean_load_mw": 112591.96,
+      "energy_mwh": 2702207.0
+    },
+    {
+      "day": "2024-07-15",
+      "observed_hours": 24,
+      "mean_load_mw": 122582.5,
+      "energy_mwh": 2941980.0
+    },
+    {
+      "day": "2024-07-16",
+      "observed_hours": 24,
+      "mean_load_mw": 127856.62,
+      "energy_mwh": 3068559.0
+    },
+    {
+      "day": "2024-07-17",
+      "observed_hours": 24,
+      "mean_load_mw": 122587.04,
+      "energy_mwh": 2942089.0
+    },
+    {
+      "day": "2024-07-18",
+      "observed_hours": 24,
+      "mean_load_mw": 108624.83,
+      "energy_mwh": 2606996.0
+    },
+    {
+      "day": "2024-07-19",
+      "observed_hours": 24,
+      "mean_load_mw": 102131.25,
+      "energy_mwh": 2451150.0
+    },
+    {
+      "day": "2024-07-20",
+      "observed_hours": 24,
+      "mean_load_mw": 97886.88,
+      "energy_mwh": 2349285.0
+    },
+    {
+      "day": "2024-07-21",
+      "observed_hours": 24,
+      "mean_load_mw": 98788.42,
+      "energy_mwh": 2370922.0
+    },
+    {
+      "day": "2024-07-22",
+      "observed_hours": 24,
+      "mean_load_mw": 106530.75,
+      "energy_mwh": 2556738.0
+    },
+    {
+      "day": "2024-07-23",
+      "observed_hours": 24,
+      "mean_load_mw": 109241.33,
+      "energy_mwh": 2621792.0
+    },
+    {
+      "day": "2024-07-24",
+      "observed_hours": 24,
+      "mean_load_mw": 110305.12,
+      "energy_mwh": 2647323.0
+    },
+    {
+      "day": "2024-07-25",
+      "observed_hours": 24,
+      "mean_load_mw": 107977.62,
+      "energy_mwh": 2591463.0
+    },
+    {
+      "day": "2024-07-26",
+      "observed_hours": 24,
+      "mean_load_mw": 101710.08,
+      "energy_mwh": 2441042.0
+    },
+    {
+      "day": "2024-07-27",
+      "observed_hours": 24,
+      "mean_load_mw": 97535.58,
+      "energy_mwh": 2340854.0
+    },
+    {
+      "day": "2024-07-28",
+      "observed_hours": 24,
+      "mean_load_mw": 98982.25,
+      "energy_mwh": 2375574.0
+    },
+    {
+      "day": "2024-07-29",
+      "observed_hours": 24,
+      "mean_load_mw": 110971.96,
+      "energy_mwh": 2663327.0
+    },
+    {
+      "day": "2024-07-30",
+      "observed_hours": 24,
+      "mean_load_mw": 115137.25,
+      "energy_mwh": 2763294.0
+    },
+    {
+      "day": "2024-07-31",
+      "observed_hours": 24,
+      "mean_load_mw": 118668.33,
+      "energy_mwh": 2848040.0
+    },
+    {
+      "day": "2024-08-01",
+      "observed_hours": 24,
+      "mean_load_mw": 122468.58,
+      "energy_mwh": 2939246.0
+    },
+    {
+      "day": "2024-08-02",
+      "observed_hours": 24,
+      "mean_load_mw": 122590.88,
+      "energy_mwh": 2942181.0
+    },
+    {
+      "day": "2024-08-03",
+      "observed_hours": 24,
+      "mean_load_mw": 111601.33,
+      "energy_mwh": 2678432.0
+    },
+    {
+      "day": "2024-08-04",
+      "observed_hours": 24,
+      "mean_load_mw": 105638.46,
+      "energy_mwh": 2535323.0
+    },
+    {
+      "day": "2024-08-05",
+      "observed_hours": 24,
+      "mean_load_mw": 117706.25,
+      "energy_mwh": 2824950.0
+    },
+    {
+      "day": "2024-08-06",
+      "observed_hours": 24,
+      "mean_load_mw": 120527.83,
+      "energy_mwh": 2892668.0
+    },
+    {
+      "day": "2024-08-07",
+      "observed_hours": 24,
+      "mean_load_mw": 107830.17,
+      "energy_mwh": 2587924.0
+    },
+    {
+      "day": "2024-08-08",
+      "observed_hours": 24,
+      "mean_load_mw": 104591.88,
+      "energy_mwh": 2510205.0
+    },
+    {
+      "day": "2024-08-09",
+      "observed_hours": 24,
+      "mean_load_mw": 107661.83,
+      "energy_mwh": 2583884.0
+    },
+    {
+      "day": "2024-08-10",
+      "observed_hours": 24,
+      "mean_load_mw": 98538.21,
+      "energy_mwh": 2364917.0
+    },
+    {
+      "day": "2024-08-11",
+      "observed_hours": 24,
+      "mean_load_mw": 90770.5,
+      "energy_mwh": 2178492.0
+    },
+    {
+      "day": "2024-08-12",
+      "observed_hours": 24,
+      "mean_load_mw": 96227.62,
+      "energy_mwh": 2309463.0
+    },
+    {
+      "day": "2024-08-13",
+      "observed_hours": 24,
+      "mean_load_mw": 99295.17,
+      "energy_mwh": 2383084.0
+    },
+    {
+      "day": "2024-08-14",
+      "observed_hours": 24,
+      "mean_load_mw": 102736.83,
+      "energy_mwh": 2465684.0
+    },
+    {
+      "day": "2024-08-15",
+      "observed_hours": 24,
+      "mean_load_mw": 103415.17,
+      "energy_mwh": 2481964.0
+    },
+    {
+      "day": "2024-08-16",
+      "observed_hours": 24,
+      "mean_load_mw": 105560.5,
+      "energy_mwh": 2533452.0
+    },
+    {
+      "day": "2024-08-17",
+      "observed_hours": 24,
+      "mean_load_mw": 101772.12,
+      "energy_mwh": 2442531.0
+    },
+    {
+      "day": "2024-08-18",
+      "observed_hours": 24,
+      "mean_load_mw": 97374.0,
+      "energy_mwh": 2336976.0
+    },
+    {
+      "day": "2024-08-19",
+      "observed_hours": 24,
+      "mean_load_mw": 100476.71,
+      "energy_mwh": 2411441.0
+    },
+    {
+      "day": "2024-08-20",
+      "observed_hours": 24,
+      "mean_load_mw": 89788.67,
+      "energy_mwh": 2154928.0
+    },
+    {
+      "day": "2024-08-21",
+      "observed_hours": 24,
+      "mean_load_mw": 85010.92,
+      "energy_mwh": 2040262.0
+    },
+    {
+      "day": "2024-08-22",
+      "observed_hours": 24,
+      "mean_load_mw": 86781.42,
+      "energy_mwh": 2082754.0
+    },
+    {
+      "day": "2024-08-23",
+      "observed_hours": 24,
+      "mean_load_mw": 90301.67,
+      "energy_mwh": 2167240.0
+    },
+    {
+      "day": "2024-08-24",
+      "observed_hours": 24,
+      "mean_load_mw": 91148.0,
+      "energy_mwh": 2187552.0
+    },
+    {
+      "day": "2024-08-25",
+      "observed_hours": 24,
+      "mean_load_mw": 97434.5,
+      "energy_mwh": 2338428.0
+    },
+    {
+      "day": "2024-08-26",
+      "observed_hours": 24,
+      "mean_load_mw": 111540.75,
+      "energy_mwh": 2676978.0
+    },
+    {
+      "day": "2024-08-27",
+      "observed_hours": 24,
+      "mean_load_mw": 117745.96,
+      "energy_mwh": 2825903.0
+    },
+    {
+      "day": "2024-08-28",
+      "observed_hours": 24,
+      "mean_load_mw": 120627.58,
+      "energy_mwh": 2895062.0
+    },
+    {
+      "day": "2024-08-29",
+      "observed_hours": 24,
+      "mean_load_mw": 119270.29,
+      "energy_mwh": 2862487.0
+    },
+    {
+      "day": "2024-08-30",
+      "observed_hours": 24,
+      "mean_load_mw": 108577.46,
+      "energy_mwh": 2605859.0
+    },
+    {
+      "day": "2024-08-31",
+      "observed_hours": 24,
+      "mean_load_mw": 99061.83,
+      "energy_mwh": 2377484.0
+    },
+    {
+      "day": "2024-09-01",
+      "observed_hours": 24,
+      "mean_load_mw": 96124.42,
+      "energy_mwh": 2306986.0
+    },
+    {
+      "day": "2024-09-02",
+      "observed_hours": 24,
+      "mean_load_mw": 88560.54,
+      "energy_mwh": 2125453.0
+    },
+    {
+      "day": "2024-09-03",
+      "observed_hours": 24,
+      "mean_load_mw": 85105.71,
+      "energy_mwh": 2042537.0
+    },
+    {
+      "day": "2024-09-04",
+      "observed_hours": 24,
+      "mean_load_mw": 87617.71,
+      "energy_mwh": 2102825.0
+    },
+    {
+      "day": "2024-09-05",
+      "observed_hours": 24,
+      "mean_load_mw": 92246.79,
+      "energy_mwh": 2213923.0
+    },
+    {
+      "day": "2024-09-06",
+      "observed_hours": 24,
+      "mean_load_mw": 93045.67,
+      "energy_mwh": 2233096.0
+    },
+    {
+      "day": "2024-09-07",
+      "observed_hours": 24,
+      "mean_load_mw": 81986.33,
+      "energy_mwh": 1967672.0
+    },
+    {
+      "day": "2024-09-08",
+      "observed_hours": 24,
+      "mean_load_mw": 73531.33,
+      "energy_mwh": 1764752.0
+    },
+    {
+      "day": "2024-09-09",
+      "observed_hours": 24,
+      "mean_load_mw": 81330.96,
+      "energy_mwh": 1951943.0
+    },
+    {
+      "day": "2024-09-10",
+      "observed_hours": 24,
+      "mean_load_mw": 87710.62,
+      "energy_mwh": 2105055.0
+    },
+    {
+      "day": "2024-09-11",
+      "observed_hours": 24,
+      "mean_load_mw": 91904.88,
+      "energy_mwh": 2205717.0
+    },
+    {
+      "day": "2024-09-12",
+      "observed_hours": 24,
+      "mean_load_mw": 94318.62,
+      "energy_mwh": 2263647.0
+    },
+    {
+      "day": "2024-09-13",
+      "observed_hours": 24,
+      "mean_load_mw": 94905.46,
+      "energy_mwh": 2277731.0
+    },
+    {
+      "day": "2024-09-14",
+      "observed_hours": 24,
+      "mean_load_mw": 92112.33,
+      "energy_mwh": 2210696.0
+    },
+    {
+      "day": "2024-09-15",
+      "observed_hours": 24,
+      "mean_load_mw": 90307.46,
+      "energy_mwh": 2167379.0
+    },
+    {
+      "day": "2024-09-16",
+      "observed_hours": 24,
+      "mean_load_mw": 92281.38,
+      "energy_mwh": 2214753.0
+    },
+    {
+      "day": "2024-09-17",
+      "observed_hours": 24,
+      "mean_load_mw": 92710.25,
+      "energy_mwh": 2225046.0
+    },
+    {
+      "day": "2024-09-18",
+      "observed_hours": 24,
+      "mean_load_mw": 94605.88,
+      "energy_mwh": 2270541.0
+    },
+    {
+      "day": "2024-09-19",
+      "observed_hours": 24,
+      "mean_load_mw": 97673.96,
+      "energy_mwh": 2344175.0
+    },
+    {
+      "day": "2024-09-20",
+      "observed_hours": 24,
+      "mean_load_mw": 98126.33,
+      "energy_mwh": 2355032.0
+    },
+    {
+      "day": "2024-09-21",
+      "observed_hours": 24,
+      "mean_load_mw": 93192.12,
+      "energy_mwh": 2236611.0
+    },
+    {
+      "day": "2024-09-22",
+      "observed_hours": 24,
+      "mean_load_mw": 87245.29,
+      "energy_mwh": 2093887.0
+    },
+    {
+      "day": "2024-09-23",
+      "observed_hours": 24,
+      "mean_load_mw": 88377.33,
+      "energy_mwh": 2121056.0
+    },
+    {
+      "day": "2024-09-24",
+      "observed_hours": 24,
+      "mean_load_mw": 86720.62,
+      "energy_mwh": 2081295.0
+    },
+    {
+      "day": "2024-09-25",
+      "observed_hours": 24,
+      "mean_load_mw": 87539.92,
+      "energy_mwh": 2100958.0
+    },
+    {
+      "day": "2024-09-26",
+      "observed_hours": 24,
+      "mean_load_mw": 90579.25,
+      "energy_mwh": 2173902.0
+    },
+    {
+      "day": "2024-09-27",
+      "observed_hours": 24,
+      "mean_load_mw": 90648.83,
+      "energy_mwh": 2175572.0
+    },
+    {
+      "day": "2024-09-28",
+      "observed_hours": 24,
+      "mean_load_mw": 85101.71,
+      "energy_mwh": 2042441.0
+    },
+    {
+      "day": "2024-09-29",
+      "observed_hours": 24,
+      "mean_load_mw": 81805.96,
+      "energy_mwh": 1963343.0
+    },
+    {
+      "day": "2024-09-30",
+      "observed_hours": 24,
+      "mean_load_mw": 86619.67,
+      "energy_mwh": 2078872.0
+    },
+    {
+      "day": "2024-10-01",
+      "observed_hours": 24,
+      "mean_load_mw": 86152.12,
+      "energy_mwh": 2067651.0
+    },
+    {
+      "day": "2024-10-02",
+      "observed_hours": 24,
+      "mean_load_mw": 83123.04,
+      "energy_mwh": 1994953.0
+    },
+    {
+      "day": "2024-10-03",
+      "observed_hours": 24,
+      "mean_load_mw": 83649.67,
+      "energy_mwh": 2007592.0
+    },
+    {
+      "day": "2024-10-04",
+      "observed_hours": 24,
+      "mean_load_mw": 84542.58,
+      "energy_mwh": 2029022.0
+    },
+    {
+      "day": "2024-10-05",
+      "observed_hours": 24,
+      "mean_load_mw": 79712.29,
+      "energy_mwh": 1913095.0
+    },
+    {
+      "day": "2024-10-06",
+      "observed_hours": 24,
+      "mean_load_mw": 77565.04,
+      "energy_mwh": 1861561.0
+    },
+    {
+      "day": "2024-10-07",
+      "observed_hours": 24,
+      "mean_load_mw": 81519.83,
+      "energy_mwh": 1956476.0
+    },
+    {
+      "day": "2024-10-08",
+      "observed_hours": 24,
+      "mean_load_mw": 79038.92,
+      "energy_mwh": 1896934.0
+    },
+    {
+      "day": "2024-10-09",
+      "observed_hours": 24,
+      "mean_load_mw": 79017.08,
+      "energy_mwh": 1896410.0
+    },
+    {
+      "day": "2024-10-10",
+      "observed_hours": 24,
+      "mean_load_mw": 78786.46,
+      "energy_mwh": 1890875.0
+    },
+    {
+      "day": "2024-10-11",
+      "observed_hours": 24,
+      "mean_load_mw": 79346.17,
+      "energy_mwh": 1904308.0
+    },
+    {
+      "day": "2024-10-12",
+      "observed_hours": 24,
+      "mean_load_mw": 75193.25,
+      "energy_mwh": 1804638.0
+    },
+    {
+      "day": "2024-10-13",
+      "observed_hours": 24,
+      "mean_load_mw": 73891.75,
+      "energy_mwh": 1773402.0
+    },
+    {
+      "day": "2024-10-14",
+      "observed_hours": 24,
+      "mean_load_mw": 78257.71,
+      "energy_mwh": 1878185.0
+    },
+    {
+      "day": "2024-10-15",
+      "observed_hours": 24,
+      "mean_load_mw": 80882.88,
+      "energy_mwh": 1941189.0
+    },
+    {
+      "day": "2024-10-16",
+      "observed_hours": 24,
+      "mean_load_mw": 82800.42,
+      "energy_mwh": 1987210.0
+    },
+    {
+      "day": "2024-10-17",
+      "observed_hours": 24,
+      "mean_load_mw": 83324.21,
+      "energy_mwh": 1999781.0
+    },
+    {
+      "day": "2024-10-18",
+      "observed_hours": 24,
+      "mean_load_mw": 82208.88,
+      "energy_mwh": 1973013.0
+    },
+    {
+      "day": "2024-10-19",
+      "observed_hours": 24,
+      "mean_load_mw": 76133.96,
+      "energy_mwh": 1827215.0
+    },
+    {
+      "day": "2024-10-20",
+      "observed_hours": 24,
+      "mean_load_mw": 74101.58,
+      "energy_mwh": 1778438.0
+    },
+    {
+      "day": "2024-10-21",
+      "observed_hours": 24,
+      "mean_load_mw": 80489.38,
+      "energy_mwh": 1931745.0
+    },
+    {
+      "day": "2024-10-22",
+      "observed_hours": 24,
+      "mean_load_mw": 82308.0,
+      "energy_mwh": 1975392.0
+    },
+    {
+      "day": "2024-10-23",
+      "observed_hours": 24,
+      "mean_load_mw": 81621.92,
+      "energy_mwh": 1958926.0
+    },
+    {
+      "day": "2024-10-24",
+      "observed_hours": 24,
+      "mean_load_mw": 79674.17,
+      "energy_mwh": 1912180.0
+    },
+    {
+      "day": "2024-10-25",
+      "observed_hours": 24,
+      "mean_load_mw": 80209.42,
+      "energy_mwh": 1925026.0
+    },
+    {
+      "day": "2024-10-26",
+      "observed_hours": 24,
+      "mean_load_mw": 74348.79,
+      "energy_mwh": 1784371.0
+    },
+    {
+      "day": "2024-10-27",
+      "observed_hours": 24,
+      "mean_load_mw": 74656.83,
+      "energy_mwh": 1791764.0
+    },
+    {
+      "day": "2024-10-28",
+      "observed_hours": 24,
+      "mean_load_mw": 82562.12,
+      "energy_mwh": 1981491.0
+    },
+    {
+      "day": "2024-10-29",
+      "observed_hours": 24,
+      "mean_load_mw": 83095.96,
+      "energy_mwh": 1994303.0
+    },
+    {
+      "day": "2024-10-30",
+      "observed_hours": 24,
+      "mean_load_mw": 83258.79,
+      "energy_mwh": 1998211.0
+    },
+    {
+      "day": "2024-10-31",
+      "observed_hours": 24,
+      "mean_load_mw": 83184.96,
+      "energy_mwh": 1996439.0
+    },
+    {
+      "day": "2024-11-01",
+      "observed_hours": 24,
+      "mean_load_mw": 81438.04,
+      "energy_mwh": 1954513.0
+    },
+    {
+      "day": "2024-11-02",
+      "observed_hours": 24,
+      "mean_load_mw": 75170.75,
+      "energy_mwh": 1804098.0
+    },
+    {
+      "day": "2024-11-03",
+      "observed_hours": 4,
+      "mean_load_mw": 76467.25,
+      "energy_mwh": 305869.0
+    },
+    {
+      "day": "2024-11-04",
+      "observed_hours": 19,
+      "mean_load_mw": 82233.42,
+      "energy_mwh": 1562435.0
+    },
+    {
+      "day": "2024-11-05",
+      "observed_hours": 24,
+      "mean_load_mw": 82550.54,
+      "energy_mwh": 1981213.0
+    },
+    {
+      "day": "2024-11-06",
+      "observed_hours": 24,
+      "mean_load_mw": 83425.17,
+      "energy_mwh": 2002204.0
+    },
+    {
+      "day": "2024-11-07",
+      "observed_hours": 24,
+      "mean_load_mw": 83120.67,
+      "energy_mwh": 1994896.0
+    },
+    {
+      "day": "2024-11-08",
+      "observed_hours": 24,
+      "mean_load_mw": 80613.58,
+      "energy_mwh": 1934726.0
+    },
+    {
+      "day": "2024-11-09",
+      "observed_hours": 24,
+      "mean_load_mw": 76690.71,
+      "energy_mwh": 1840577.0
+    },
+    {
+      "day": "2024-11-10",
+      "observed_hours": 24,
+      "mean_load_mw": 77698.08,
+      "energy_mwh": 1864754.0
+    },
+    {
+      "day": "2024-11-11",
+      "observed_hours": 24,
+      "mean_load_mw": 80158.0,
+      "energy_mwh": 1923792.0
+    },
+    {
+      "day": "2024-11-12",
+      "observed_hours": 24,
+      "mean_load_mw": 81972.08,
+      "energy_mwh": 1967330.0
+    },
+    {
+      "day": "2024-11-13",
+      "observed_hours": 24,
+      "mean_load_mw": 87478.92,
+      "energy_mwh": 2099494.0
+    },
+    {
+      "day": "2024-11-14",
+      "observed_hours": 24,
+      "mean_load_mw": 89717.54,
+      "energy_mwh": 2153221.0
+    },
+    {
+      "day": "2024-11-15",
+      "observed_hours": 24,
+      "mean_load_mw": 85903.17,
+      "energy_mwh": 2061676.0
+    },
+    {
+      "day": "2024-11-16",
+      "observed_hours": 24,
+      "mean_load_mw": 79985.46,
+      "energy_mwh": 1919651.0
+    },
+    {
+      "day": "2024-11-17",
+      "observed_hours": 24,
+      "mean_load_mw": 79151.46,
+      "energy_mwh": 1899635.0
+    },
+    {
+      "day": "2024-11-18",
+      "observed_hours": 24,
+      "mean_load_mw": 83136.92,
+      "energy_mwh": 1995286.0
+    },
+    {
+      "day": "2024-11-19",
+      "observed_hours": 24,
+      "mean_load_mw": 83472.79,
+      "energy_mwh": 2003347.0
+    },
+    {
+      "day": "2024-11-20",
+      "observed_hours": 24,
+      "mean_load_mw": 83123.79,
+      "energy_mwh": 1994971.0
+    },
+    {
+      "day": "2024-11-21",
+      "observed_hours": 24,
+      "mean_load_mw": 88808.04,
+      "energy_mwh": 2131393.0
+    },
+    {
+      "day": "2024-11-22",
+      "observed_hours": 24,
+      "mean_load_mw": 96231.96,
+      "energy_mwh": 2309567.0
+    },
+    {
+      "day": "2024-11-23",
+      "observed_hours": 24,
+      "mean_load_mw": 87466.42,
+      "energy_mwh": 2099194.0
+    },
+    {
+      "day": "2024-11-24",
+      "observed_hours": 24,
+      "mean_load_mw": 83028.54,
+      "energy_mwh": 1992685.0
+    },
+    {
+      "day": "2024-11-25",
+      "observed_hours": 24,
+      "mean_load_mw": 88403.29,
+      "energy_mwh": 2121679.0
+    },
+    {
+      "day": "2024-11-26",
+      "observed_hours": 24,
+      "mean_load_mw": 86550.79,
+      "energy_mwh": 2077219.0
+    },
+    {
+      "day": "2024-11-27",
+      "observed_hours": 24,
+      "mean_load_mw": 90318.21,
+      "energy_mwh": 2167637.0
+    },
+    {
+      "day": "2024-11-28",
+      "observed_hours": 24,
+      "mean_load_mw": 84982.88,
+      "energy_mwh": 2039589.0
+    },
+    {
+      "day": "2024-11-29",
+      "observed_hours": 24,
+      "mean_load_mw": 87942.12,
+      "energy_mwh": 2110611.0
+    },
+    {
+      "day": "2024-11-30",
+      "observed_hours": 24,
+      "mean_load_mw": 95740.96,
+      "energy_mwh": 2297783.0
+    },
+    {
+      "day": "2024-12-01",
+      "observed_hours": 24,
+      "mean_load_mw": 97663.54,
+      "energy_mwh": 2343925.0
+    },
+    {
+      "day": "2024-12-02",
+      "observed_hours": 24,
+      "mean_load_mw": 104308.42,
+      "energy_mwh": 2503402.0
+    },
+    {
+      "day": "2024-12-03",
+      "observed_hours": 24,
+      "mean_load_mw": 107199.75,
+      "energy_mwh": 2572794.0
+    },
+    {
+      "day": "2024-12-04",
+      "observed_hours": 24,
+      "mean_load_mw": 109672.17,
+      "energy_mwh": 2632132.0
+    },
+    {
+      "day": "2024-12-05",
+      "observed_hours": 24,
+      "mean_load_mw": 106277.83,
+      "energy_mwh": 2550668.0
+    },
+    {
+      "day": "2024-12-06",
+      "observed_hours": 24,
+      "mean_load_mw": 110699.62,
+      "energy_mwh": 2656791.0
+    },
+    {
+      "day": "2024-12-07",
+      "observed_hours": 24,
+      "mean_load_mw": 103629.75,
+      "energy_mwh": 2487114.0
+    },
+    {
+      "day": "2024-12-08",
+      "observed_hours": 24,
+      "mean_load_mw": 91214.5,
+      "energy_mwh": 2189148.0
+    },
+    {
+      "day": "2024-12-09",
+      "observed_hours": 24,
+      "mean_load_mw": 91896.83,
+      "energy_mwh": 2205524.0
+    },
+    {
+      "day": "2024-12-10",
+      "observed_hours": 24,
+      "mean_load_mw": 92116.04,
+      "energy_mwh": 2210785.0
+    },
+    {
+      "day": "2024-12-11",
+      "observed_hours": 24,
+      "mean_load_mw": 93709.83,
+      "energy_mwh": 2249036.0
+    },
+    {
+      "day": "2024-12-12",
+      "observed_hours": 24,
+      "mean_load_mw": 104573.58,
+      "energy_mwh": 2509766.0
+    },
+    {
+      "day": "2024-12-13",
+      "observed_hours": 24,
+      "mean_load_mw": 107975.96,
+      "energy_mwh": 2591423.0
+    },
+    {
+      "day": "2024-12-14",
+      "observed_hours": 24,
+      "mean_load_mw": 101792.29,
+      "energy_mwh": 2443015.0
+    },
+    {
+      "day": "2024-12-15",
+      "observed_hours": 24,
+      "mean_load_mw": 97331.83,
+      "energy_mwh": 2335964.0
+    },
+    {
+      "day": "2024-12-16",
+      "observed_hours": 24,
+      "mean_load_mw": 96483.83,
+      "energy_mwh": 2315612.0
+    },
+    {
+      "day": "2024-12-17",
+      "observed_hours": 24,
+      "mean_load_mw": 91884.12,
+      "energy_mwh": 2205219.0
+    },
+    {
+      "day": "2024-12-18",
+      "observed_hours": 24,
+      "mean_load_mw": 95198.25,
+      "energy_mwh": 2284758.0
+    },
+    {
+      "day": "2024-12-19",
+      "observed_hours": 24,
+      "mean_load_mw": 96920.29,
+      "energy_mwh": 2326087.0
+    },
+    {
+      "day": "2024-12-20",
+      "observed_hours": 24,
+      "mean_load_mw": 101621.79,
+      "energy_mwh": 2438923.0
+    },
+    {
+      "day": "2024-12-21",
+      "observed_hours": 24,
+      "mean_load_mw": 101267.92,
+      "energy_mwh": 2430430.0
+    },
+    {
+      "day": "2024-12-22",
+      "observed_hours": 24,
+      "mean_load_mw": 106132.79,
+      "energy_mwh": 2547187.0
+    },
+    {
+      "day": "2024-12-23",
+      "observed_hours": 24,
+      "mean_load_mw": 111233.62,
+      "energy_mwh": 2669607.0
+    },
+    {
+      "day": "2024-12-24",
+      "observed_hours": 24,
+      "mean_load_mw": 100929.25,
+      "energy_mwh": 2422302.0
+    },
+    {
+      "day": "2024-12-25",
+      "observed_hours": 24,
+      "mean_load_mw": 90447.0,
+      "energy_mwh": 2170728.0
+    },
+    {
+      "day": "2024-12-26",
+      "observed_hours": 24,
+      "mean_load_mw": 94411.5,
+      "energy_mwh": 2265876.0
+    },
+    {
+      "day": "2024-12-27",
+      "observed_hours": 24,
+      "mean_load_mw": 96449.38,
+      "energy_mwh": 2314785.0
+    },
+    {
+      "day": "2024-12-28",
+      "observed_hours": 24,
+      "mean_load_mw": 87581.5,
+      "energy_mwh": 2101956.0
+    },
+    {
+      "day": "2024-12-29",
+      "observed_hours": 24,
+      "mean_load_mw": 81466.17,
+      "energy_mwh": 1955188.0
+    },
+    {
+      "day": "2024-12-30",
+      "observed_hours": 24,
+      "mean_load_mw": 83967.42,
+      "energy_mwh": 2015218.0
+    },
+    {
+      "day": "2024-12-31",
+      "observed_hours": 24,
+      "mean_load_mw": 89213.79,
+      "energy_mwh": 2141131.0
+    }
+  ]
+}
