@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#163d36">
+  <title>Gridnote · Energy Analysis Agent</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a href="/" class="brand"><span class="brand-icon">ϟ</span> gridnote<span class="brand-dot">.</span></a>
+    <div class="workspace-label">ENERGY WORKSPACE</div>
+    <nav aria-label="主导航">
+      <button class="nav-item active" id="nav-analysis"><span>◫</span> 数据分析 <span class="nav-arrow">↗</span></button>
+      <button class="nav-item" id="nav-data"><span>▤</span> 数据与来源</button>
+      <button class="nav-item" id="nav-about"><span>⌘</span> 关于项目</button>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="workspace-label">本次会话</div>
+    <div id="history" class="history"><span class="history-empty">你的分析会出现在这里</span></div>
+    <div class="sidebar-footer">
+      <div class="connection"><span class="status-dot"></span> 本地工作空间</div>
+      <p>每个答案，都有数据可循。</p>
+      <div class="sidebar-version">ENERGY AGENT <span>v0.2</span></div>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div class="breadcrumb">工作空间 <span>/</span> <strong>能源数据分析</strong></div>
+      <div class="topbar-right"><button id="mobile-data" class="mobile-data">数据来源</button><span class="readonly-badge">◈ 只读分析</span><span class="avatar">EN</span></div>
+    </header>
+    <div class="main-content" id="analysis-view">
+      <div class="intro-row">
+        <div><div class="eyebrow"><span></span> ENERGY INTELLIGENCE</div>
+          <h1>从负荷数据，到有依据的洞察<span>。</span></h1>
+          <p class="subtitle">用自然语言探索趋势、定位异常、评估预测。查看每一步，也验证每一个结论。</p>
+        </div>
+        <div class="dataset-chip"><span class="dataset-chip-icon">▤</span><div><strong id="dataset-name">正在连接数据</strong><small id="dataset-range">读取数据范围…</small></div></div>
+      </div>
+      <div id="global-error" class="error-banner" role="alert" hidden></div>
+      <div class="demo-banner" id="source-banner"><span class="banner-icon">i</span><div><strong>演示数据空间</strong><span>数据为可复现的合成样本，并非真实 PJM 观测。支持导入你的小时负荷 CSV。</span></div><button id="source-details">查看来源 ↗</button></div>
+
+      <section class="metrics" aria-label="数据集概览">
+        <article class="metric"><div class="metric-label">平均负荷 <span>↗</span></div><div class="metric-value"><span id="metric-average">—</span><small>MW</small></div><div class="metric-foot" id="metric-region">区域全量数据 · UTC</div></article>
+        <article class="metric"><div class="metric-label">小时负荷峰值 <span>⌁</span></div><div class="metric-value"><span id="metric-peak">—</span><small>MW</small></div><div class="metric-foot">该区域数据集中的最高小时平均负荷</div></article>
+        <article class="metric"><div class="metric-label">有效小时记录 <span>▦</span></div><div class="metric-value"><span id="metric-rows">—</span><small>小时</small></div><div class="metric-foot"><span class="tiny-dot"></span><span id="metric-coverage">正在检查完整性</span></div></article>
+      </section>
+
+      <section class="composer" aria-labelledby="composer-title">
+        <div class="section-heading"><h2 id="composer-title"><span class="spark">✳</span> 你想了解什么？</h2><span id="planner-badge" class="mode-badge">规则演示 · 无模型调用</span></div>
+        <form id="ask-form">
+          <label class="sr-only" for="question">你的能源数据问题</label>
+          <textarea id="question" rows="2" maxlength="2000" placeholder="例如：最近 7 天，负荷最高的 10 个小时分别是什么？" required></textarea>
+          <div class="composer-bottom"><div class="filters">
+            <label class="select-wrap"><span>区域</span><select id="region" aria-label="选择区域"></select></label>
+            <button id="toggle-dates" type="button" class="date-button" aria-expanded="false">▦ <span>日期范围</span></button>
+            <span class="timezone">UTC</span>
+          </div><button class="submit-button" id="submit" type="submit"><span>开始分析</span><span>↗</span></button></div>
+          <div id="date-filters" class="date-filters" hidden><label>开始日期 <input type="date" id="start-date"></label><span>→</span><label>结束日期 <input type="date" id="end-date"></label><button id="clear-dates" type="button">恢复默认</button><small>首尾日均包含；相对日期以数据最新日为基准。</small></div>
+        </form>
+        <div class="suggestions"><span>试着问</span>
+          <button data-question="最近7天的负荷趋势">负荷趋势 <span>↗</span></button>
+          <button data-question="最近7天的每日预测误差">预测误差 <span>↗</span></button>
+          <button data-question="最近7天有哪些负荷异常">异常筛查 <span>↗</span></button>
+          <button data-question="最近7天负荷最高的10个小时">峰值 Top 10 <span>↗</span></button>
+          <button data-question="最近7天工作日与周末负荷比较">工作日与周末 <span>↗</span></button>
+        </div>
+      </section>
+
+      <section class="result-panel" aria-labelledby="result-title" aria-live="polite">
+        <div class="result-top"><div><div class="eyebrow" id="result-eyebrow">数据预览</div><h2 id="result-title">最近 7 天 · 每日平均负荷</h2></div><button id="download" class="export-button" disabled>↓ 导出 CSV</button></div>
+        <div id="loading" class="loading" hidden><span class="spinner"></span><div><strong>正在查询并验证数据…</strong><p>读取结构 → 生成查询 → 校验范围 → 执行分析</p></div></div>
+        <div id="result-content">
+          <div id="answer" class="answer" hidden></div>
+          <div id="plan-summary" class="plan-summary"></div>
+          <div class="tabs" role="tablist" aria-label="分析结果视图">
+            <button class="tab active" id="tab-chart" role="tab" aria-selected="true" aria-controls="panel-chart" data-tab="chart">可视化</button>
+            <button class="tab" id="tab-data" role="tab" aria-selected="false" aria-controls="panel-data" data-tab="data">结果数据 <span id="row-count"></span></button>
+            <button class="tab" id="tab-sql" role="tab" aria-selected="false" aria-controls="panel-sql" data-tab="sql">SQL 查询</button>
+            <button class="tab" id="tab-trace" role="tab" aria-selected="false" aria-controls="panel-trace" data-tab="trace">执行记录</button>
+            <button class="tab" id="tab-validation" role="tab" aria-selected="false" aria-controls="panel-validation" data-tab="validation">核验依据</button>
+          </div>
+          <div id="panel-chart" class="tab-panel" role="tabpanel" aria-labelledby="tab-chart">
+            <div class="chart-heading"><div class="legend" id="legend"></div><span id="chart-unit">负荷 · MW</span></div>
+            <div class="chart-container" id="chart"><div class="empty-state">正在加载数据预览…</div></div>
+          </div>
+          <div id="panel-data" class="tab-panel" role="tabpanel" aria-labelledby="tab-data" hidden><div class="table-container" id="data-table"></div></div>
+          <div id="panel-sql" class="tab-panel" role="tabpanel" aria-labelledby="tab-sql" hidden><div class="code-heading"><span>SQLite · 实际执行的查询</span><button id="copy-sql">复制 SQL</button></div><pre id="sql-code"></pre></div>
+          <div id="panel-trace" class="tab-panel" role="tabpanel" aria-labelledby="tab-trace" hidden><div id="trace-list"></div></div>
+          <div id="panel-validation" class="tab-panel" role="tabpanel" aria-labelledby="tab-validation" hidden><div id="validation-detail"></div></div>
+          <div class="result-bottom"><div id="scope-label">所有时间均为 UTC</div><div id="run-stats">读取本地数据</div></div>
+          <div class="method" id="method" hidden></div><div id="warnings" class="warnings"></div>
+        </div>
+      </section>
+      <footer class="page-footer"><span><span class="tiny-dot"></span> 查询可追溯 · 结果可验证</span><span>Built with LangGraph & SQLite</span></footer>
+    </div>
+
+    <div class="main-content secondary-view" id="data-view" hidden><div class="eyebrow">DATA CATALOG</div><h1>数据与来源</h1><p class="subtitle">当前数据集的来源、覆盖情况与字段定义。</p><div id="dataset-detail" class="detail-card"></div><div class="detail-card"><h2>接入你的小时负荷数据</h2><p>在本地终端执行，下列命令会用校验后的 CSV 替换当前数据库。</p><pre>energy-agent import-csv /path/to/load.csv --source "你的数据来源" --replace</pre><p>必需列：timestamp_utc、region、load_mw；可选列：forecast_mw。也支持 PJM 导出的 datetime_beginning_utc、load_area、mw。仅接受整点 UTC 小时数据；预测缺失请留空。</p></div></div>
+    <div class="main-content secondary-view" id="about-view" hidden><div class="eyebrow">ABOUT GRIDNOTE</div><h1>每个答案，都有数据可循。</h1><p class="subtitle">一个可检查、可复现的能源数据分析 Agent。</p><div class="detail-card"><h2>分析工作流</h2><p>任务与范围 → SQL 计划 → 只读校验和预编译 → 执行 → 独立 Python 指标核验 → 有限纠错 → 结果与依据。</p><h2>两种运行模式</h2><p>规则演示：提取 Top-K、时间粒度和日类型参数，支持有限任务，无 API 调用。OpenAI：模型生成查询计划，使用相同的数据库约束与已支持任务的数值核验；开放式问题会标注语义未覆盖。切换方式见项目 README。</p><h2>边界与评测</h2><p>首版每次分析一个区域，最多 366 天、500 行结果。异常只是探索性筛查，无法解释因果。内置 26 个合成用例，比较单次生成、基础纠错和领域核验三个流程；另列 4 类显式故障注入诊断。历史不足不当作正常。这不代表真实数据上的模型能力。</p><p>官方参考：<a href="https://docs.langchain.com/oss/python/langgraph/sql-agent" target="_blank" rel="noopener noreferrer">LangGraph SQL Agent</a> · <a href="https://developers.openai.com/api/docs/guides/structured-outputs" target="_blank" rel="noopener noreferrer">OpenAI Structured Outputs</a></p></div></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+pipeline,fault,correct,outcome,retries
+baseline,power_sum,False,success,0
+baseline,energy_average,False,success,0
+baseline,wrong_topk,False,success,0
+baseline,null_as_zero,False,success,0
+agent,power_sum,False,success,0
+agent,energy_average,False,success,0
+agent,wrong_topk,False,success,0
+agent,null_as_zero,False,success,0
+domain,power_sum,True,success,1
+domain,energy_average,True,success,1
+domain,wrong_topk,True,success,1
+domain,null_as_zero,True,insufficient_data,1

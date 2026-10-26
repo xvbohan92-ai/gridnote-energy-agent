@@ -1,0 +1,4889 @@
+{
+  "benchmark": "energy-contract-v2",
+  "planner": "demo",
+  "model": null,
+  "limitations": "26 curated synthetic cases, not held-out real-PJM evidence. All pipelines share scope/read-only guards, task contracts and the causal anomaly tool. Baseline is one-shot; agent adds syntax preflight/repair; domain adds independent metric verification. Extra columns are ignored; required columns, stable row order and typed outcomes must match. Cold starts are explicit. Diagnostic faults are injected, not real LLM performance gains.",
+  "summary": {
+    "baseline": {
+      "cases": 26,
+      "correct": 26,
+      "end_to_end_accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "typed_rejection_accuracy": 1.0,
+      "system_failures": 0,
+      "median_latency_ms": 5.38,
+      "p95_latency_ms": 7.17,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0.0
+    },
+    "agent": {
+      "cases": 26,
+      "correct": 26,
+      "end_to_end_accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "typed_rejection_accuracy": 1.0,
+      "system_failures": 0,
+      "median_latency_ms": 5.39,
+      "p95_latency_ms": 7.77,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0.0
+    },
+    "domain": {
+      "cases": 26,
+      "correct": 26,
+      "end_to_end_accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "typed_rejection_accuracy": 1.0,
+      "system_failures": 0,
+      "median_latency_ms": 5.79,
+      "p95_latency_ms": 8.09,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  "records": [
+    {
+      "case": "daily-zh",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 18.74,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回结果中最高分组平均负荷为 84,488.34 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 10.04
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.03
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 1.13
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.33
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.31
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "daily-en",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.53,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回结果中最高分组平均负荷为 12,923.02 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 1.0
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.89
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.24
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.32
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "explicit-range",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.15,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-03T00:00:00Z' AND timestamp_utc < '2025-01-06T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 3 行。 返回结果中最高分组平均负荷为 1,872.55 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-03 → 2025-01-06 (结束不含) · trend/day",
+          "duration_ms": 1.31
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.6
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 3 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "hourly",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.59,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc AS timestamp_utc, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-27T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY timestamp_utc ORDER BY timestamp_utc LIMIT 501",
+      "answer": "查询返回 48 行。 返回结果中最高小时平均负荷为 15,012.04 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-27 → 2025-01-29 (结束不含) · trend/hour",
+          "duration_ms": 1.13
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "小时平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.62
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 48 行",
+          "duration_ms": 0.25
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.17
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "peak",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.44,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 5",
+      "answer": "查询返回 5 行。 返回结果中最高小时平均负荷为 111,520.41 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 1.02
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 5",
+          "duration_ms": 0.05
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.5
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 5 行",
+          "duration_ms": 0.22
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.32
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "forecast",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.37,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回分组中最高 MAE 为 4,223.434 MW（2025-01-22）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+          "duration_ms": 1.42
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日预测误差",
+          "duration_ms": 0.03
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 1.2
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.25
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "energy",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.33,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 已展示分组的观测电量为 283,382.87 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+          "duration_ms": 0.86
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.51
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.55
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "anomaly",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.56,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM load_hourly WHERE region=? AND timestamp_utc>=? AND timestamp_utc<? ORDER BY timestamp_utc",
+      "answer": "查询返回 7 行。 已评分 168 小时，标记 7 小时；仅为筛查，不解释原因。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · anomaly/hour",
+          "duration_ms": 0.69
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "历史基线异常筛查",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "调用受限历史基线工具；只向用户返回请求窗口内的异常",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 1.35
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：domain_tool",
+          "duration_ms": 0.31
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "out-of-range",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": false,
+      "outcome": "rejected",
+      "error_code": "invalid_scope",
+      "status": "error",
+      "latency_ms": 3.67,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "超出数据范围；PJM_RTO 可用日期为 2025-01-01 至 2025-01-28（UTC）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "超出数据范围；PJM_RTO 可用日期为 2025-01-01 至 2025-01-28（UTC）。",
+          "duration_ms": 0.59
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "write-refusal",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "policy_refusal",
+      "status": "error",
+      "latency_ms": 3.25,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "此助手只提供只读分析。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "此助手只提供只读分析。",
+          "duration_ms": 0.85
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "missing-evidence",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "data_unavailable",
+      "status": "error",
+      "latency_ms": 3.17,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "当前数据没有电价、天气或碳排放，无法支持该问题。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "当前数据没有电价、天气或碳排放，无法支持该问题。",
+          "duration_ms": 0.64
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "top10-zh",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.09,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 10",
+      "answer": "查询返回 10 行。 返回结果中最高小时平均负荷为 111,520.41 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.88
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 10",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.64
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 10 行",
+          "duration_ms": 0.21
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.29
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "top10-en",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 4.84,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 10",
+      "answer": "查询返回 10 行。 返回结果中最高小时平均负荷为 17,205.59 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.82
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 10",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.49
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 10 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.27
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "weekly",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.17,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT DATE(timestamp_utc, '-' || ((CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) + 6) % 7) || ' days') AS week, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-01T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY week ORDER BY week LIMIT 501",
+      "answer": "查询返回 5 行。 返回结果中最高分组平均负荷为 1,862.47 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-01 → 2025-01-29 (结束不含) · trend/week",
+          "duration_ms": 1.33
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每周平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.77
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 5 行",
+          "duration_ms": 0.67
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.73
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "weekday-vs-weekend",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.55,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT CASE WHEN CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY day_type ORDER BY day_type LIMIT 501",
+      "answer": "查询返回 2 行。 返回结果中最高分组平均负荷为 12,497.71 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day_type",
+          "duration_ms": 1.04
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "工作日与周末平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.7
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.22
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.33
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "weekend-filter",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.52,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 2 行。 返回结果中最高分组平均负荷为 11,521.91 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 1.11
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.03
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.71
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.22
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.34
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "energy-total",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 4.72,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 已展示分组的观测电量为 283,382.87 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · energy/total",
+          "duration_ms": 0.79
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.46
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.16
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.27
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "forecast-total",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.48,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 返回分组中最高 MAE 为 300.864 MW（整体）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · forecast/total",
+          "duration_ms": 1.23
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.99
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "row-count",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.22,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS n FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · count/total",
+          "duration_ms": 0.8
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷记录数",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.63
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.15
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.56
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "gaps",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 4.87,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 已展示分组的观测电量为 13,260,549.04 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+          "duration_ms": 0.85
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.53
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.2
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.27
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "missing-forecast",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "insufficient_data",
+      "error_code": null,
+      "status": "insufficient_data",
+      "latency_ms": 5.71,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "所选范围没有可用预测值，无法计算 MAE、RMSE 和 MAPE。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+          "duration_ms": 1.3
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 1.07
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.22
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "summarize",
+          "status": "insufficient_data",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "zero-actual-mape",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.79,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 返回分组中最高 MAE 为 2,623.605 MW（整体）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/total",
+          "duration_ms": 1.21
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 1.01
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.2
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.27
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "cold-start-anomaly",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "insufficient_data",
+      "error_code": null,
+      "status": "insufficient_data",
+      "latency_ms": 3.84,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM load_hourly WHERE region=? AND timestamp_utc>=? AND timestamp_utc<? ORDER BY timestamp_utc",
+      "answer": "没有达到最小历史样本数的小时，无法判断异常；历史不足不代表正常。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-01 → 2025-01-02 (结束不含) · anomaly/hour",
+          "duration_ms": 0.63
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "历史基线异常筛查",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "调用受限历史基线工具；只向用户返回请求窗口内的异常",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 0 行",
+          "duration_ms": 0.21
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：domain_tool",
+          "duration_ms": 0.13
+        },
+        {
+          "node": "summarize",
+          "status": "insufficient_data",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "invalid-topk",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "unsupported_question",
+      "status": "error",
+      "latency_ms": 3.56,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "Top-K 应在 1–100 之间。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "Top-K 应在 1–100 之间。",
+          "duration_ms": 0.72
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "top100",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 4.88,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 100",
+      "answer": "查询返回 100 行。 返回结果中最高小时平均负荷为 17,205.59 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.88
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 100",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 0.44
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 100 行",
+          "duration_ms": 0.25
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.35
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "weekday-forecast",
+      "mode": "baseline",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.39,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT CASE WHEN CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day_type ORDER BY day_type LIMIT 501",
+      "answer": "查询返回 2 行。 返回分组中最高 MAE 为 46.922 MW（weekday）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day_type",
+          "duration_ms": 1.3
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "工作日与周末预测误差",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；基线不重试",
+          "duration_ms": 1.55
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.32
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "daily-zh",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.34,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回结果中最高分组平均负荷为 84,488.34 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 1.2
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.71
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.17
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.32
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "daily-en",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.62,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回结果中最高分组平均负荷为 12,923.02 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 1.0
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.71
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.63
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "explicit-range",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.03,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-03T00:00:00Z' AND timestamp_utc < '2025-01-06T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 3 行。 返回结果中最高分组平均负荷为 1,872.55 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-03 → 2025-01-06 (结束不含) · trend/day",
+          "duration_ms": 0.95
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.74
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 3 行",
+          "duration_ms": 0.16
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "hourly",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 4.85,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc AS timestamp_utc, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-27T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY timestamp_utc ORDER BY timestamp_utc LIMIT 501",
+      "answer": "查询返回 48 行。 返回结果中最高小时平均负荷为 15,012.04 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-27 → 2025-01-29 (结束不含) · trend/hour",
+          "duration_ms": 0.92
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "小时平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.68
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 48 行",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.16
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "peak",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 4.97,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 5",
+      "answer": "查询返回 5 行。 返回结果中最高小时平均负荷为 111,520.41 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.82
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 5",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.6
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 5 行",
+          "duration_ms": 0.15
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "forecast",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.16,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回分组中最高 MAE 为 4,223.434 MW（2025-01-22）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+          "duration_ms": 1.33
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日预测误差",
+          "duration_ms": 0.03
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.31
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.21
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.28
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "energy",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.19,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 已展示分组的观测电量为 283,382.87 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+          "duration_ms": 0.96
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.21
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.31
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.34
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "anomaly",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.83,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM load_hourly WHERE region=? AND timestamp_utc>=? AND timestamp_utc<? ORDER BY timestamp_utc",
+      "answer": "查询返回 7 行。 已评分 168 小时，标记 7 小时；仅为筛查，不解释原因。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · anomaly/hour",
+          "duration_ms": 0.77
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "历史基线异常筛查",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "调用受限历史基线工具；只向用户返回请求窗口内的异常",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 1.32
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：domain_tool",
+          "duration_ms": 0.29
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "out-of-range",
+      "mode": "agent",
+      "correct": true,
+      "answerable": false,
+      "outcome": "rejected",
+      "error_code": "invalid_scope",
+      "status": "error",
+      "latency_ms": 3.29,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "超出数据范围；PJM_RTO 可用日期为 2025-01-01 至 2025-01-28（UTC）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "超出数据范围；PJM_RTO 可用日期为 2025-01-01 至 2025-01-28（UTC）。",
+          "duration_ms": 0.72
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "write-refusal",
+      "mode": "agent",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "policy_refusal",
+      "status": "error",
+      "latency_ms": 3.02,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "此助手只提供只读分析。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "此助手只提供只读分析。",
+          "duration_ms": 0.68
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "missing-evidence",
+      "mode": "agent",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "data_unavailable",
+      "status": "error",
+      "latency_ms": 3.07,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "当前数据没有电价、天气或碳排放，无法支持该问题。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "当前数据没有电价、天气或碳排放，无法支持该问题。",
+          "duration_ms": 0.64
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "top10-zh",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.12,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 10",
+      "answer": "查询返回 10 行。 返回结果中最高小时平均负荷为 111,520.41 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.88
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 10",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.73
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 10 行",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.29
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "top10-en",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.06,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 10",
+      "answer": "查询返回 10 行。 返回结果中最高小时平均负荷为 17,205.59 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.83
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 10",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.64
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 10 行",
+          "duration_ms": 0.16
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.27
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "weekly",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.8,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT DATE(timestamp_utc, '-' || ((CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) + 6) % 7) || ' days') AS week, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-01T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY week ORDER BY week LIMIT 501",
+      "answer": "查询返回 5 行。 返回结果中最高分组平均负荷为 1,862.47 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-01 → 2025-01-29 (结束不含) · trend/week",
+          "duration_ms": 1.11
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每周平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.99
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 5 行",
+          "duration_ms": 0.54
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.75
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "weekday-vs-weekend",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.81,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT CASE WHEN CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY day_type ORDER BY day_type LIMIT 501",
+      "answer": "查询返回 2 行。 返回结果中最高分组平均负荷为 12,497.71 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day_type",
+          "duration_ms": 1.11
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "工作日与周末平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.87
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.32
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "weekend-filter",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.19,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 2 行。 返回结果中最高分组平均负荷为 11,521.91 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 0.99
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.82
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.17
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.36
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "energy-total",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.44,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 已展示分组的观测电量为 283,382.87 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · energy/total",
+          "duration_ms": 0.77
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.23
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.36
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "forecast-total",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.75,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 返回分组中最高 MAE 为 300.864 MW（整体）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · forecast/total",
+          "duration_ms": 1.78
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.43
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.23
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.34
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "row-count",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 8.34,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS n FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · count/total",
+          "duration_ms": 2.15
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷记录数",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.59
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.12
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 1.75
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "gaps",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.52,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 已展示分组的观测电量为 13,260,549.04 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+          "duration_ms": 1.02
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.76
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.28
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "missing-forecast",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "insufficient_data",
+      "error_code": null,
+      "status": "insufficient_data",
+      "latency_ms": 6.57,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "所选范围没有可用预测值，无法计算 MAE、RMSE 和 MAPE。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+          "duration_ms": 1.35
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.34
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.2
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "summarize",
+          "status": "insufficient_data",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "zero-actual-mape",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.77,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 返回分组中最高 MAE 为 2,623.605 MW（整体）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/total",
+          "duration_ms": 1.54
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.26
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.54
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "cold-start-anomaly",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "insufficient_data",
+      "error_code": null,
+      "status": "insufficient_data",
+      "latency_ms": 4.0,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM load_hourly WHERE region=? AND timestamp_utc>=? AND timestamp_utc<? ORDER BY timestamp_utc",
+      "answer": "没有达到最小历史样本数的小时，无法判断异常；历史不足不代表正常。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-01 → 2025-01-02 (结束不含) · anomaly/hour",
+          "duration_ms": 0.68
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "历史基线异常筛查",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "调用受限历史基线工具；只向用户返回请求窗口内的异常",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 0 行",
+          "duration_ms": 0.23
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：domain_tool",
+          "duration_ms": 0.14
+        },
+        {
+          "node": "summarize",
+          "status": "insufficient_data",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "invalid-topk",
+      "mode": "agent",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "unsupported_question",
+      "status": "error",
+      "latency_ms": 3.07,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "Top-K 应在 1–100 之间。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "Top-K 应在 1–100 之间。",
+          "duration_ms": 0.65
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "top100",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.09,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 100",
+      "answer": "查询返回 100 行。 返回结果中最高小时平均负荷为 17,205.59 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.92
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 100",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.56
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 100 行",
+          "duration_ms": 0.23
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.31
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "weekday-forecast",
+      "mode": "agent",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.39,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT CASE WHEN CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day_type ORDER BY day_type LIMIT 501",
+      "answer": "查询返回 2 行。 返回分组中最高 MAE 为 46.922 MW（weekday）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day_type",
+          "duration_ms": 1.63
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "工作日与周末预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.36
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.22
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：not_run",
+          "duration_ms": 0.26
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "daily-zh",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.75,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回结果中最高分组平均负荷为 84,488.34 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 1.15
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.71
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.82
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "daily-en",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.61,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回结果中最高分组平均负荷为 12,923.02 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 0.96
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.72
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.18
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.78
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "explicit-range",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.57,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-03T00:00:00Z' AND timestamp_utc < '2025-01-06T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 3 行。 返回结果中最高分组平均负荷为 1,872.55 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-03 → 2025-01-06 (结束不含) · trend/day",
+          "duration_ms": 0.91
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.01
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 3 行",
+          "duration_ms": 0.16
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.56
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "hourly",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 8.47,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc AS timestamp_utc, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-27T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY timestamp_utc ORDER BY timestamp_utc LIMIT 501",
+      "answer": "查询返回 48 行。 返回结果中最高小时平均负荷为 15,012.04 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-27 → 2025-01-29 (结束不含) · trend/hour",
+          "duration_ms": 0.88
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "小时平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.67
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 48 行",
+          "duration_ms": 0.17
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 3.84
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.04
+        }
+      ]
+    },
+    {
+      "case": "peak",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.46,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 5",
+      "answer": "查询返回 5 行。 返回结果中最高小时平均负荷为 111,520.41 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.84
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 5",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.63
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 5 行",
+          "duration_ms": 0.16
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.44
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "forecast",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.23,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 返回分组中最高 MAE 为 4,223.434 MW（2025-01-22）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+          "duration_ms": 1.48
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日预测误差",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.32
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.2
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 1.16
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "energy",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.04,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 已展示分组的观测电量为 283,382.87 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+          "duration_ms": 1.02
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.73
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.64
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "anomaly",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.82,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM load_hourly WHERE region=? AND timestamp_utc>=? AND timestamp_utc<? ORDER BY timestamp_utc",
+      "answer": "查询返回 7 行。 已评分 168 小时，标记 7 小时；仅为筛查，不解释原因。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · anomaly/hour",
+          "duration_ms": 0.66
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "历史基线异常筛查",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "调用受限历史基线工具；只向用户返回请求窗口内的异常",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 1.39
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：domain_tool",
+          "duration_ms": 0.55
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "out-of-range",
+      "mode": "domain",
+      "correct": true,
+      "answerable": false,
+      "outcome": "rejected",
+      "error_code": "invalid_scope",
+      "status": "error",
+      "latency_ms": 3.77,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "超出数据范围；PJM_RTO 可用日期为 2025-01-01 至 2025-01-28（UTC）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "超出数据范围；PJM_RTO 可用日期为 2025-01-01 至 2025-01-28（UTC）。",
+          "duration_ms": 0.65
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "write-refusal",
+      "mode": "domain",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "policy_refusal",
+      "status": "error",
+      "latency_ms": 3.68,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "此助手只提供只读分析。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "此助手只提供只读分析。",
+          "duration_ms": 0.74
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "missing-evidence",
+      "mode": "domain",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "data_unavailable",
+      "status": "error",
+      "latency_ms": 3.57,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "当前数据没有电价、天气或碳排放，无法支持该问题。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "当前数据没有电价、天气或碳排放，无法支持该问题。",
+          "duration_ms": 0.68
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "top10-zh",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.56,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 10",
+      "answer": "查询返回 10 行。 返回结果中最高小时平均负荷为 111,520.41 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.85
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 10",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.92
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 10 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.5
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "top10-en",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.53,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 10",
+      "answer": "查询返回 10 行。 返回结果中最高小时平均负荷为 17,205.59 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.9
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 10",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.7
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 10 行",
+          "duration_ms": 0.27
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.49
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "weekly",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 8.09,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT DATE(timestamp_utc, '-' || ((CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) + 6) % 7) || ' days') AS week, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-01T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY week ORDER BY week LIMIT 501",
+      "answer": "查询返回 5 行。 返回结果中最高分组平均负荷为 1,862.47 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-01 → 2025-01-29 (结束不含) · trend/week",
+          "duration_ms": 1.14
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每周平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.25
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 5 行",
+          "duration_ms": 0.42
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 2.09
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "weekday-vs-weekend",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.84,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT CASE WHEN CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 GROUP BY day_type ORDER BY day_type LIMIT 501",
+      "answer": "查询返回 2 行。 返回结果中最高分组平均负荷为 12,497.71 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day_type",
+          "duration_ms": 1.67
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "工作日与周末平均负荷趋势",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.94
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.22
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.77
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "weekend-filter",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.75,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, ROUND(AVG(load_mw), 2) AS load_mw, ROUND(AVG(forecast_mw), 2) AS forecast_mw, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 2 行。 返回结果中最高分组平均负荷为 11,521.91 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+          "duration_ms": 1.25
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日平均负荷趋势",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.17
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.74
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "energy-total",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.36,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 已展示分组的观测电量为 283,382.87 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · energy/total",
+          "duration_ms": 0.85
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体观测电量",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.66
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.15
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.44
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "forecast-total",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.43,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 返回分组中最高 MAE 为 300.864 MW（整体）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · forecast/total",
+          "duration_ms": 1.37
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体预测误差",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.56
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.98
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "row-count",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.4,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS n FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · count/total",
+          "duration_ms": 0.85
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷记录数",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.61
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.13
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.4
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "gaps",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 6.29,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, ROUND(SUM(load_mw), 2) AS energy_mwh FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "查询返回 7 行。 已展示分组的观测电量为 13,260,549.04 MWh（未补齐缺失小时）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+          "duration_ms": 1.05
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日观测电量",
+          "duration_ms": 0.02
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.75
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.2
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.65
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "missing-forecast",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "insufficient_data",
+      "error_code": null,
+      "status": "insufficient_data",
+      "latency_ms": 7.78,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT SUBSTRING(timestamp_utc, 1, 10) AS day, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 GROUP BY day ORDER BY day LIMIT 501",
+      "answer": "所选范围没有可用预测值，无法计算 MAE、RMSE 和 MAPE。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+          "duration_ms": 1.77
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "每日预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.35
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 7 行",
+          "duration_ms": 0.23
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 1.21
+        },
+        {
+          "node": "summarize",
+          "status": "insufficient_data",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "zero-actual-mape",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.54,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'PJM_RTO') AS load_hourly WHERE 1 = 1 LIMIT 501",
+      "answer": "查询返回 1 行。 返回分组中最高 MAE 为 2,623.605 MW（整体）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/total",
+          "duration_ms": 1.37
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "整体预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.46
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 1 行",
+          "duration_ms": 0.19
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.97
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.02
+        }
+      ]
+    },
+    {
+      "case": "cold-start-anomaly",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "insufficient_data",
+      "error_code": null,
+      "status": "insufficient_data",
+      "latency_ms": 4.09,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM load_hourly WHERE region=? AND timestamp_utc>=? AND timestamp_utc<? ORDER BY timestamp_utc",
+      "answer": "没有达到最小历史样本数的小时，无法判断异常；历史不足不代表正常。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-01 → 2025-01-02 (结束不含) · anomaly/hour",
+          "duration_ms": 0.68
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "历史基线异常筛查",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "调用受限历史基线工具；只向用户返回请求窗口内的异常",
+          "duration_ms": 0.0
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 0 行",
+          "duration_ms": 0.25
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：domain_tool",
+          "duration_ms": 0.14
+        },
+        {
+          "node": "summarize",
+          "status": "insufficient_data",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.01
+        }
+      ]
+    },
+    {
+      "case": "invalid-topk",
+      "mode": "domain",
+      "correct": true,
+      "answerable": false,
+      "outcome": "refused",
+      "error_code": "unsupported_question",
+      "status": "error",
+      "latency_ms": 3.3,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "",
+      "answer": "Top-K 应在 1–100 之间。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "error",
+          "detail": "Top-K 应在 1–100 之间。",
+          "duration_ms": 0.67
+        },
+        {
+          "node": "summarize",
+          "status": "error",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.0
+        }
+      ]
+    },
+    {
+      "case": "top100",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 5.46,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT timestamp_utc, load_mw, forecast_mw FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'DOM') AS load_hourly WHERE 1 = 1 ORDER BY load_mw DESC, timestamp_utc LIMIT 100",
+      "answer": "查询返回 100 行。 返回结果中最高小时平均负荷为 17,205.59 MW。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "DOM · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+          "duration_ms": 0.87
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "负荷峰值 Top 100",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 0.6
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 100 行",
+          "duration_ms": 0.23
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 0.52
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    },
+    {
+      "case": "weekday-forecast",
+      "mode": "domain",
+      "correct": true,
+      "answerable": true,
+      "outcome": "success",
+      "error_code": null,
+      "status": "ok",
+      "latency_ms": 7.71,
+      "retries": 0,
+      "usage": {
+        "calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0
+      },
+      "sql": "SELECT CASE WHEN CAST(STRFTIME('%w', timestamp_utc) AS INTEGER) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, COUNT(*) AS observed_hours, COUNT(forecast_mw) AS forecast_hours, COUNT(CASE WHEN NOT forecast_mw IS NULL AND load_mw > 0 THEN 1 END) AS mape_hours, ROUND(AVG(ABS(forecast_mw - load_mw)), 3) AS mae_mw, ROUND(AVG((forecast_mw - load_mw) * (forecast_mw - load_mw)), 3) AS mse_mw2, ROUND(AVG(CASE WHEN load_mw > 0 AND NOT forecast_mw IS NULL THEN 100.0 * ABS(forecast_mw - load_mw) / load_mw END), 3) AS mape_pct FROM (SELECT * FROM load_hourly WHERE timestamp_utc >= '2025-01-22T00:00:00Z' AND timestamp_utc < '2025-01-29T00:00:00Z' AND region = 'AECO') AS load_hourly WHERE 1 = 1 GROUP BY day_type ORDER BY day_type LIMIT 501",
+      "answer": "查询返回 2 行。 返回分组中最高 MAE 为 46.922 MW（weekday）。",
+      "trace": [
+        {
+          "node": "inspect",
+          "status": "ok",
+          "detail": "AECO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day_type",
+          "duration_ms": 1.6
+        },
+        {
+          "node": "plan",
+          "status": "ok",
+          "detail": "工作日与周末预测误差",
+          "duration_ms": 0.01
+        },
+        {
+          "node": "check",
+          "status": "ok",
+          "detail": "只读与范围限制通过；预编译通过",
+          "duration_ms": 1.59
+        },
+        {
+          "node": "execute",
+          "status": "ok",
+          "detail": "返回 2 行",
+          "duration_ms": 0.23
+        },
+        {
+          "node": "semantics",
+          "status": "ok",
+          "detail": "独立 Python 指标核验：verified",
+          "duration_ms": 1.16
+        },
+        {
+          "node": "summarize",
+          "status": "ok",
+          "detail": "根据返回数据与校验状态生成摘要",
+          "duration_ms": 0.03
+        }
+      ]
+    }
+  ],
+  "semantic_diagnostics": {
+    "label": "Injected executable-but-wrong SQL; engineering diagnostic, NOT an LLM benchmark.",
+    "summary": {
+      "baseline": {
+        "correct": 0,
+        "cases": 4
+      },
+      "agent": {
+        "correct": 0,
+        "cases": 4
+      },
+      "domain": {
+        "correct": 4,
+        "cases": 4
+      }
+    },
+    "records": [
+      {
+        "fault": "power_sum",
+        "mode": "baseline",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+            "duration_ms": 1.0
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日平均负荷趋势",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；基线不重试",
+            "duration_ms": 0.58
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.2
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.32
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "energy_average",
+        "mode": "baseline",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+            "duration_ms": 0.87
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日观测电量",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；基线不重试",
+            "duration_ms": 0.54
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.23
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.27
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "wrong_topk",
+        "mode": "baseline",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+            "duration_ms": 0.77
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "负荷峰值 Top 10",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；基线不重试",
+            "duration_ms": 0.86
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 5 行",
+            "duration_ms": 0.21
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.27
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "null_as_zero",
+        "mode": "baseline",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+            "duration_ms": 1.27
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日预测误差",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；基线不重试",
+            "duration_ms": 1.18
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.41
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.32
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.03
+          }
+        ]
+      },
+      {
+        "fault": "power_sum",
+        "mode": "agent",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+            "duration_ms": 1.04
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日平均负荷趋势",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.96
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.19
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.32
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "energy_average",
+        "mode": "agent",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+            "duration_ms": 0.81
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日观测电量",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.61
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.16
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.26
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "wrong_topk",
+        "mode": "agent",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+            "duration_ms": 0.77
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "负荷峰值 Top 10",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.58
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 5 行",
+            "duration_ms": 0.14
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.25
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "null_as_zero",
+        "mode": "agent",
+        "correct": false,
+        "outcome": "success",
+        "retries": 0,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+            "duration_ms": 1.36
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日预测误差",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 1.26
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.2
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：not_run",
+            "duration_ms": 0.26
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.01
+          }
+        ]
+      },
+      {
+        "fault": "power_sum",
+        "mode": "domain",
+        "correct": true,
+        "outcome": "success",
+        "retries": 1,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · trend/day",
+            "duration_ms": 0.97
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日平均负荷趋势",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.73
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.17
+          },
+          {
+            "node": "semantics",
+            "status": "error",
+            "detail": "load_mw 不符合任务定义；检查聚合、单位、NULL 分母、排序及日类型。",
+            "duration_ms": 0.77
+          },
+          {
+            "node": "repair",
+            "status": "retry",
+            "duration_ms": 0,
+            "detail": "基于 semantic_error 重写，第 1 次"
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日平均负荷趋势",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.67
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.16
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：verified",
+            "duration_ms": 0.89
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.02
+          }
+        ]
+      },
+      {
+        "fault": "energy_average",
+        "mode": "domain",
+        "correct": true,
+        "outcome": "success",
+        "retries": 1,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · energy/day",
+            "duration_ms": 0.86
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日观测电量",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.64
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.16
+          },
+          {
+            "node": "semantics",
+            "status": "error",
+            "detail": "energy_mwh 不符合任务定义；检查聚合、单位、NULL 分母、排序及日类型。",
+            "duration_ms": 0.56
+          },
+          {
+            "node": "repair",
+            "status": "retry",
+            "duration_ms": 0,
+            "detail": "基于 semantic_error 重写，第 1 次"
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日观测电量",
+            "duration_ms": 0.01
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.69
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.18
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：verified",
+            "duration_ms": 0.57
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.02
+          }
+        ]
+      },
+      {
+        "fault": "wrong_topk",
+        "mode": "domain",
+        "correct": true,
+        "outcome": "success",
+        "retries": 1,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · peak/hour",
+            "duration_ms": 0.74
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "负荷峰值 Top 10",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.58
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 5 行",
+            "duration_ms": 0.15
+          },
+          {
+            "node": "semantics",
+            "status": "error",
+            "detail": "结果行数与任务不符；检查时间分组、过滤、Top-K、LIMIT 和缺失值。",
+            "duration_ms": 0.43
+          },
+          {
+            "node": "repair",
+            "status": "retry",
+            "duration_ms": 0,
+            "detail": "基于 semantic_error 重写，第 1 次"
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "负荷峰值 Top 10",
+            "duration_ms": 0.06
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 0.54
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 10 行",
+            "duration_ms": 0.15
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：verified",
+            "duration_ms": 0.41
+          },
+          {
+            "node": "summarize",
+            "status": "ok",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.02
+          }
+        ]
+      },
+      {
+        "fault": "null_as_zero",
+        "mode": "domain",
+        "correct": true,
+        "outcome": "insufficient_data",
+        "retries": 1,
+        "trace": [
+          {
+            "node": "inspect",
+            "status": "ok",
+            "detail": "PJM_RTO · 2025-01-22 → 2025-01-29 (结束不含) · forecast/day",
+            "duration_ms": 1.27
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日预测误差",
+            "duration_ms": 0.02
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 1.25
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.2
+          },
+          {
+            "node": "semantics",
+            "status": "error",
+            "detail": "mae_mw 不符合任务定义；检查聚合、单位、NULL 分母、排序及日类型。",
+            "duration_ms": 0.89
+          },
+          {
+            "node": "repair",
+            "status": "retry",
+            "duration_ms": 0,
+            "detail": "基于 semantic_error 重写，第 1 次"
+          },
+          {
+            "node": "plan",
+            "status": "ok",
+            "detail": "每日预测误差",
+            "duration_ms": 0.01
+          },
+          {
+            "node": "check",
+            "status": "ok",
+            "detail": "只读与范围限制通过；预编译通过",
+            "duration_ms": 1.28
+          },
+          {
+            "node": "execute",
+            "status": "ok",
+            "detail": "返回 7 行",
+            "duration_ms": 0.19
+          },
+          {
+            "node": "semantics",
+            "status": "ok",
+            "detail": "独立 Python 指标核验：verified",
+            "duration_ms": 0.87
+          },
+          {
+            "node": "summarize",
+            "status": "insufficient_data",
+            "detail": "根据返回数据与校验状态生成摘要",
+            "duration_ms": 0.02
+          }
+        ]
+      }
+    ]
+  }
+}

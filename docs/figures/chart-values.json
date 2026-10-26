@@ -1,0 +1,1316 @@
+{
+  "benchmark": "energy-contract-v2",
+  "planner": "demo",
+  "model": null,
+  "summary": {
+    "baseline": {
+      "cases": 26,
+      "correct": 26,
+      "p50_ms": 5.38,
+      "p95_ms": 7.17,
+      "model_calls": 0
+    },
+    "agent": {
+      "cases": 26,
+      "correct": 26,
+      "p50_ms": 5.39,
+      "p95_ms": 7.77,
+      "model_calls": 0
+    },
+    "domain": {
+      "cases": 26,
+      "correct": 26,
+      "p50_ms": 5.79,
+      "p95_ms": 8.09,
+      "model_calls": 0
+    }
+  },
+  "diagnostics": {
+    "baseline": {
+      "power_sum": false,
+      "energy_average": false,
+      "wrong_topk": false,
+      "null_as_zero": false
+    },
+    "agent": {
+      "power_sum": false,
+      "energy_average": false,
+      "wrong_topk": false,
+      "null_as_zero": false
+    },
+    "domain": {
+      "power_sum": true,
+      "energy_average": true,
+      "wrong_topk": true,
+      "null_as_zero": true
+    }
+  },
+  "tests": {
+    "total": 101,
+    "passed": 101,
+    "failed": 0,
+    "skipped": 0,
+    "sha256": "60d229e19a39ce2e0ddc7518befa1aa96aa6fa785adc298ba99e0386af1c5f18"
+  },
+  "demo": {
+    "synthetic": true,
+    "seed": 42,
+    "region": "PJM_RTO",
+    "scope": {
+      "start": "2025-01-22T00:00:00Z",
+      "end": "2025-01-29T00:00:00Z",
+      "region": "PJM_RTO",
+      "note": ""
+    },
+    "dataset_rows": 2016,
+    "regions": 3,
+    "days_per_region": 28,
+    "observed_hours": 168,
+    "expected_hours": 168,
+    "flagged_hours": 5,
+    "known_injected_hours": 3,
+    "known_injected_flagged": 0,
+    "additional_flags": 5,
+    "anomaly_evidence": {
+      "scored_hours": 168,
+      "insufficient_history_hours": 0,
+      "flagged_hours": 5,
+      "shown_hours": 5,
+      "min_history_points": 4,
+      "lookback_days": 28,
+      "threshold": 3.5,
+      "current_point_in_baseline": false,
+      "future_points_in_baseline": false,
+      "history_read_start": "2024-12-25T00:00:00Z",
+      "history_read_end_exclusive": "2025-01-29T00:00:00Z"
+    },
+    "daily_mae": [
+      {
+        "day": "2025-01-22",
+        "mae_mw": 4223.434,
+        "forecast_hours": 24
+      },
+      {
+        "day": "2025-01-23",
+        "mae_mw": 1696.165,
+        "forecast_hours": 24
+      },
+      {
+        "day": "2025-01-24",
+        "mae_mw": 1356.543,
+        "forecast_hours": 24
+      },
+      {
+        "day": "2025-01-25",
+        "mae_mw": 1212.877,
+        "forecast_hours": 24
+      },
+      {
+        "day": "2025-01-26",
+        "mae_mw": 1558.864,
+        "forecast_hours": 24
+      },
+      {
+        "day": "2025-01-27",
+        "mae_mw": 1465.205,
+        "forecast_hours": 24
+      },
+      {
+        "day": "2025-01-28",
+        "mae_mw": 1388.878,
+        "forecast_hours": 24
+      }
+    ],
+    "hourly": [
+      {
+        "timestamp_utc": "2025-01-22T00:00:00Z",
+        "load_mw": 70663.09,
+        "forecast_mw": 71799.12,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T01:00:00Z",
+        "load_mw": 68017.3,
+        "forecast_mw": 69801.79,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T02:00:00Z",
+        "load_mw": 67383.34,
+        "forecast_mw": 69097.89,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T03:00:00Z",
+        "load_mw": 66476.39,
+        "forecast_mw": 67235.94,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T04:00:00Z",
+        "load_mw": 66468.42,
+        "forecast_mw": 68428.72,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T05:00:00Z",
+        "load_mw": 68946.92,
+        "forecast_mw": 72652.88,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T06:00:00Z",
+        "load_mw": 70234.79,
+        "forecast_mw": 72029.43,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T07:00:00Z",
+        "load_mw": 72029.8,
+        "forecast_mw": 74331.36,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T08:00:00Z",
+        "load_mw": 76235.07,
+        "forecast_mw": 74888.03,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T09:00:00Z",
+        "load_mw": 78661.96,
+        "forecast_mw": 79252.45,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T10:00:00Z",
+        "load_mw": 82828.95,
+        "forecast_mw": 80365.74,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T11:00:00Z",
+        "load_mw": 88124.69,
+        "forecast_mw": 88075.24,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T12:00:00Z",
+        "load_mw": 84815.2,
+        "forecast_mw": 88201.06,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T13:00:00Z",
+        "load_mw": 90379.47,
+        "forecast_mw": 90489.6,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T14:00:00Z",
+        "load_mw": 89323.05,
+        "forecast_mw": 91039.04,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T15:00:00Z",
+        "load_mw": 91269.53,
+        "forecast_mw": 92478.91,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T16:00:00Z",
+        "load_mw": 90909.13,
+        "forecast_mw": 91052.14,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T17:00:00Z",
+        "load_mw": 111520.41,
+        "forecast_mw": 91475.9,
+        "detector_flag": false,
+        "known_injection": true
+      },
+      {
+        "timestamp_utc": "2025-01-22T18:00:00Z",
+        "load_mw": 108587.17,
+        "forecast_mw": 85283.38,
+        "detector_flag": false,
+        "known_injection": true
+      },
+      {
+        "timestamp_utc": "2025-01-22T19:00:00Z",
+        "load_mw": 106767.24,
+        "forecast_mw": 81118.75,
+        "detector_flag": false,
+        "known_injection": true
+      },
+      {
+        "timestamp_utc": "2025-01-22T20:00:00Z",
+        "load_mw": 82206.71,
+        "forecast_mw": 85047.21,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T21:00:00Z",
+        "load_mw": 80253.54,
+        "forecast_mw": 80384.95,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T22:00:00Z",
+        "load_mw": 76163.93,
+        "forecast_mw": 77834.66,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-22T23:00:00Z",
+        "load_mw": 73381.84,
+        "forecast_mw": 71830.49,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T00:00:00Z",
+        "load_mw": 71485.58,
+        "forecast_mw": 68958.74,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T01:00:00Z",
+        "load_mw": 68239.51,
+        "forecast_mw": 70532.69,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T02:00:00Z",
+        "load_mw": 65532.67,
+        "forecast_mw": 65850.92,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T03:00:00Z",
+        "load_mw": 67466.72,
+        "forecast_mw": 70934.75,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T04:00:00Z",
+        "load_mw": 66994.2,
+        "forecast_mw": 64836.95,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T05:00:00Z",
+        "load_mw": 70247.2,
+        "forecast_mw": 69911.21,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T06:00:00Z",
+        "load_mw": 72074.47,
+        "forecast_mw": 72901.11,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T07:00:00Z",
+        "load_mw": 72847.31,
+        "forecast_mw": 73143.45,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T08:00:00Z",
+        "load_mw": 75361.44,
+        "forecast_mw": 74267.78,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T09:00:00Z",
+        "load_mw": 78490.85,
+        "forecast_mw": 75678.49,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T10:00:00Z",
+        "load_mw": 83180.31,
+        "forecast_mw": 82001.94,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T11:00:00Z",
+        "load_mw": 88517.53,
+        "forecast_mw": 91627.18,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T12:00:00Z",
+        "load_mw": 89035.44,
+        "forecast_mw": 88395.89,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T13:00:00Z",
+        "load_mw": 90851.02,
+        "forecast_mw": 88486.22,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T14:00:00Z",
+        "load_mw": 92486.51,
+        "forecast_mw": 93012.93,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T15:00:00Z",
+        "load_mw": 91556.48,
+        "forecast_mw": 91456.1,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T16:00:00Z",
+        "load_mw": 93009.47,
+        "forecast_mw": 91644.0,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T17:00:00Z",
+        "load_mw": 90689.04,
+        "forecast_mw": 92166.01,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T18:00:00Z",
+        "load_mw": 89126.02,
+        "forecast_mw": 92730.09,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T19:00:00Z",
+        "load_mw": 85255.65,
+        "forecast_mw": 89282.88,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T20:00:00Z",
+        "load_mw": 80828.98,
+        "forecast_mw": 82060.24,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T21:00:00Z",
+        "load_mw": 77518.19,
+        "forecast_mw": 77971.61,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T22:00:00Z",
+        "load_mw": 76739.26,
+        "forecast_mw": 78174.36,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-23T23:00:00Z",
+        "load_mw": 72590.77,
+        "forecast_mw": 75657.7,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T00:00:00Z",
+        "load_mw": 70563.28,
+        "forecast_mw": 70858.39,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T01:00:00Z",
+        "load_mw": 66896.55,
+        "forecast_mw": 67483.8,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T02:00:00Z",
+        "load_mw": 68351.96,
+        "forecast_mw": 68398.93,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T03:00:00Z",
+        "load_mw": 66113.35,
+        "forecast_mw": 69321.81,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T04:00:00Z",
+        "load_mw": 67090.29,
+        "forecast_mw": 66047.72,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T05:00:00Z",
+        "load_mw": 69097.21,
+        "forecast_mw": 68211.75,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T06:00:00Z",
+        "load_mw": 73319.76,
+        "forecast_mw": 69862.05,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T07:00:00Z",
+        "load_mw": 75596.04,
+        "forecast_mw": 74694.49,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T08:00:00Z",
+        "load_mw": 76404.6,
+        "forecast_mw": 74326.16,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T09:00:00Z",
+        "load_mw": 80434.95,
+        "forecast_mw": 79835.23,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T10:00:00Z",
+        "load_mw": 83096.57,
+        "forecast_mw": 83254.15,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T11:00:00Z",
+        "load_mw": 85746.74,
+        "forecast_mw": 86459.19,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T12:00:00Z",
+        "load_mw": 88585.78,
+        "forecast_mw": 87619.37,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T13:00:00Z",
+        "load_mw": 90976.25,
+        "forecast_mw": 90405.56,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T14:00:00Z",
+        "load_mw": 92288.09,
+        "forecast_mw": 95640.33,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T15:00:00Z",
+        "load_mw": 92165.37,
+        "forecast_mw": 92754.37,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T16:00:00Z",
+        "load_mw": 94075.53,
+        "forecast_mw": 92173.32,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T17:00:00Z",
+        "load_mw": 91138.61,
+        "forecast_mw": 90646.92,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T18:00:00Z",
+        "load_mw": 88759.04,
+        "forecast_mw": 89518.08,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T19:00:00Z",
+        "load_mw": 85952.83,
+        "forecast_mw": 89718.58,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T20:00:00Z",
+        "load_mw": 83211.31,
+        "forecast_mw": 82622.44,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T21:00:00Z",
+        "load_mw": 81809.01,
+        "forecast_mw": 84371.44,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T22:00:00Z",
+        "load_mw": 75457.08,
+        "forecast_mw": 78330.28,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-24T23:00:00Z",
+        "load_mw": 73770.86,
+        "forecast_mw": 73608.62,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T00:00:00Z",
+        "load_mw": 66052.65,
+        "forecast_mw": 64094.55,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T01:00:00Z",
+        "load_mw": 62925.6,
+        "forecast_mw": 60550.04,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T02:00:00Z",
+        "load_mw": 62285.04,
+        "forecast_mw": 62911.47,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T03:00:00Z",
+        "load_mw": 62321.83,
+        "forecast_mw": 60665.31,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T04:00:00Z",
+        "load_mw": 61039.04,
+        "forecast_mw": 61062.47,
+        "detector_flag": true,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T05:00:00Z",
+        "load_mw": 63369.79,
+        "forecast_mw": 62352.71,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T06:00:00Z",
+        "load_mw": 65362.82,
+        "forecast_mw": 65006.49,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T07:00:00Z",
+        "load_mw": 67464.18,
+        "forecast_mw": 67934.64,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T08:00:00Z",
+        "load_mw": 70502.19,
+        "forecast_mw": 71661.86,
+        "detector_flag": true,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T09:00:00Z",
+        "load_mw": 73737.58,
+        "forecast_mw": 74482.57,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T10:00:00Z",
+        "load_mw": 77315.09,
+        "forecast_mw": 77766.47,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T11:00:00Z",
+        "load_mw": 79543.27,
+        "forecast_mw": 79949.64,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T12:00:00Z",
+        "load_mw": 82928.85,
+        "forecast_mw": 85675.85,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T13:00:00Z",
+        "load_mw": 84563.39,
+        "forecast_mw": 84054.27,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T14:00:00Z",
+        "load_mw": 86727.65,
+        "forecast_mw": 86848.71,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T15:00:00Z",
+        "load_mw": 87379.01,
+        "forecast_mw": 90583.36,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T16:00:00Z",
+        "load_mw": 86909.62,
+        "forecast_mw": 86509.51,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T17:00:00Z",
+        "load_mw": 82836.66,
+        "forecast_mw": 85756.76,
+        "detector_flag": true,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T18:00:00Z",
+        "load_mw": 81599.25,
+        "forecast_mw": 77807.52,
+        "detector_flag": true,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T19:00:00Z",
+        "load_mw": 82348.03,
+        "forecast_mw": 81286.99,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T20:00:00Z",
+        "load_mw": 76265.25,
+        "forecast_mw": 75260.05,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T21:00:00Z",
+        "load_mw": 73663.47,
+        "forecast_mw": 74058.59,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T22:00:00Z",
+        "load_mw": 74250.89,
+        "forecast_mw": 73579.06,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-25T23:00:00Z",
+        "load_mw": 68758.88,
+        "forecast_mw": 67722.82,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T00:00:00Z",
+        "load_mw": 65866.36,
+        "forecast_mw": 65445.52,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T01:00:00Z",
+        "load_mw": 65926.84,
+        "forecast_mw": 66042.94,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T02:00:00Z",
+        "load_mw": 64008.4,
+        "forecast_mw": 65381.48,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T03:00:00Z",
+        "load_mw": 62896.84,
+        "forecast_mw": 60256.99,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T04:00:00Z",
+        "load_mw": 63930.57,
+        "forecast_mw": 64455.79,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T05:00:00Z",
+        "load_mw": 64423.07,
+        "forecast_mw": 66000.63,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T06:00:00Z",
+        "load_mw": 68375.89,
+        "forecast_mw": 69418.22,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T07:00:00Z",
+        "load_mw": 69005.9,
+        "forecast_mw": 67207.97,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T08:00:00Z",
+        "load_mw": 70813.02,
+        "forecast_mw": 67762.83,
+        "detector_flag": true,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T09:00:00Z",
+        "load_mw": 75002.78,
+        "forecast_mw": 75355.35,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T10:00:00Z",
+        "load_mw": 79397.55,
+        "forecast_mw": 76043.37,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T11:00:00Z",
+        "load_mw": 79858.66,
+        "forecast_mw": 78248.45,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T12:00:00Z",
+        "load_mw": 84048.59,
+        "forecast_mw": 85750.79,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T13:00:00Z",
+        "load_mw": 86693.65,
+        "forecast_mw": 89307.11,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T14:00:00Z",
+        "load_mw": 87535.97,
+        "forecast_mw": 89649.87,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T15:00:00Z",
+        "load_mw": 86158.06,
+        "forecast_mw": 86841.67,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T16:00:00Z",
+        "load_mw": 87280.39,
+        "forecast_mw": 88554.3,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T17:00:00Z",
+        "load_mw": 86097.24,
+        "forecast_mw": 88080.65,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T18:00:00Z",
+        "load_mw": 80721.02,
+        "forecast_mw": 79908.4,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T19:00:00Z",
+        "load_mw": 79561.72,
+        "forecast_mw": 81482.32,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T20:00:00Z",
+        "load_mw": 77796.05,
+        "forecast_mw": 82168.11,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T21:00:00Z",
+        "load_mw": 77296.37,
+        "forecast_mw": 75861.55,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T22:00:00Z",
+        "load_mw": 73132.3,
+        "forecast_mw": 72857.92,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-26T23:00:00Z",
+        "load_mw": 69596.37,
+        "forecast_mw": 69964.07,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T00:00:00Z",
+        "load_mw": 72669.14,
+        "forecast_mw": 73495.3,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T01:00:00Z",
+        "load_mw": 69578.39,
+        "forecast_mw": 66713.32,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T02:00:00Z",
+        "load_mw": 70056.41,
+        "forecast_mw": 70782.51,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T03:00:00Z",
+        "load_mw": 69303.7,
+        "forecast_mw": 71434.05,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T04:00:00Z",
+        "load_mw": 68425.77,
+        "forecast_mw": 68304.37,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T05:00:00Z",
+        "load_mw": 73317.32,
+        "forecast_mw": 75609.36,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T06:00:00Z",
+        "load_mw": 73468.87,
+        "forecast_mw": 71947.92,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T07:00:00Z",
+        "load_mw": 76817.71,
+        "forecast_mw": 78724.21,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T08:00:00Z",
+        "load_mw": 78399.2,
+        "forecast_mw": 74971.68,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T09:00:00Z",
+        "load_mw": 81652.7,
+        "forecast_mw": 81285.31,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T10:00:00Z",
+        "load_mw": 87186.16,
+        "forecast_mw": 87101.62,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T11:00:00Z",
+        "load_mw": 88877.22,
+        "forecast_mw": 87296.25,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T12:00:00Z",
+        "load_mw": 93193.78,
+        "forecast_mw": 97548.18,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T13:00:00Z",
+        "load_mw": 93349.93,
+        "forecast_mw": 94620.41,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T14:00:00Z",
+        "load_mw": 95078.01,
+        "forecast_mw": 95819.78,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T15:00:00Z",
+        "load_mw": 97226.08,
+        "forecast_mw": 96561.26,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T16:00:00Z",
+        "load_mw": 95221.74,
+        "forecast_mw": 94885.64,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T17:00:00Z",
+        "load_mw": 95139.61,
+        "forecast_mw": 99551.15,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T18:00:00Z",
+        "load_mw": 93601.68,
+        "forecast_mw": 92352.3,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T19:00:00Z",
+        "load_mw": 88543.51,
+        "forecast_mw": 86435.19,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T20:00:00Z",
+        "load_mw": 87223.61,
+        "forecast_mw": 87177.28,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T21:00:00Z",
+        "load_mw": 82608.82,
+        "forecast_mw": 82068.57,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T22:00:00Z",
+        "load_mw": 81260.06,
+        "forecast_mw": 81729.27,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-27T23:00:00Z",
+        "load_mw": 76843.09,
+        "forecast_mw": 75719.77,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T00:00:00Z",
+        "load_mw": 73176.58,
+        "forecast_mw": 70585.91,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T01:00:00Z",
+        "load_mw": 71523.62,
+        "forecast_mw": 72325.23,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T02:00:00Z",
+        "load_mw": 69879.47,
+        "forecast_mw": 70469.15,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T03:00:00Z",
+        "load_mw": 71094.25,
+        "forecast_mw": 71842.3,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T04:00:00Z",
+        "load_mw": 73671.13,
+        "forecast_mw": 75600.73,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T05:00:00Z",
+        "load_mw": 72721.66,
+        "forecast_mw": 71934.01,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T06:00:00Z",
+        "load_mw": 73393.54,
+        "forecast_mw": 70971.45,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T07:00:00Z",
+        "load_mw": 76097.64,
+        "forecast_mw": 79608.5,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T08:00:00Z",
+        "load_mw": 81024.28,
+        "forecast_mw": 82444.55,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T09:00:00Z",
+        "load_mw": 83117.4,
+        "forecast_mw": 86131.49,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T10:00:00Z",
+        "load_mw": 86554.54,
+        "forecast_mw": 87360.11,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T11:00:00Z",
+        "load_mw": 92303.78,
+        "forecast_mw": 93664.27,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T12:00:00Z",
+        "load_mw": 94615.39,
+        "forecast_mw": 95812.28,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T13:00:00Z",
+        "load_mw": 97697.78,
+        "forecast_mw": 98738.58,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T14:00:00Z",
+        "load_mw": 99543.13,
+        "forecast_mw": 99913.44,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T15:00:00Z",
+        "load_mw": 98296.73,
+        "forecast_mw": 97479.48,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T16:00:00Z",
+        "load_mw": 96317.89,
+        "forecast_mw": 97823.28,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T17:00:00Z",
+        "load_mw": 97102.82,
+        "forecast_mw": 95464.56,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T18:00:00Z",
+        "load_mw": 94029.07,
+        "forecast_mw": 94155.33,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T19:00:00Z",
+        "load_mw": 92447.32,
+        "forecast_mw": 95298.01,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T20:00:00Z",
+        "load_mw": 87316.5,
+        "forecast_mw": 87550.49,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T21:00:00Z",
+        "load_mw": 85078.97,
+        "forecast_mw": 83569.41,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T22:00:00Z",
+        "load_mw": 81820.42,
+        "forecast_mw": 82943.18,
+        "detector_flag": false,
+        "known_injection": false
+      },
+      {
+        "timestamp_utc": "2025-01-28T23:00:00Z",
+        "load_mw": 78896.28,
+        "forecast_mw": 77956.0,
+        "detector_flag": false,
+        "known_injection": false
+      }
+    ]
+  },
+  "provenance": {
+    "evaluation_path": "evaluation.json",
+    "evaluation_sha256": "040951bc6ee1daa74004a3e141beaaaa04a88e89bf333027c15ec0443a91d0d5",
+    "generated_at_utc": "2026-10-26T00:36:06.723157+00:00",
+    "generator_sha256": "dc1a2aa2f951c68a3a476712a590a4dd903965fd2fe7da59e69ce9a17c1ff4a2",
+    "anomaly_code_sha256": "f36007d68ae403900ab8a16d9f871cd0f72c780c86624e6ba7d4dbceaa702a0a"
+  },
+  "limits": [
+    "Curated synthetic tasks; not held-out real-PJM evidence.",
+    "Recovery diagnostic uses an explicitly scripted planner, not an LLM.",
+    "Runtime describes one local run and cannot establish a production SLA.",
+    "Energy case uses an isolated synthetic database and exposes missed injected events."
+  ]
+}

@@ -1,0 +1,29 @@
+name: Gridnote checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ENERGY_PLANNER: demo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: uv python install 3.12
+      - run: uv sync --frozen --python 3.12
+      - run: uv run ruff check energy_agent tests
+      - run: node --check --input-type=module < energy_agent/static/app.js
+      - run: uv run pytest -q --junitxml=/tmp/gridnote-tests.xml
+      - run: uv run energy-agent evaluate --planner demo --output /tmp/gridnote-evaluation.json
+      - run: uv build
